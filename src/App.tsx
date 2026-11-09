@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { supabase } from "./lib/supabase";
 
 type Player = { id: string; name: string; phone: string };
 type Session = { id: string; date: string; venue: string; participants: string[]; total: number };
@@ -7,7 +8,7 @@ const initialPlayers: Player[] = ["Aniket","Ajit","Suhas","Sameet","Krunal","Moh
 const money = (n:number) => new Intl.NumberFormat("en-IN",{style:"currency",currency:"INR",maximumFractionDigits:0}).format(n);
 function load<T>(key:string,fallback:T):T { try { const v=localStorage.getItem(key); return v ? JSON.parse(v) as T : fallback; } catch { return fallback; } }
 
-export default function App() {
+function Dashboard({ email }: { email: string }) {
  const [tab,setTab]=useState("Overview");
  const [players,setPlayers]=useState<Player[]>(()=>load("tm-players",initialPlayers));
  const [sessions,setSessions]=useState<Session[]>(()=>load("tm-sessions",[]));
@@ -25,8 +26,8 @@ export default function App() {
  function addSession(e:React.FormEvent){e.preventDefault();const total=Number(amount);if(!selected.length||total<=0)return;setSessions([{id:crypto.randomUUID(),date,venue,participants:selected,total},...sessions]);setSelected([]);setAmount("");setShowSession(false);}
  function addPayment(e:React.FormEvent){e.preventDefault();const n=Number(payAmount);if(!payPlayer||n<=0)return;setPayments([{id:crypto.randomUUID(),playerId:payPlayer,amount:n,date:new Date().toISOString().slice(0,10),note:payNote},...payments]);setPayAmount("");setPayNote("");}
  const nav=["Overview","Sessions","Players","Payments"];
- return <div className="shell"><aside className="sidebar"><div className="brand"><span>🏏</span><div><b>TurfMate</b><small>MANHATTAN CRICKET</small></div></div><p className="muted">WORKSPACE</p>{nav.map(x=><button key={x} className={tab===x?"nav active":"nav"} onClick={()=>setTab(x)}>{x}</button>)}<div className="sidefoot">Organiser preview<br/><small>Local demo</small></div></aside>
- <main><header><span>MANHATTAN CRICKET / <b>{tab}</b></span><span className="pill">● DEMO MODE</span></header>
+ return <div className="shell"><aside className="sidebar"><div className="brand"><span>🏏</span><div><b>TurfMate</b><small>MANHATTAN CRICKET</small></div></div><p className="muted">WORKSPACE</p>{nav.map(x=><button key={x} className={tab===x?"nav active":"nav"} onClick={()=>setTab(x)}>{x}</button>)}<div className="sidefoot">{email}<br/><button className="nav" onClick={() => supabase.auth.signOut()}>Sign out</button><small>Data sync is next</small></div></aside>
+ <main><header><span>MANHATTAN CRICKET / <b>{tab}</b></span><span className="pill">● AUTH CONNECTED · DATA DEMO</span></header>
  {tab==="Overview"&&<><section className="hero"><div><small>YOUR CRICKET FINANCES, SIMPLIFIED</small><h1>Good game. Clear accounts.</h1><p>Track turf sessions, split expenses and keep everyone's contributions in one place.</p></div><button className="primary" onClick={()=>setShowSession(true)}>＋ Add session</button></section><section className="stats"><Stat label="TOTAL TURF SPEND" value={money(spend)}/><Stat label="COLLECTED" value={money(collected)}/><Stat label="OUTSTANDING" value={money(outstanding)}/><Stat label="PLAYERS" value={String(players.length)}/></section><h2>Recent sessions</h2><SessionList sessions={sessions.slice(0,5)} players={players}/><p className="notice">Demo only: data is stored in this browser and is not shared with your players yet.</p></>}
  {tab==="Sessions"&&<><div className="pagehead"><div><h1>Sessions</h1><p>Record a turf booking and split its cost equally.</p></div><button className="primary" onClick={()=>setShowSession(true)}>＋ Add session</button></div><SessionList sessions={sessions} players={players}/></>}
  {tab==="Players"&&<><div className="pagehead"><div><h1>Players</h1><p>Manage your cricket group roster.</p></div><button className="primary" onClick={()=>setShowPlayer(true)}>＋ Add player</button></div><div className="panel">{players.map(p=><div className="line" key={p.id}><b>{p.name}</b><span>{p.phone||"No phone added"}</span><strong>{money(Math.max(0,dues[p.id]||0))} due</strong></div>)}</div></>}
