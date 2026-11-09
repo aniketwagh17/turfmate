@@ -74,8 +74,8 @@ export default function AuthGate() {
   async function saveWhatsappPhone(e: FormEvent) {
     e.preventDefault();
     if (!session) return;
-    const normalized = whatsappPhone.replace(/[\\s()-]/g, "");
-    if (!/^\\+[1-9]\\d{7,14}$/.test(normalized)) {
+    const normalized = whatsappPhone.replace(/[\s()-]/g, "");
+    if (!/^\+[1-9]\d{7,14}$/.test(normalized)) {
       setMessage("Enter the number with country code, e.g. +919876543210.");
       return;
     }
