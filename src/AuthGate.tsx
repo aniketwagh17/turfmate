@@ -74,9 +74,9 @@ export default function AuthGate() {
   async function saveWhatsappPhone(e: FormEvent) {
     e.preventDefault();
     if (!session) return;
-    const normalized = whatsappPhone.replace(/[\s()-]/g, "");
-    if (!/^\+[1-9]\d{7,14}$/.test(normalized)) {
-      setMessage("Enter the number with country code, e.g. +919876543210.");
+    const normalized = whatsappPhone.replace(/\D/g, "");
+    if (!/^[6-9]\d{9}$/.test(normalized)) {
+      setMessage("Enter a valid 10-digit Indian mobile number.");
       return;
     }
     setBusy(true); setMessage("");
@@ -101,10 +101,10 @@ export default function AuthGate() {
       <p className="auth-subtitle">MANHATTAN CRICKET</p>
       <h1>One last thing</h1>
       <p className="auth-copy">Add your WhatsApp number so your cricket organiser can send you personalized session and payment messages from TurfMate. You only need to add this once.</p>
-      <label>WhatsApp number (include country code)
-        <input type="tel" autoComplete="tel" inputMode="tel" required value={whatsappPhone} onChange={e=>setWhatsappPhone(e.target.value)} placeholder="+91 98765 43210"/>
+      <label>WhatsApp number
+        <input type="tel" autoComplete="tel-national" inputMode="numeric" maxLength={10} required value={whatsappPhone} onChange={e=>setWhatsappPhone(e.target.value.replace(/\D/g, "").slice(0, 10))} placeholder="9876543210"/>
       </label>
-      <p className="auth-copy">Example: +91 followed by your 10-digit mobile number. Your number is used for group coordination and WhatsApp reminders.</p>
+      <p className="auth-copy">Enter your 10-digit Indian mobile number. We’ll add the country code when creating WhatsApp links.</p>
       {message && <p className="auth-message" role="status">{message}</p>}
       <button className="primary auth-submit" disabled={busy}>{busy ? "Saving…" : "Save WhatsApp number"}</button>
       <button type="button" className="auth-switch" onClick={() => supabase.auth.signOut()}>Sign out</button>
