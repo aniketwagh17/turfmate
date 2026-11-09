@@ -8,7 +8,7 @@ const initialPlayers: Player[] = ["Aniket","Ajit","Suhas","Sameet","Krunal","Moh
 const money = (n:number) => new Intl.NumberFormat("en-IN",{style:"currency",currency:"INR",maximumFractionDigits:0}).format(n);
 function load<T>(key:string,fallback:T):T { try { const v=localStorage.getItem(key); return v ? JSON.parse(v) as T : fallback; } catch { return fallback; } }
 
-function Dashboard({ email }: { email: string }) {
+export default function Dashboard({ email }: { email: string }) {
  const [tab,setTab]=useState("Overview");
  const [players,setPlayers]=useState<Player[]>(()=>load("tm-players",initialPlayers));
  const [sessions,setSessions]=useState<Session[]>(()=>load("tm-sessions",[]));
