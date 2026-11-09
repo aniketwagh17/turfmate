@@ -10,3 +10,9 @@
 .auth-submit{width:100%;margin-top:10px}.auth-switch{width:100%;border:0;background:transparent;color:#16865f;font-size:12px;font-weight:700;padding:16px 4px 0}
 .auth-message{font-size:12px;line-height:1.5;color:#795d20;background:#fff7e7;padding:10px;border-radius:8px}
 @media(max-width:580px){.auth-card{padding:24px}}
+
+.small-action{border:1px solid #cfe7dc;background:#effaf5;color:#147a56;border-radius:7px;padding:8px 10px;font-size:11px;font-weight:700;white-space:nowrap}
+.whatsapp-preview{background:#e8f5ed;border-radius:10px;padding:12px;margin:12px 0}
+.whatsapp-preview-head{font-size:11px;color:#16865f;font-weight:700;margin-bottom:8px}
+.whatsapp-preview pre{white-space:pre-wrap;overflow-wrap:anywhere;font:13px/1.55 "DM Sans",sans-serif;color:#253746;margin:0;background:#fff;padding:13px;border-radius:9px}
+@media(max-width:580px){.line{flex-wrap:wrap}.small-action{margin-left:auto}}
