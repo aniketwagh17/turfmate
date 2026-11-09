@@ -401,4 +401,21 @@ with check (
   )
 );
 
+
+-- Explicit Data API privileges because "Automatically expose new tables" was
+-- intentionally left disabled during project creation. RLS remains the
+-- row-level gate for every authenticated request.
+grant usage on schema public to authenticated;
+grant select, update on public.profiles to authenticated;
+grant select, insert, update on public.cricket_groups to authenticated;
+grant select, insert, update, delete on public.group_members to authenticated;
+grant select, insert, update, delete on public.sessions to authenticated;
+grant select, insert, update, delete on public.session_players to authenticated;
+grant select, insert, update, delete on public.expenses to authenticated;
+grant select, insert on public.payments to authenticated;
+grant select, insert on public.payment_allocations to authenticated;
+grant select, insert on public.payment_reviews to authenticated;
+grant execute on function public.is_active_group_member(uuid) to authenticated;
+grant execute on function public.has_group_role(uuid, text[]) to authenticated;
+
 commit;
