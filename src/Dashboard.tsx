@@ -76,7 +76,7 @@ export default function Dashboard({ email }: { email: string }) {
   const manualOut=rangeFund.filter(t=>t.type==="Withdrawal").reduce((n,t)=>n+t.amount,0);
   const fundMovement=playerContributions-rangeSessions.filter(s=>s.mode==="fund").reduce((n,s)=>n+s.total,0)+manualIn-manualOut;
   const closing=opening+fundMovement;
-  const doc=new jsPDF({orientation:"portrait",unit:"mm",format:"a4"});
+  const doc=new jsPDF({orientation:"portrait",unit:"mm",format:"a4"});doc.setCharSpace(0);
   const W=210, L=14, R=196; let y=0;
   const navy=[19,42,61] as [number,number,number], green=[24,151,105] as [number,number,number], pale=[239,247,243] as [number,number,number], ink=[43,57,72] as [number,number,number], muted=[112,127,143] as [number,number,number];
   const setText=(rgb:[number,number,number])=>doc.setTextColor(rgb[0],rgb[1],rgb[2]);
