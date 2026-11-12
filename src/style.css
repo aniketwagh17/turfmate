@@ -69,3 +69,26 @@
 .toast{position:fixed;z-index:40;left:50%;bottom:24px;transform:translateX(-50%);background:#142b3d;color:white;padding:12px 16px;border-radius:10px;box-shadow:0 8px 28px #142b3d30;font-size:12px;display:flex;align-items:center;gap:14px;max-width:calc(100vw - 24px)}
 .toast button{border:0;background:transparent;color:#a0e0c5;font-weight:700}
 .modal .whatsapp-preview pre{max-height:48vh;overflow:auto}
+
+
+/* Add players modal refinements */
+.player-select-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;max-height:44vh;overflow:auto;padding:2px 3px 8px}
+.player-select-card{min-width:0;min-height:48px;justify-content:flex-start!important;padding:10px 12px!important;border:1px solid #e7edf2;background:#f7f9fb!important;cursor:pointer}
+.player-select-card:has(input:checked){background:#eaf8f1!important;border-color:#83d2ad}
+.player-select-card input{accent-color:#15966a;width:17px;height:17px;flex:none}
+.player-select-card span{min-width:0;overflow-wrap:anywhere}
+.player-select-card b{display:block;font-size:12px;color:#24364a}
+.player-select-card small{display:block;color:#8492a2;font-size:10px;margin-top:2px}
+.quick-add-wrap{margin:14px 0 18px}
+.add-new-player-toggle{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;padding:12px 16px;border:1px dashed #21a675;border-radius:10px;background:#f0fbf6;color:#087d57;font-weight:700;font-size:13px}
+.add-new-player-toggle span{font-size:18px;line-height:1}
+.quick-add-player{padding:14px;background:#f7f9fb;border:1px solid #e5ebf0;border-radius:11px}
+.quick-add-heading{font:700 13px Manrope;color:#26394d;margin-bottom:8px}
+.quick-add-fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.quick-add-fields label{margin:8px 0;font-size:11px}
+.quick-add-fields input{margin-top:6px}
+.quick-add-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:8px}
+.save-attendance-button{width:100%}
+.modal-close-button{width:36px;height:36px;display:grid;place-items:center;border:1px solid #e3e9ef!important;border-radius:50%!important;background:#f5f7fa!important;color:#536274!important;font-size:24px!important;line-height:1;padding:0!important;transition:all .15s ease}
+.modal-close-button:hover{background:#feeceb!important;border-color:#f6c2bd!important;color:#c0392b!important}
+@media(max-width:620px){.player-select-grid{grid-template-columns:repeat(2,minmax(0,1fr));max-height:40vh}.quick-add-fields{grid-template-columns:1fr}}
