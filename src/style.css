@@ -57,3 +57,15 @@
   .small-action{font-size:10px}
   .modal{padding:18px}
 }
+
+/* Fund mode, household attendance, payment and WhatsApp sharing */
+.mode-options{display:grid;gap:8px;margin:10px 0 16px}
+.mode-options label{display:flex;align-items:center;gap:9px;background:#f4f7f8;padding:11px;border-radius:8px;margin:0}
+.mode-options input,.attendance-row input{width:auto;margin:0}
+.attendance-row{display:flex;align-items:center;justify-content:space-between;gap:8px;background:#f4f7f8;padding:7px 9px;border-radius:8px}
+.attendance-row label{display:flex;align-items:center;gap:7px;margin:0}
+.attendance-row select{width:auto;max-width:130px;margin:0;padding:7px;border:1px solid #dce3ea;border-radius:7px;background:white;font-size:11px}
+.checks{grid-template-columns:1fr}
+.toast{position:fixed;z-index:40;left:50%;bottom:24px;transform:translateX(-50%);background:#142b3d;color:white;padding:12px 16px;border-radius:10px;box-shadow:0 8px 28px #142b3d30;font-size:12px;display:flex;align-items:center;gap:14px;max-width:calc(100vw - 24px)}
+.toast button{border:0;background:transparent;color:#a0e0c5;font-weight:700}
+.modal .whatsapp-preview pre{max-height:48vh;overflow:auto}
