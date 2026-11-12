@@ -1,11 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "./lib/supabase";
 import Swal from "sweetalert2";
+import { jsPDF } from "jspdf";
 
 type Player = { id: string; name: string; phone: string };
 type ContributionMode = "equal" | "fund";
 type Session = { id: string; date: string; venue: string; participants: string[]; attendance: Record<string, number>; total: number; mode: ContributionMode; contribution: number };
 type Payment = { id: string; playerId: string; amount: number; date: string; note: string; method: "UPI" | "Cash"; sessionId: string };
+type FundTransaction = { id:string; date:string; type:"Contribution"|"Withdrawal"; amount:number; note:string };
 const initialPlayers: Player[] = ["Aniket","Ajit","Suhas","Sameet","Krunal","Mohak"].map((name,i)=>({id:String(i+1),name,phone:""}));
 const money = (n:number) => new Intl.NumberFormat("en-IN",{style:"currency",currency:"INR",maximumFractionDigits:0}).format(n);
 function load<T>(key:string,fallback:T):T { try { const v=localStorage.getItem(key); return v ? JSON.parse(v) as T : fallback; } catch { return fallback; } }
@@ -18,6 +20,10 @@ export default function Dashboard({ email }: { email: string }) {
  const [players,setPlayers]=useState<Player[]>(()=>load("tm-players",initialPlayers));
  const [sessions,setSessions]=useState<Session[]>(()=>load("tm-sessions",[]));
  const [payments,setPayments]=useState<Payment[]>(()=>load("tm-payments",[]));
+ const [fundTransactions,setFundTransactions]=useState<FundTransaction[]>(()=>load("tm-fund-transactions",[]));
+ const [fundType,setFundType]=useState<"Contribution"|"Withdrawal">("Contribution"); const [fundAmount,setFundAmount]=useState(""); const [fundNote,setFundNote]=useState("");
+ const today=new Date().toISOString().slice(0,10); const monthStart=today.slice(0,8)+"01";
+ const [reportStart,setReportStart]=useState(monthStart); const [reportEnd,setReportEnd]=useState(today);
  const [name,setName]=useState(""); const [phone,setPhone]=useState("");
  const [date,setDate]=useState(new Date().toISOString().slice(0,10)); const [venue,setVenue]=useState("Titans Turf");
  const [attendanceSessionId,setAttendanceSessionId]=useState(""); const [attendanceDraft,setAttendanceDraft]=useState<string[]>([]); const [quickPlayerName,setQuickPlayerName]=useState(""); const [quickPlayerPhone,setQuickPlayerPhone]=useState(""); const [showQuickPlayerForm,setShowQuickPlayerForm]=useState(false);
@@ -30,12 +36,14 @@ export default function Dashboard({ email }: { email: string }) {
  useEffect(()=>localStorage.setItem("tm-players",JSON.stringify(players)),[players]);
  useEffect(()=>localStorage.setItem("tm-sessions",JSON.stringify(sessions)),[sessions]);
  useEffect(()=>localStorage.setItem("tm-payments",JSON.stringify(payments)),[payments]);
+ useEffect(()=>localStorage.setItem("tm-fund-transactions",JSON.stringify(fundTransactions)),[fundTransactions]);
 
  const dues=useMemo(()=>{const d:Record<string,number>={};players.forEach(p=>d[p.id]=0);sessions.forEach(s=>{if(s.mode==="fund"){s.participants.forEach(id=>d[id]=(d[id]||0)+(s.attendance?.[id]||1)*s.contribution);}else{const heads=s.participants.reduce((n,id)=>n+(s.attendance?.[id]||1),0);if(!heads)return;const each=s.total/heads;s.participants.forEach(id=>d[id]=(d[id]||0)+each*(s.attendance?.[id]||1));}});payments.forEach(p=>d[p.playerId]=(d[p.playerId]||0)-p.amount);return d;},[players,sessions,payments]);
  const spend=sessions.reduce((n,s)=>n+s.total,0), collected=payments.reduce((n,p)=>n+p.amount,0), outstanding=players.reduce((n,p)=>n+Math.max(0,dues[p.id]||0),0);
  const fundCollected=payments.filter(p=>sessions.find(s=>s.id===p.sessionId)?.mode==="fund").reduce((n,p)=>n+p.amount,0);
  const fundSpend=sessions.filter(s=>s.mode==="fund").reduce((n,s)=>n+s.total,0);
- const fundBalance=OPENING_FUND+fundCollected-fundSpend;
+ const manualFundNet=fundTransactions.reduce((n,t)=>n+(t.type==="Contribution"?t.amount:-t.amount),0);
+ const fundBalance=OPENING_FUND+fundCollected-fundSpend+manualFundNet;
  function addPlayer(e:React.FormEvent){e.preventDefault();if(!name.trim())return;setPlayers([...players,{id:crypto.randomUUID(),name:name.trim(),phone:phone.trim()}]);setName("");setPhone("");setShowPlayer(false);}
  function addSession(e:React.FormEvent){e.preventDefault();const total=Number(amount), per=Number(contribution);if(total<=0||(mode==="fund"&&per<=0))return;const values={date,venue, total,mode,contribution:mode==="fund"?per:0};if(editingSessionId){setSessions(current=>current.map(s=>s.id===editingSessionId?{...s,...values}:s));void Swal.fire({icon:"success",title:"Changes saved",text:"Your session has been updated.",timer:1500,showConfirmButton:false});}else{const session:Session={id:crypto.randomUUID(),...values,participants:[],attendance:{}};setSessions(current=>[session,...current]);setNotice("Session created successfully. Add players whenever you are ready.");}setAmount("");setShowSession(false);setEditingSessionId("");}
  function openAttendance(s:Session){setAttendanceSessionId(s.id);setAttendanceDraft(s.participants||[]);setQuickPlayerName("");setQuickPlayerPhone("");setShowQuickPlayerForm(false);}
@@ -44,6 +52,15 @@ export default function Dashboard({ email }: { email: string }) {
  function editSession(s:Session){setEditingSessionId(s.id);setDate(s.date);setVenue(s.venue);setAmount(String(s.total));setMode(s.mode);setContribution(String(s.contribution||250));setShowSession(true);}
  async function deleteSession(s:Session){const result=await Swal.fire({title:"Delete this session?",text:"Payments recorded against this session will also be deleted. This action cannot be undone.",icon:"warning",showCancelButton:true,confirmButtonText:"Yes, delete session",cancelButtonText:"Keep session",confirmButtonColor:"#dc2626",cancelButtonColor:"#64748b",reverseButtons:true});if(!result.isConfirmed)return;setSessions(current=>current.filter(x=>x.id!==s.id));setPayments(current=>current.filter(p=>p.sessionId!==s.id));if(announcementSessionId===s.id)setAnnouncementSessionId("");await Swal.fire({icon:"success",title:"Session deleted",text:"The session has been removed.",timer:1500,showConfirmButton:false});}
  function addPayment(e:React.FormEvent){e.preventDefault();const n=Number(payAmount);if(!payPlayer||!paySession||n<=0)return;setPayments([{id:crypto.randomUUID(),playerId:payPlayer,amount:n,date:new Date().toISOString().slice(0,10),note:payNote,method:payMethod,sessionId:paySession},...payments]);setPayAmount("");setPayNote("");}
+ function expectedForPlayer(s:Session,playerId:string){if(!s.participants.includes(playerId))return 0;if(s.mode==="fund")return s.contribution;const count=s.participants.length;return count?s.total/count:0;}
+ function latestSessionForPlayer(playerId:string){return [...sessions].filter(s=>s.participants.includes(playerId)).sort((a,b)=>b.date.localeCompare(a.date))[0];}
+ function amountDueForSession(playerId:string,sessionId:string){const s=sessions.find(x=>x.id===sessionId);if(!s)return 0;const expected=expectedForPlayer(s,playerId);const paid=payments.filter(p=>p.playerId===playerId&&p.sessionId===sessionId).reduce((n,p)=>n+p.amount,0);return Math.max(0,expected-paid);}
+ useEffect(()=>{if(!sessions.length)return;if(!paySession){const latest=[...sessions].sort((a,b)=>b.date.localeCompare(a.date))[0];setPaySession(latest.id);}},[sessions,paySession]);
+ useEffect(()=>{if(!payPlayer)return;const latest=latestSessionForPlayer(payPlayer);if(latest)setPaySession(latest.id);},[payPlayer]);
+ useEffect(()=>{if(!payPlayer||!paySession)return;const due=amountDueForSession(payPlayer,paySession);setPayAmount(due>0?String(Math.round(due*100)/100):"");},[payPlayer,paySession,sessions,payments]);
+ function addFundEntry(e:React.FormEvent){e.preventDefault();const n=Number(fundAmount);if(n<=0)return;setFundTransactions(current=>[{id:crypto.randomUUID(),date:new Date().toISOString().slice(0,10),type:fundType,amount:n,note:fundNote.trim()},...current]);setFundAmount("");setFundNote("");void Swal.fire({icon:"success",title:fundType==="Contribution"?"Contribution added":"Withdrawal recorded",timer:1400,showConfirmButton:false});}
+ function downloadReport(){if(!reportStart||!reportEnd||reportStart>reportEnd){void Swal.fire({icon:"warning",title:"Check report dates",text:"Please choose a valid date range."});return;}const inRange=(date:string)=>date>=reportStart&&date<=reportEnd;const rangeSessions=sessions.filter(s=>inRange(s.date)).sort((a,b)=>a.date.localeCompare(b.date));const rangePayments=payments.filter(p=>inRange(p.date));const rangeFund=fundTransactions.filter(t=>inRange(t.date)).sort((a,b)=>a.date.localeCompare(b.date));const doc=new jsPDF();let y=18;doc.setFont("helvetica","bold");doc.setFontSize(18);doc.text("TurfMate - Cricket Fund Report",14,y);y+=9;doc.setFont("helvetica","normal");doc.setFontSize(10);doc.text("Manhattan Cricket | "+reportStart+" to "+reportEnd,14,y);y+=10;const opening=OPENING_FUND+payments.filter(p=>p.date<reportStart&&sessions.some(s=>s.id===p.sessionId&&s.mode==="fund")).reduce((n,p)=>n+p.amount,0)-sessions.filter(s=>s.mode==="fund"&&s.date<reportStart).reduce((n,s)=>n+s.total,0)+fundTransactions.filter(t=>t.date<reportStart).reduce((n,t)=>n+(t.type==="Contribution"?t.amount:-t.amount),0);const sessionSpend=rangeSessions.reduce((n,s)=>n+s.total,0);const collectedInRange=rangePayments.reduce((n,p)=>n+p.amount,0);const fundChange=rangePayments.filter(p=>sessions.some(s=>s.id===p.sessionId&&s.mode==="fund")).reduce((n,p)=>n+p.amount,0)-rangeSessions.filter(s=>s.mode==="fund").reduce((n,s)=>n+s.total,0)+rangeFund.reduce((n,t)=>n+(t.type==="Contribution"?t.amount:-t.amount),0);doc.text("Opening fund balance: "+money(opening),14,y);y+=6;doc.text("Fund movement in period: "+money(fundChange),14,y);y+=6;doc.text("Closing fund balance: "+money(opening+fundChange),14,y);y+=6;doc.text("Turf expenses: "+money(sessionSpend)+" | Payments recorded: "+money(collectedInRange),14,y);y+=10;const section=(title:string,rows:string[][])=>{if(y>255){doc.addPage();y=18;}doc.setFont("helvetica","bold");doc.setFontSize(12);doc.text(title,14,y);y+=7;doc.setFont("helvetica","normal");doc.setFontSize(9);if(!rows.length){doc.text("No entries in this period.",14,y);y+=8;return;}rows.forEach(row=>{const lines=doc.splitTextToSize(row.join(" | "),180);if(y+lines.length*5>280){doc.addPage();y=18;}doc.text(lines,14,y);y+=lines.length*5+2;});y+=4;};section("Sessions and turf expenses",rangeSessions.map(s=>[s.date,s.venue,"Cost "+money(s.total),s.mode==="fund"?"Contribution "+money(s.contribution)+"/player":"Equal split"]));section("Player payments",rangePayments.map(p=>[p.date,players.find(x=>x.id===p.playerId)?.name||"Player",sessions.find(s=>s.id===p.sessionId)?.venue||"Session",money(p.amount),p.method,p.note||""]));section("Cricket fund contributions and withdrawals",rangeFund.map(t=>[t.date,t.type,money(t.amount),t.note||""]));doc.save("TurfMate-report-"+reportStart+"-to-"+reportEnd+".pdf");}
+
  const reminderPlayer=players.find(p=>p.id===reminderPlayerId);
  const reminderDue=reminderPlayer?Math.max(0,dues[reminderPlayer.id]||0):0;
  const reminderPaid=reminderPlayer?payments.filter(p=>p.playerId===reminderPlayer.id).reduce((sum,p)=>sum+p.amount,0):0;
