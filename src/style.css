@@ -100,10 +100,10 @@
 .session-line>strong{text-align:right;white-space:nowrap}
 .session-line>.small-action{justify-self:center;min-width:132px}
 .session-icon-actions{justify-self:end;min-width:76px}
-.player-list-row{display:grid;grid-template-columns:minmax(180px,1fr) 150px 150px;align-items:center;gap:18px;min-height:72px}
+.player-list-row{display:grid;grid-template-columns:minmax(180px,1fr) 130px 150px 76px;align-items:center;gap:18px;min-height:72px}
 .player-identity{min-width:0}
 .player-due{text-align:right;white-space:nowrap}
-.player-reminder-action{justify-self:end;min-width:132px}
+.player-reminder-action{justify-self:end;min-width:132px}.player-row-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px;justify-self:end}.player-row-actions button{width:32px;height:34px;display:grid;place-items:center;border:0;border-radius:7px;background:transparent;font-size:20px;line-height:1;padding:0}.player-row-actions button:first-child{color:#2563eb}.player-row-actions button:last-child{color:#dc2626}.player-row-actions button:hover{background:#f1f5f9}.field-error{display:block!important;color:#dc2626!important;font-size:11px!important;font-weight:600;margin-top:6px!important}
 .fund-report-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:24px 0}
 .section-hint{font-size:12px;color:#8491a1;line-height:1.5;margin:5px 0 14px}
 .fund-entry-fields,.report-date-fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}
@@ -115,7 +115,7 @@
 .report-date-fields{margin-bottom:12px}
 .field-hint{display:block;color:#8491a1;font-size:10px;margin-top:5px}
 @media(max-width:900px){.session-line{grid-template-columns:minmax(160px,1fr) 95px 135px 76px;gap:10px}.fund-report-grid{grid-template-columns:1fr}}
-@media(max-width:620px){.session-line{grid-template-columns:minmax(0,1fr) auto;gap:8px;padding:16px 2px}.session-line>strong{grid-column:2;grid-row:1;text-align:right}.session-line>.small-action{grid-column:1;justify-self:start}.session-icon-actions{grid-column:2;grid-row:2}.player-list-row{grid-template-columns:minmax(0,1fr) auto;gap:8px}.player-due{grid-column:2;grid-row:1}.player-reminder-action{grid-column:1/-1;justify-self:start}.fund-entry-fields,.report-date-fields{grid-template-columns:1fr}.fund-report-grid{gap:12px}}
+@media(max-width:620px){.session-line{grid-template-columns:minmax(0,1fr) auto;gap:8px;padding:16px 2px}.session-line>strong{grid-column:2;grid-row:1;text-align:right}.session-line>.small-action{grid-column:1;justify-self:start}.session-icon-actions{grid-column:2;grid-row:2}.player-list-row{grid-template-columns:minmax(0,1fr) auto;gap:8px}.player-due{grid-column:2;grid-row:1}.player-reminder-action{grid-column:1;grid-row:2;justify-self:start}.player-row-actions{grid-column:2;grid-row:2;justify-self:end}.fund-entry-fields,.report-date-fields{grid-template-columns:1fr}.fund-report-grid{gap:12px}}
 
 
 /* Overview: keep occasional organiser tools out of the primary dashboard */
