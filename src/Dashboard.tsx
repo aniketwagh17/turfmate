@@ -10,7 +10,7 @@ type Payment = { id: string; playerId: string; amount: number; date: string; not
 type FundTransaction = { id:string; date:string; type:"Contribution"|"Withdrawal"; amount:number; note:string };
 const initialPlayers: Player[] = ["Aniket","Ajit","Suhas","Sameet","Krunal","Mohak"].map((name,i)=>({id:String(i+1),name,phone:""}));
 const money = (n:number) => new Intl.NumberFormat("en-IN",{style:"currency",currency:"INR",maximumFractionDigits:0}).format(n);
-function formatSessionTime(value?:string){const raw=value||"21:00";const [hh,mm]=raw.split(":").map(Number);const hour=hh%12||12;return hour+" "+(hh>=12?"pm":"am")+(mm?":"+String(mm).padStart(2,"0"):"");}
+function formatSessionTime(value?:string){const raw=value||"21:00";const [hh,mm]=raw.split(":").map(Number);const hour=hh%12||12;return hour+(mm?":"+String(mm).padStart(2,"0"):"")+" "+(hh>=12?"pm":"am");}
 function load<T>(key:string,fallback:T):T { try { const v=localStorage.getItem(key); return v ? JSON.parse(v) as T : fallback; } catch { return fallback; } }
 const UPI_ID = "aniketwagh17-2@oksbi";
 const PAYEE_NAME = "Aniket Wagh";
