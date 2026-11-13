@@ -65,6 +65,7 @@ export default function Dashboard({ email }: { email: string }) {
  function expectedForPlayer(s:Session,playerId:string){if(!s.participants.includes(playerId))return 0;if(s.mode==="fund")return s.contribution;const count=s.participants.length;return count?s.total/count:0;}
  function latestSessionForPlayer(playerId:string){return [...sessions].filter(s=>s.participants.includes(playerId)).sort((a,b)=>b.date.localeCompare(a.date))[0];}
  function amountDueForSession(playerId:string,sessionId:string){const s=sessions.find(x=>x.id===sessionId);if(!s)return 0;const expected=expectedForPlayer(s,playerId);const paid=payments.filter(p=>p.playerId===playerId&&p.sessionId===sessionId).reduce((n,p)=>n+p.amount,0);return Math.max(0,expected-paid);}
+ function sessionPaid(s:Session,playerId:string){return payments.filter(p=>p.sessionId===s.id&&p.playerId===playerId).reduce((total,p)=>total+p.amount,0);}
  useEffect(()=>{if(!sessions.length)return;if(!paySession){const latest=[...sessions].sort((a,b)=>b.date.localeCompare(a.date))[0];setPaySession(latest.id);}},[sessions,paySession]);
  
  useEffect(()=>{if(!payPlayer||!paySession||editingPaymentId)return;const due=amountDueForSession(payPlayer,paySession);setPayAmount(due>0?String(Math.round(due*100)/100):"");},[payPlayer,paySession,sessions,payments,editingPaymentId]);
