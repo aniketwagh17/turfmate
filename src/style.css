@@ -115,7 +115,7 @@
 .report-date-fields{margin-bottom:12px}
 .field-hint{display:block;color:#8491a1;font-size:10px;margin-top:5px}
 @media(max-width:900px){.session-line{grid-template-columns:minmax(160px,1fr) 95px 135px 76px;gap:10px}.fund-report-grid{grid-template-columns:1fr}}
-@media(max-width:620px){.session-line{grid-template-columns:minmax(0,1fr) auto;gap:8px;padding:16px 2px}.session-line>strong{grid-column:2;grid-row:1;text-align:right}.session-line>.small-action{grid-column:1;justify-self:start}.session-icon-actions{grid-column:2;grid-row:2}.player-list-row{grid-template-columns:minmax(0,1fr) auto;gap:8px}.player-due{grid-column:2;grid-row:1}.player-reminder-action{grid-column:1;grid-row:2;justify-self:start}.player-row-actions{grid-column:2;grid-row:2;justify-self:end}.fund-entry-fields,.report-date-fields{grid-template-columns:1fr}.fund-report-grid{gap:12px}}
+@media(max-width:620px){.session-line{grid-template-columns:minmax(0,1fr) auto;gap:8px;padding:16px 2px}.session-line>strong{grid-column:2;grid-row:1;text-align:right}.session-line>.small-action{grid-column:1;justify-self:start}.session-icon-actions{grid-column:2;grid-row:2}.player-list-row{grid-template-columns:minmax(0,1fr) auto;gap:8px}.player-due{grid-column:2;grid-row:1}.player-reminder-action{grid-column:1;grid-row:2;justify-self:start;margin-left:0!important}.player-row-actions{grid-column:2;grid-row:2;justify-self:end}.fund-entry-fields,.report-date-fields{grid-template-columns:1fr}.fund-report-grid{gap:12px}}
 
 
 /* Overview: keep occasional organiser tools out of the primary dashboard */
@@ -156,7 +156,7 @@
  .session-line{grid-template-columns:minmax(0,1fr) auto;align-items:start}
  .session-line .session-summary{grid-column:1;grid-row:1}
  .session-line>strong{grid-column:2;grid-row:1}
- .session-line>.small-action{grid-column:1;grid-row:2;margin-left:0}
+ .session-line>.small-action{grid-column:1;grid-row:2;margin-left:0!important}
  .session-line .session-icon-actions{grid-column:2;grid-row:2}
  .session-detail-summary{gap:12px;padding:12px}
  .session-detail-actions{flex-direction:column}
