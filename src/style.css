@@ -166,3 +166,18 @@
  .payment-history-row{grid-template-columns:minmax(0,1fr) auto;gap:8px}
  .payment-row-actions{grid-column:1/-1;justify-content:flex-end}
 }
+
+
+/* Session detail page and payment form spacing */
+.session-detail-summary{margin-top:18px}
+.session-detail-actions{justify-content:flex-start;gap:12px}
+.session-detail-actions>*{flex:0 1 auto!important;min-width:150px}
+.payment-form-actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:18px}
+.payment-form-actions .primary{min-width:160px}
+.payment-form-actions .small-action{padding:11px 16px;min-width:112px}
+.payment-form-actions button{margin:0}
+@media(max-width:620px){
+ .payment-form-actions{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+ .payment-form-actions>*{width:100%;min-width:0!important}
+ .session-detail-actions>*{width:100%;min-width:0}
+}
