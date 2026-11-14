@@ -152,5 +152,5 @@ export default function AuthGate() {
     <button type="button" className="auth-switch" onClick={()=>{setMode(mode === "signin" ? "signup" : "signin");setMessage("");}}>
       {mode === "signin" ? "New to TurfMate? Create an account" : "Already registered? Sign in"}
     </button>
-  </form></div>;
+  </form></div></>;
 }
