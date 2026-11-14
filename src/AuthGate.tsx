@@ -2,6 +2,34 @@ import { FormEvent, useEffect, useState } from "react";
 import type { Session } from "@supabase/supabase-js";
 import { supabase } from "./lib/supabase";
 import Dashboard from "./Dashboard";
+import Swal from "sweetalert2";
+
+type InstallPromptEvent = Event & { prompt: () => Promise<void>; userChoice: Promise<{ outcome: "accepted" | "dismissed"; platform: string }> };
+
+function InstallAppButton() {
+  const [promptEvent, setPromptEvent] = useState<InstallPromptEvent | null>(null);
+  const [installed, setInstalled] = useState(false);
+  const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  useEffect(() => {
+    setInstalled(window.matchMedia("(display-mode: standalone)").matches || (navigator as Navigator & { standalone?: boolean }).standalone === true);
+    const onPrompt = (event: Event) => { event.preventDefault(); setPromptEvent(event as InstallPromptEvent); };
+    const onInstalled = () => { setInstalled(true); setPromptEvent(null); };
+    window.addEventListener("beforeinstallprompt", onPrompt);
+    window.addEventListener("appinstalled", onInstalled);
+    return () => { window.removeEventListener("beforeinstallprompt", onPrompt); window.removeEventListener("appinstalled", onInstalled); };
+  }, []);
+  if (installed || (!promptEvent && !isIos)) return null;
+  async function install() {
+    if (promptEvent) {
+      await promptEvent.prompt();
+      const choice = await promptEvent.userChoice;
+      if (choice.outcome === "accepted") setPromptEvent(null);
+      return;
+    }
+    await Swal.fire({ title: "Add TurfMate to your Home Screen", text: "Open this page in Safari, tap the Share button, then choose Add to Home Screen.", icon: "info", confirmButtonText: "Got it" });
+  }
+  return <button type="button" className="install-app-button install-app-floating" onClick={install}>↓ Install TurfMate</button>;
+}
 
 export default function AuthGate() {
   const [session, setSession] = useState<Session | null>(null);
@@ -96,7 +124,7 @@ export default function AuthGate() {
   if (loading || (session && profileLoading)) return <div className="auth-screen"><div className="auth-card">Loading TurfMate…</div></div>;
 
   if (session && !phoneSaved) {
-    return <div className="auth-screen"><form className="auth-card" onSubmit={saveWhatsappPhone}>
+    return <><InstallAppButton /><div className="auth-screen"><form className="auth-card" onSubmit={saveWhatsappPhone}>
       <div className="auth-brand">🏏 <span>TurfMate</span></div>
       <p className="auth-subtitle">MANHATTAN CRICKET</p>
       <h1>One last thing</h1>
@@ -108,11 +136,11 @@ export default function AuthGate() {
       {message && <p className="auth-message" role="status">{message}</p>}
       <button className="primary auth-submit" disabled={busy}>{busy ? "Saving…" : "Save WhatsApp number"}</button>
       <button type="button" className="auth-switch" onClick={() => supabase.auth.signOut()}>Sign out</button>
-    </form></div>;
+    </form></div></>;
   }
 
-  if (session) return <Dashboard email={session.user.email ?? "Signed in"} />;
-  return <div className="auth-screen"><form className="auth-card" onSubmit={submit}>
+  if (session) return <><InstallAppButton /><Dashboard email={session.user.email ?? "Signed in"} /></>;
+  return <><InstallAppButton /><div className="auth-screen"><form className="auth-card" onSubmit={submit}>
     <div className="auth-brand">🏏 <span>TurfMate</span></div>
     <p className="auth-subtitle">MANHATTAN CRICKET</p>
     <h1>{mode === "signin" ? "Welcome back" : "Create your account"}</h1>
