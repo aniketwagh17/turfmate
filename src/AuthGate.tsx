@@ -121,7 +121,7 @@ export default function AuthGate() {
     setPhoneSaved(true);
   }
 
-  if (loading || (session && profileLoading)) return <div className="auth-screen"><div className="auth-card">Loading TurfMate…</div></div>;
+  if (loading || (session && profileLoading)) return <><InstallAppButton /><div className="auth-screen"><div className="auth-card">Loading TurfMate…</div></div></>;
 
   if (session && !phoneSaved) {
     return <><InstallAppButton /><div className="auth-screen"><form className="auth-card" onSubmit={saveWhatsappPhone}>
