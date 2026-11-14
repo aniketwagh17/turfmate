@@ -66,7 +66,7 @@ export default function Dashboard({ email }: { email: string }) {
  const fundSpend=sessions.filter(s=>s.mode==="fund").reduce((n,s)=>n+s.total,0);
  const manualFundNet=fundTransactions.reduce((n,t)=>n+(t.type==="Contribution"?t.amount:-t.amount),0);
  const fundBalance=OPENING_FUND+fundCollected-fundSpend+manualFundNet+sessions.filter(s=>s.mode==="fund"&&!s.organiserAdvanceSettled).reduce((n,s)=>n+Math.max(0,s.total-(s.participants||[]).reduce((sum,id)=>sum+expectedForPlayer(s,id),0)),0);
- const showFundFeatures=hasCricketFund||sessions.some(s=>s.mode==="fund");
+ const showFundFeatures=hasCricketFund;
  function addPlayer(e:FormEvent){e.preventDefault();const cleanName=name.trim();const digits=phone.trim();if(!cleanName)return;if(!/^[6-9][0-9]{9}$/.test(digits)){setPhoneError("Enter a valid 10-digit mobile number. This field is mandatory.");return;}const duplicate=players.some(p=>p.id!==editingPlayerId&&p.name.trim().toLowerCase()===cleanName.toLowerCase());if(duplicate){setPhoneError("This player name is already in use. Please use a unique name or add a nickname.");void Swal.fire({icon:"warning",title:"Player name already exists",text:"Please use a unique name or add a nickname (for example, Aniket Wagh / Aniket Patil) to avoid confusion when recording payments."});return;}setPhoneError("");if(editingPlayerId){setPlayers(current=>current.map(p=>p.id===editingPlayerId?{...p,name:cleanName,phone:digits}:p));void Swal.fire({toast:true,position:"top-end",icon:"success",title:"Player details updated",showConfirmButton:false,timer:1500});}else{setPlayers(current=>[...current,{id:crypto.randomUUID(),name:cleanName,phone:digits,active:true}]);}setName("");setPhone("");setEditingPlayerId("");setShowPlayer(false);}
  function editPlayer(player:Player){setEditingPlayerId(player.id);setName(player.name);setPhone(player.phone||"");setPhoneError("");setShowPlayer(true);}
  async function deletePlayer(player:Player){const result=await Swal.fire({title:"Remove "+player.name+"?",text:"This player will be removed from the active roster and cannot be selected for future sessions. Past attendance and payment history will be kept.",icon:"warning",showCancelButton:true,confirmButtonText:"Yes, remove player",cancelButtonText:"Cancel",confirmButtonColor:"#dc2626",cancelButtonColor:"#64748b",reverseButtons:true});if(!result.isConfirmed)return;setPlayers(current=>current.map(p=>p.id===player.id?{...p,active:false}:p));setAttendanceDraft(current=>current.filter(id=>id!==player.id));if(reminderPlayerId===player.id)setReminderPlayerId("");await Swal.fire({icon:"success",title:"Player removed",text:"Past records have been preserved.",timer:1500,showConfirmButton:false});}
@@ -102,7 +102,7 @@ export default function Dashboard({ email }: { email: string }) {
   const rangePayments=payments.filter(p=>inRange(p.date)).sort((a,b)=>a.date.localeCompare(b.date));
   const rangeFund=fundTransactions.filter(t=>inRange(t.date)).sort((a,b)=>a.date.localeCompare(b.date));
   const isFundPayment=(p:Payment)=>sessions.some(s=>s.id===p.sessionId&&s.mode==="fund");
-  const fundReport=showFundFeatures;
+  const fundReport=hasCricketFund||sessions.some(s=>s.mode==="fund");
   const balanceAt=(date:string,exclusive=false)=>{
    const before=(value:string)=>exclusive?value<date:value<=date;
    const credits=payments.filter(p=>before(p.date)&&isFundPayment(p)).reduce((n,p)=>n+p.amount,0);
