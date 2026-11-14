@@ -8,7 +8,7 @@ type ContributionMode = "equal" | "fund";
 type Session = { id: string; date: string; venue: string; startTime?: string; endTime?: string; participants: string[]; attendance: Record<string, number>; total: number; mode: ContributionMode; contribution: number; organiserAdvanceSettled?: boolean; organiserAdvanceSettledAt?: string; organiserAdvanceSettledAmount?: number };
 type Payment = { id: string; playerId: string; amount: number; date: string; note: string; method: "UPI" | "Cash"; sessionId: string };
 type FundTransaction = { id:string; date:string; type:"Contribution"|"Withdrawal"; amount:number; note:string };
-const initialPlayers: Player[] = ["Aniket","Ajit","Suhas","Sameet","Krunal","Mohak"].map((name,i)=>({id:String(i+1),name,phone:""}));
+function loadPlayers():Player[]{const saved=load<Player[]>("tm-players",[]);const demoNames=["Aniket","Ajit","Suhas","Sameet","Krunal","Mohak"];const isOldDemoSeed=saved.length===demoNames.length&&saved.every((p,i)=>p.id===String(i+1)&&p.name===demoNames[i]&&!p.phone);return isOldDemoSeed?[]:saved;}
 const money = (n:number) => new Intl.NumberFormat("en-IN",{style:"currency",currency:"INR",maximumFractionDigits:0}).format(n);
 function formatSessionTime(value?:string){const raw=value||"21:00";const [hh,mm]=raw.split(":").map(Number);const hour=hh%12||12;return hour+(mm?":"+String(mm).padStart(2,"0"):"")+" "+(hh>=12?"pm":"am");}
 function paymentNoteLabel(note?:string){const value=note?.trim()||"";return !value||/^approved from(?: session details)?$/i.test(value)?"Approved by organiser":value;}
@@ -19,8 +19,8 @@ const OPENING_FUND = 50000;
 const demoFundSettingsEnabled = new URLSearchParams(window.location.search).get("demo-fund-settings") === "1";
 
 export default function Dashboard({ email }: { email: string }) {
- const [tab,setTab]=useState("Overview"); const [financeSection,setFinanceSection]=useState<"Fund activity"|"Download reports"|"Payment details"|"Demo settings">("Download reports"); const [sessionPage,setSessionPage]=useState(1);
- const [players,setPlayers]=useState<Player[]>(()=>load("tm-players",initialPlayers));
+ const [tab,setTab]=useState(()=>load("tm-ui-tab","Overview")); const [financeSection,setFinanceSection]=useState<"Fund activity"|"Download reports"|"Payment details"|"Demo settings">("Download reports"); const [sessionPage,setSessionPage]=useState(1);
+ const [players,setPlayers]=useState<Player[]>(()=>loadPlayers());
  const [sessions,setSessions]=useState<Session[]>(()=>load("tm-sessions",[]));
  const [payments,setPayments]=useState<Payment[]>(()=>load("tm-payments",[]));
  const [fundTransactions,setFundTransactions]=useState<FundTransaction[]>(()=>load("tm-fund-transactions",[]));
@@ -31,16 +31,17 @@ export default function Dashboard({ email }: { email: string }) {
  const [fundType,setFundType]=useState<"Contribution"|"Withdrawal">("Contribution"); const [fundAmount,setFundAmount]=useState(""); const [fundNote,setFundNote]=useState("");
  const today=new Date().toISOString().slice(0,10); const monthStart=today.slice(0,8)+"01";
  const [reportStart,setReportStart]=useState(monthStart); const [reportEnd,setReportEnd]=useState(today);
- const [name,setName]=useState(""); const [phone,setPhone]=useState(""); const [phoneError,setPhoneError]=useState(""); const [editingPlayerId,setEditingPlayerId]=useState("");
+ const [name,setName]=useState(()=>load("tm-player-draft-name","")); const [phone,setPhone]=useState(()=>load("tm-player-draft-phone","")); const [phoneError,setPhoneError]=useState(""); const [editingPlayerId,setEditingPlayerId]=useState(()=>load("tm-player-draft-editing-id",""));
  const [date,setDate]=useState(new Date().toISOString().slice(0,10)); const [venue,setVenue]=useState("Titans Turf"); const [sessionStartTime,setSessionStartTime]=useState("21:00"); const [sessionEndTime,setSessionEndTime]=useState("00:00");
  const [attendanceSessionId,setAttendanceSessionId]=useState(""); const [attendanceDraft,setAttendanceDraft]=useState<string[]>([]); const [quickPlayerName,setQuickPlayerName]=useState(""); const [quickPlayerPhone,setQuickPlayerPhone]=useState(""); const [quickPhoneError,setQuickPhoneError]=useState(""); const [showQuickPlayerForm,setShowQuickPlayerForm]=useState(false);
  const [amount,setAmount]=useState(""); const [contribution,setContribution]=useState("250"); const [mode,setMode]=useState<ContributionMode>(()=>hasCricketFund?"fund":"equal");
- const [showSession,setShowSession]=useState(false); const [showPlayer,setShowPlayer]=useState(false); const [editingSessionId,setEditingSessionId]=useState("");
+ const [showSession,setShowSession]=useState(false); const [showPlayer,setShowPlayer]=useState(()=>load("tm-player-modal-open",false)); const [editingSessionId,setEditingSessionId]=useState("");
  const [payPlayer,setPayPlayer]=useState(""); const [payPlayerName,setPayPlayerName]=useState(""); const [payPlayerPhone,setPayPlayerPhone]=useState(""); const [payAmount,setPayAmount]=useState(""); const [payNote,setPayNote]=useState(""); const [payMethod,setPayMethod]=useState<"UPI"|"Cash">("UPI"); const [paySession,setPaySession]=useState(""); const [editingPaymentId,setEditingPaymentId]=useState(""); const [detailSessionId,setDetailSessionId]=useState("");
  const [reminderPlayerId,setReminderPlayerId]=useState(""); const [reminderPhone,setReminderPhone]=useState(""); const [reminderPhoneError,setReminderPhoneError]=useState("");
  const [announcementSessionId,setAnnouncementSessionId]=useState(""); const [sessionReminderId,setSessionReminderId]=useState("");
  const [notice,setNotice]=useState("");
  useEffect(()=>localStorage.setItem("tm-players",JSON.stringify(players)),[players]);
+ useEffect(()=>{localStorage.setItem("tm-ui-tab",tab);localStorage.setItem("tm-player-modal-open",String(showPlayer));localStorage.setItem("tm-player-draft-name",name);localStorage.setItem("tm-player-draft-phone",phone);localStorage.setItem("tm-player-draft-editing-id",editingPlayerId);},[tab,showPlayer,name,phone,editingPlayerId]);
  useEffect(()=>localStorage.setItem("tm-sessions",JSON.stringify(sessions)),[sessions]);
  useEffect(()=>localStorage.setItem("tm-payments",JSON.stringify(payments)),[payments]);
  useEffect(()=>localStorage.setItem("tm-fund-transactions",JSON.stringify(fundTransactions)),[fundTransactions]);
