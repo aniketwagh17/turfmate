@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+<defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#142e4a"/><stop offset="1" stop-color="#071629"/></linearGradient><linearGradient id="grass" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#55d83b"/><stop offset="1" stop-color="#0b8d55"/></linearGradient><radialGradient id="ball" cx="35%" cy="28%" r="75%"><stop stop-color="#fff"/><stop offset="1" stop-color="#dce5ee"/></radialGradient></defs>
+<rect width="512" height="512" rx="112" fill="url(#bg)"/>
+<circle cx="256" cy="218" r="145" fill="url(#ball)"/>
+<path d="M124 210c78-37 146-91 196-154M140 253c88-35 153-89 203-149M163 291c82-34 141-81 190-137" fill="none" stroke="#e22f3b" stroke-width="13" stroke-linecap="round" stroke-dasharray="18 16"/>
+<path d="M26 399Q256 275 486 399Q256 353 26 399Z" fill="url(#grass)"/><path d="M85 430Q256 331 427 430Q256 390 85 430Z" fill="#08764e"/>
+</svg>
