@@ -223,3 +223,5 @@
 .pagination-bar b{white-space:nowrap;color:#34465a}
 .pagination-bar .small-action:disabled{opacity:.4;cursor:not-allowed}
 @media(max-width:620px){.finance-subnav{width:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.finance-subnav-item{padding:10px 7px;font-size:11px}.pagination-bar{align-items:stretch;flex-direction:column}.pagination-bar>div{justify-content:space-between}.mobile-nav-item{font-size:9px}}
+
+.header-actions{display:flex;align-items:center;gap:10px}.install-app-button{border:1px solid #cfe9df;background:#eaf8f2;color:#11734f;border-radius:8px;padding:8px 12px;font-size:12px;font-weight:700;white-space:nowrap}.install-app-button:hover{background:#d9f2e8}@media(max-width:700px){.header-actions{gap:6px}.header-actions .pill{display:none}.install-app-button{padding:8px 10px;font-size:11px}main>header{gap:10px;font-size:11px}}
