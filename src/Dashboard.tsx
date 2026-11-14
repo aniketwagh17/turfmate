@@ -13,13 +13,14 @@ const money = (n:number) => new Intl.NumberFormat("en-IN",{style:"currency",curr
 function formatSessionTime(value?:string){const raw=value||"21:00";const [hh,mm]=raw.split(":").map(Number);const hour=hh%12||12;return hour+(mm?":"+String(mm).padStart(2,"0"):"")+" "+(hh>=12?"pm":"am");}
 function paymentNoteLabel(note?:string){const value=note?.trim()||"";return !value||/^approved from(?: session details)?$/i.test(value)?"Approved by organiser":value;}
 function load<T>(key:string,fallback:T):T { try { const v=localStorage.getItem(key); return v ? JSON.parse(v) as T : fallback; } catch { return fallback; } }
+function loadString(key:string,fallback:string):string { try { return localStorage.getItem(key) ?? fallback; } catch { return fallback; } }
 const UPI_ID = "aniketwagh17-2@oksbi";
 const PAYEE_NAME = "Aniket Wagh";
 const OPENING_FUND = 50000;
 const demoFundSettingsEnabled = new URLSearchParams(window.location.search).get("demo-fund-settings") === "1";
 
 export default function Dashboard({ email }: { email: string }) {
- const [tab,setTab]=useState(()=>load("tm-ui-tab","Overview")); const [financeSection,setFinanceSection]=useState<"Fund activity"|"Download reports"|"Payment details"|"Demo settings">("Download reports"); const [sessionPage,setSessionPage]=useState(1);
+ const [tab,setTab]=useState(()=>loadString("tm-ui-tab","Overview")); const [financeSection,setFinanceSection]=useState<"Fund activity"|"Download reports"|"Payment details"|"Demo settings">("Download reports"); const [sessionPage,setSessionPage]=useState(1);
  const [players,setPlayers]=useState<Player[]>(()=>loadPlayers());
  const [sessions,setSessions]=useState<Session[]>(()=>load("tm-sessions",[]));
  const [payments,setPayments]=useState<Payment[]>(()=>load("tm-payments",[]));
@@ -31,7 +32,7 @@ export default function Dashboard({ email }: { email: string }) {
  const [fundType,setFundType]=useState<"Contribution"|"Withdrawal">("Contribution"); const [fundAmount,setFundAmount]=useState(""); const [fundNote,setFundNote]=useState("");
  const today=new Date().toISOString().slice(0,10); const monthStart=today.slice(0,8)+"01";
  const [reportStart,setReportStart]=useState(monthStart); const [reportEnd,setReportEnd]=useState(today);
- const [name,setName]=useState(()=>load("tm-player-draft-name","")); const [phone,setPhone]=useState(()=>load("tm-player-draft-phone","")); const [phoneError,setPhoneError]=useState(""); const [editingPlayerId,setEditingPlayerId]=useState(()=>load("tm-player-draft-editing-id",""));
+ const [name,setName]=useState(()=>loadString("tm-player-draft-name","")); const [phone,setPhone]=useState(()=>loadString("tm-player-draft-phone","")); const [phoneError,setPhoneError]=useState(""); const [editingPlayerId,setEditingPlayerId]=useState(()=>loadString("tm-player-draft-editing-id",""));
  const [date,setDate]=useState(new Date().toISOString().slice(0,10)); const [venue,setVenue]=useState("Titans Turf"); const [sessionStartTime,setSessionStartTime]=useState("21:00"); const [sessionEndTime,setSessionEndTime]=useState("00:00");
  const [attendanceSessionId,setAttendanceSessionId]=useState(""); const [attendanceDraft,setAttendanceDraft]=useState<string[]>([]); const [quickPlayerName,setQuickPlayerName]=useState(""); const [quickPlayerPhone,setQuickPlayerPhone]=useState(""); const [quickPhoneError,setQuickPhoneError]=useState(""); const [showQuickPlayerForm,setShowQuickPlayerForm]=useState(false);
  const [amount,setAmount]=useState(""); const [contribution,setContribution]=useState("250"); const [mode,setMode]=useState<ContributionMode>(()=>hasCricketFund?"fund":"equal");
