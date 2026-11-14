@@ -181,3 +181,33 @@
  .payment-form-actions>*{width:100%;min-width:0!important}
  .session-detail-actions>*{width:100%;min-width:0}
 }
+
+
+/* Finance reports and payment settings: mobile-first layout */
+.report-panel{min-width:0}
+.report-panel>label{margin-top:16px}
+.report-period-select{width:100%;min-height:44px}
+.report-date-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:8px 0 12px}
+.report-date-fields label{min-width:0}
+.report-date-fields input{width:100%;min-width:0}
+.report-range-preview{font-size:11px;color:#7c8998;background:#f5f8fa;border-radius:8px;padding:10px 12px;margin:10px 0 14px;overflow-wrap:anywhere}
+.report-download-button{width:100%}
+.payee-settings-panel{grid-column:1/-1}
+.payee-settings-panel form{max-width:560px}
+.payee-settings-panel form button{margin-top:8px}
+.session-fund-reconciliation{background:#f3f8f5;border:1px solid #dcefe5;border-radius:11px;padding:15px;margin:12px 0 16px}
+.session-fund-reconciliation h3{font:700 14px Manrope;margin:0 0 10px;color:#1d3a31}
+.session-fund-reconciliation>div{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;padding:9px 0;border-bottom:1px solid #dfebe4}
+.session-fund-reconciliation>div:last-of-type{border-bottom:0}
+.session-fund-reconciliation span{font-size:12px;color:#52675d}
+.session-fund-reconciliation strong{font:700 14px Manrope;color:#1b4938;white-space:nowrap}
+.session-fund-reconciliation small{grid-column:1/-1;color:#7c8e84;font-size:10px}
+.session-fund-reconciliation>button{margin-top:12px;width:100%}
+@media(max-width:620px){
+ .report-date-fields{grid-template-columns:1fr}
+ .report-panel{padding:15px}
+ .report-download-button{min-height:44px}
+ .payee-settings-panel{grid-column:auto}
+ .session-fund-reconciliation{padding:12px}
+ .session-detail-summary{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
