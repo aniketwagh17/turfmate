@@ -19,7 +19,7 @@ const OPENING_FUND = 50000;
 const demoFundSettingsEnabled = new URLSearchParams(window.location.search).get("demo-fund-settings") === "1";
 
 export default function Dashboard({ email }: { email: string }) {
- const [tab,setTab]=useState("Overview"); const [financeSection,setFinanceSection]=useState<"Fund activity"|"Download reports"|"Payment details">("Download reports"); const [sessionPage,setSessionPage]=useState(1);
+ const [tab,setTab]=useState("Overview"); const [financeSection,setFinanceSection]=useState<"Fund activity"|"Download reports"|"Payment details"|"Demo settings">("Download reports"); const [sessionPage,setSessionPage]=useState(1);
  const [players,setPlayers]=useState<Player[]>(()=>load("tm-players",initialPlayers));
  const [sessions,setSessions]=useState<Session[]>(()=>load("tm-sessions",[]));
  const [payments,setPayments]=useState<Payment[]>(()=>load("tm-payments",[]));
