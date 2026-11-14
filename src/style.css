@@ -229,3 +229,5 @@
 .install-app-floating{position:fixed;right:20px;bottom:20px;z-index:1000;box-shadow:0 8px 24px #101b2d2b;padding:11px 16px}@media(max-width:600px){.install-app-floating{right:14px;bottom:14px;padding:10px 13px;border-radius:24px;box-shadow:0 5px 18px #101b2d38}}
 
 .demo-opening-fund{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:end;padding:12px;margin:12px 0 18px;border:1px dashed #d5a33c;border-radius:10px;background:#fffaf0}.demo-opening-fund label{min-width:0}.demo-opening-fund small{grid-column:1/-1;color:#8a6a2d;font-size:11px;line-height:1.4}@media(max-width:600px){.demo-opening-fund{grid-template-columns:1fr}.demo-opening-fund button{width:100%}}
+
+.demo-reset-button{display:block;margin:12px 0 4px;padding:9px 12px;border:1px solid #e3b5b5;border-radius:8px;background:#fff;color:#a32626;font-weight:700;cursor:pointer}.demo-reset-button:hover{background:#fff4f4}.demo-reset-help{display:block;margin:0 0 18px;color:#8a6a2d;font-size:11px;line-height:1.45}
