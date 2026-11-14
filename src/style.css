@@ -35,7 +35,7 @@
   .pill{font-size:8px;padding:7px 8px;white-space:nowrap}
   .mobile-nav{
     display:grid;
-    grid-template-columns:repeat(4,minmax(0,1fr));
+    grid-template-columns:repeat(5,minmax(0,1fr));
     position:fixed;
     z-index:20;
     left:0;right:0;bottom:0;
@@ -211,3 +211,15 @@
  .session-fund-reconciliation{padding:12px}
  .session-detail-summary{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
+
+
+/* Finance workspace and compact session pagination */
+.finance-subnav{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 18px;padding:6px;background:#edf2f5;border-radius:11px;width:fit-content;max-width:100%}
+.finance-subnav-item{border:0;background:transparent;color:#526174;border-radius:8px;padding:10px 14px;font-size:12px;font-weight:700}
+.finance-subnav-item.active{background:#fff;color:#16865f;box-shadow:0 1px 4px #102b3d16}
+.finance-content-panel{max-width:760px}
+.pagination-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 4px;color:#7b8795;font-size:12px}
+.pagination-bar>div{display:flex;align-items:center;gap:12px}
+.pagination-bar b{white-space:nowrap;color:#34465a}
+.pagination-bar .small-action:disabled{opacity:.4;cursor:not-allowed}
+@media(max-width:620px){.finance-subnav{width:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.finance-subnav-item{padding:10px 7px;font-size:11px}.pagination-bar{align-items:stretch;flex-direction:column}.pagination-bar>div{justify-content:space-between}.mobile-nav-item{font-size:9px}}
