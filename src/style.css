@@ -254,3 +254,10 @@
 .personal-qr-cta .share-cta-button{background:#176b4d}
 .personal-qr-hint{display:block;text-align:center;line-height:1.55;margin:0 auto 8px;max-width:460px}
 .personal-qr-hint::first-line{color:#52675f}
+
+
+/* Session announcement: separate message, QR and optional skip actions */
+.group-qr-cta{margin-top:8px}
+.group-qr-cta .small-action{width:min(100%,340px);min-height:44px}
+.skip-share-button{display:block;width:100%;margin:12px auto 2px;padding:10px;border:0;background:transparent;color:#718096;font-size:12px;font-weight:700}
+.skip-share-button:hover{color:#147a56;text-decoration:underline}
