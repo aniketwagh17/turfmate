@@ -53,6 +53,7 @@ export default function Dashboard({ email }: { email: string }) {
  useEffect(()=>localStorage.setItem("tm-demo-opening-fund",JSON.stringify(openingFund)),[openingFund]);
  useEffect(()=>setOpeningFundDraft(String(openingFund)),[openingFund]);
  useEffect(()=>localStorage.setItem("tm-has-cricket-fund",JSON.stringify(hasCricketFund)),[hasCricketFund]);
+ useEffect(()=>localStorage.setItem("tm-upi-id",upiId),[upiId]); useEffect(()=>localStorage.setItem("tm-payee-name",payeeName),[payeeName]);
 
  const activePlayers=players.filter(p=>p.active!==false);
  const paymentPlayers=paySession?(sessions.find(s=>s.id===paySession)?.participants||[]).map(id=>players.find(p=>p.id===id)).filter((p):p is Player=>Boolean(p)):[];
