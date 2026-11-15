@@ -231,3 +231,9 @@
 .demo-opening-fund{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:end;padding:12px;margin:12px 0 18px;border:1px dashed #d5a33c;border-radius:10px;background:#fffaf0}.demo-opening-fund label{min-width:0}.demo-opening-fund small{grid-column:1/-1;color:#8a6a2d;font-size:11px;line-height:1.4}@media(max-width:600px){.demo-opening-fund{grid-template-columns:1fr}.demo-opening-fund button{width:100%}}
 
 .demo-reset-button{display:block;margin:12px 0 4px;padding:9px 12px;border:1px solid #e3b5b5;border-radius:8px;background:#fff;color:#a32626;font-weight:700;cursor:pointer}.demo-reset-button:hover{background:#fff4f4}.demo-reset-help{display:block;margin:0 0 18px;color:#8a6a2d;font-size:11px;line-height:1.45}
+
+
+/* Prefilled UPI payment QR previews */
+.payment-qr-preview{display:block;width:min(100%,260px);height:auto;aspect-ratio:1;margin:14px auto 8px;padding:10px;background:#fff;border:1px solid #e3e9ef;border-radius:12px;object-fit:contain}
+.qr-download-link{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;margin-top:10px}
+.whatsapp-preview .field-hint{text-align:center;line-height:1.5;overflow-wrap:anywhere}
