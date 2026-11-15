@@ -237,3 +237,12 @@
 .payment-qr-preview{display:block;width:min(100%,260px);height:auto;aspect-ratio:1;margin:14px auto 8px;padding:10px;background:#fff;border:1px solid #e3e9ef;border-radius:12px;object-fit:contain}
 .qr-download-link{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;margin-top:10px}
 .whatsapp-preview .field-hint{text-align:center;line-height:1.5;overflow-wrap:anywhere}
+
+
+/* Mobile-first payment QR sharing callout and centered action */
+.share-prompt{display:flex;flex-direction:column;gap:5px;margin:0 0 14px;padding:14px 16px;border:1px solid #ccebdd;border-radius:12px;background:linear-gradient(135deg,#effbf5,#f7fbff)}
+.share-prompt strong{font:800 15px Manrope;color:#145b43}
+.share-prompt span{font-size:12px;line-height:1.5;color:#52675f}
+.share-cta-wrap{display:flex;justify-content:center;width:100%;margin:18px 0 4px}
+.share-cta-button{width:min(100%,340px);min-height:48px;padding:12px 16px;white-space:nowrap;font-size:13px;font-weight:800;letter-spacing:.1px}
+@media(max-width:480px){.share-cta-button{width:100%;font-size:13px;padding-inline:10px}.share-prompt{padding:12px 14px}}
