@@ -246,3 +246,11 @@
 .share-cta-wrap{display:flex;justify-content:center;width:100%;margin:18px 0 4px}
 .share-cta-button{width:min(100%,340px);min-height:48px;padding:12px 16px;white-space:nowrap;font-size:13px;font-weight:800;letter-spacing:.1px}
 @media(max-width:480px){.share-cta-button{width:100%;font-size:13px;padding-inline:10px}.share-prompt{padding:12px 14px}}
+
+
+/* Personalised payment QR card */
+.payment-qr-card-preview{display:block;width:min(100%,340px);height:auto;max-height:560px;object-fit:contain;margin:14px auto 8px;border:1px solid #e3e9ef;border-radius:14px;background:#f1f6f4;box-shadow:0 5px 18px #142b3d12}
+.personal-qr-cta{margin-top:10px}
+.personal-qr-cta .share-cta-button{background:#176b4d}
+.personal-qr-hint{display:block;text-align:center;line-height:1.55;margin:0 auto 8px;max-width:460px}
+.personal-qr-hint::first-line{color:#52675f}
