@@ -44,12 +44,18 @@ export default function handler(req: Request, res: Response) {
   if (token) {
     try {
       const base64 = token.replace(/-/g, "+").replace(/_/g, "/");
-      const binary = atob(base64);
+      const paddedBase64 = base64 + "=".repeat((4 - (base64.length % 4)) % 4);
+      const binary = atob(paddedBase64);
       const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0));
       const decoded = JSON.parse(new TextDecoder().decode(bytes)) as Record<string, unknown>;
-      paymentData = Object.fromEntries(
-        Object.entries(decoded).map(([key, item]) => [key, String(item ?? "")])
-      );
+      paymentData = {
+        name: String(decoded.n ?? decoded.name ?? ""),
+        amount: String(decoded.a ?? decoded.amount ?? ""),
+        upi: String(decoded.u ?? decoded.upi ?? ""),
+        payee: String(decoded.p ?? decoded.payee ?? ""),
+        note: String(decoded.t ?? decoded.note ?? ""),
+        sessions: String(decoded.s ?? decoded.sessions ?? ""),
+      };
     } catch {
       return res.status(400).send("Invalid payment link.");
     }
