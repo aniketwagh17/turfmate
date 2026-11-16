@@ -43,7 +43,7 @@ const steps: Step[] = [
     title: "Save the sample player",
     body: "Enter a sample name and a valid 10-digit test mobile number. This creates a demo player only; it won't message anyone.",
     hint: "Fill both fields, then tap Add player.",
-    complete: event => event.type === "click" && !!(event.target as HTMLElement | null)?.closest("[data-tutorial='quick-player-save']")
+    complete: event => event.type === "tutorial:player-added"
   },
   {
     target: "[data-tutorial='save-attendance']",
@@ -161,9 +161,11 @@ export default function OrganiserTutorial({ onClose }: { onClose: () => void }) 
     };
     document.addEventListener("click", handleProgress);
     document.addEventListener("submit", handleProgress);
+    document.addEventListener("tutorial:player-added", handleProgress);
     return () => {
       document.removeEventListener("click", handleProgress);
       document.removeEventListener("submit", handleProgress);
+      document.removeEventListener("tutorial:player-added", handleProgress);
     };
   }, [index, onClose, step]);
 
