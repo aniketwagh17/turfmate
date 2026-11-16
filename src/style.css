@@ -285,3 +285,118 @@
 .report-download-actions .report-summary-button:hover:not(:disabled){background:#e2f5eb}
 .report-download-actions .report-summary-button:disabled{opacity:.45;cursor:not-allowed}
 @media(min-width:700px){.report-download-actions{grid-template-columns:1fr 1fr}}
+
+
+/* Interactive organiser tutorial */
+.tutorial-launch{display:flex;align-items:center;gap:10px;width:calc(100% - 24px);margin:18px 12px 12px;padding:12px 13px;border:1px solid #bfe6d3;border-radius:10px;background:linear-gradient(135deg,#effaf4,#f5f9ff);color:#176b4d;text-align:left;font-size:12px;font-weight:800;cursor:pointer}
+.tutorial-launch span:first-child{display:grid;place-items:center;width:28px;height:28px;border-radius:8px;background:#d9f3e5;font-size:16px}
+.tutorial-launch:hover{border-color:#80cba6;background:#e8f7ef}
+.tutorial-layer{position:fixed;inset:0;z-index:2000;display:flex;align-items:flex-end;justify-content:center;padding:20px;pointer-events:none}
+.tutorial-scrim{position:fixed;inset:0;background:rgba(13,27,42,.58);pointer-events:none}
+.tutorial-card{position:relative;z-index:2002;width:min(100%,560px);padding:22px 24px 18px;border:1px solid #e4eaf0;border-radius:18px;background:#fff;box-shadow:0 24px 80px rgba(9,24,39,.28);pointer-events:auto}
+.tutorial-card-top{display:flex;align-items:center;justify-content:space-between;color:#16805a;font-size:10px;font-weight:900;letter-spacing:1.2px}
+.tutorial-card-top button{width:32px;height:32px;border:0;border-radius:50%;background:#f1f5f8;color:#667588;font-size:22px;cursor:pointer}
+.tutorial-progress{height:5px;margin:15px 0 20px;overflow:hidden;border-radius:99px;background:#edf1f4}
+.tutorial-progress span{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#16805a,#49b987);transition:width .25s ease}
+.tutorial-step-meta{margin-bottom:7px;color:#16805a;font-size:10px;font-weight:900;letter-spacing:1px}
+.tutorial-card h2{margin:0 0 9px;color:#1d3043;font:800 22px/1.25 Manrope, sans-serif}
+.tutorial-card>p{margin:0;color:#536477;font-size:13px;line-height:1.65}
+.tutorial-tip{display:flex;gap:10px;margin:16px 0 20px;padding:13px 14px;border:1px solid #dceee4;border-radius:11px;background:#f3faf6;color:#456355;font-size:12px;line-height:1.55}
+.tutorial-tip>span:first-child{flex:none;color:#159568;font-size:16px}
+.tutorial-footer{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:14px;border-top:1px solid #edf1f4;color:#8290a0;font-size:11px;font-weight:700}
+.tutorial-footer>div{display:flex;align-items:center;gap:9px}
+.tutorial-secondary,.tutorial-primary{min-height:40px;padding:9px 14px;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer}
+.tutorial-secondary{border:1px solid #e1e7ed;background:#fff;color:#5e6d7d}
+.tutorial-primary{border:1px solid #176b4d;background:#176b4d;color:#fff;box-shadow:0 4px 10px #176b4d24}
+.tutorial-primary:hover{background:#12583e}
+.tutorial-highlight{position:relative!important;z-index:2001!important;outline:3px solid #40c58c!important;outline-offset:4px!important;border-radius:10px!important;box-shadow:0 0 0 7px rgba(64,197,140,.18)!important}
+@media(max-width:600px){.tutorial-layer{padding:12px;align-items:flex-end}.tutorial-card{padding:18px 17px 15px;border-radius:16px}.tutorial-card h2{font-size:19px}.tutorial-card>p{font-size:12px}.tutorial-tip{font-size:11px;padding:11px}.tutorial-footer{align-items:flex-start;flex-direction:column}.tutorial-footer>div{width:100%}.tutorial-footer button{flex:1}.tutorial-launch{width:calc(100% - 20px);margin:14px 10px 10px}}
+
+
+/* Keep the organiser tutorial entry point visible on phones, where the sidebar is hidden. */
+.tutorial-header-launch{display:none;border:1px solid #bfe6d3;border-radius:8px;background:#effaf4;color:#176b4d;padding:7px 10px;font-size:11px;font-weight:800;white-space:nowrap;cursor:pointer}
+@media(max-width:580px){.tutorial-header-launch{display:inline-flex;align-items:center;gap:5px}.header-actions{display:flex;align-items:center;gap:7px}}
+
+
+/* Contextual organiser tutorial: spotlight the real control and keep the explanation beside it. */
+.tutorial-layer{position:fixed;inset:0;z-index:1000;display:block;padding:0;pointer-events:none}
+.tutorial-scrim{position:fixed;inset:0;z-index:0;background:rgba(10,22,36,.66);pointer-events:auto}
+.tutorial-focus{position:relative!important;z-index:1001!important;isolation:isolate;outline:4px solid #25b77e!important;outline-offset:3px!important;box-shadow:0 0 0 9999px rgba(8,20,34,.70)!important;border-radius:12px!important;scroll-margin:100px}
+.tutorial-card{position:fixed;z-index:2;width:min(370px,calc(100vw - 24px));max-height:min(82vh,540px);overflow-y:auto;padding:20px 21px 16px;border:1px solid #dce9e3;border-radius:18px;background:#fff;box-shadow:0 20px 70px rgba(3,16,28,.35);pointer-events:auto}
+.tutorial-card-top{display:flex;align-items:center;justify-content:space-between;color:#147b58;font-size:10px;font-weight:900;letter-spacing:.8px}
+.tutorial-card-top button{width:32px;height:32px;display:grid;place-items:center;border:0;border-radius:50%;background:#f1f5f7;color:#586779;font-size:22px;cursor:pointer}
+.tutorial-progress{height:5px;margin:13px 0 17px;overflow:hidden;border-radius:99px;background:#edf2ef}
+.tutorial-progress span{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#15986a,#56c596);transition:width .2s ease}
+.tutorial-step-meta{font-size:9px;letter-spacing:1px;font-weight:900;color:#16845d}
+.tutorial-card h2{margin:8px 0 9px;font:800 19px Manrope;color:#1b2c3c;line-height:1.25}
+.tutorial-card>p{margin:0;color:#536274;font-size:12px;line-height:1.6}
+.tutorial-tip{display:flex;gap:9px;margin-top:14px;padding:11px 12px;border:1px solid #dcefe5;border-radius:10px;background:#f2faf6;color:#476254;font-size:11px;line-height:1.55}
+.tutorial-tip>span:first-child{color:#15986a;font-size:15px}
+.tutorial-footer{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:16px}
+.tutorial-footer>div{display:flex;gap:8px}
+.tutorial-footer button{border-radius:8px;padding:9px 12px;font-size:11px;font-weight:800;cursor:pointer}
+.tutorial-skip{border:0;background:transparent;color:#788596;padding-left:0!important}
+.tutorial-secondary{border:1px solid #dce4ea;background:white;color:#59697a}
+.tutorial-primary{border:0;background:#15986a;color:white}
+@media(max-width:760px){
+ .tutorial-card{left:12px!important;right:12px!important;bottom:calc(78px + env(safe-area-inset-bottom))!important;top:auto!important;width:auto!important;max-height:min(48vh,410px);padding:16px 17px 13px}
+ .tutorial-card h2{font-size:17px;margin:6px 0}
+ .tutorial-card>p{font-size:11px;line-height:1.45}
+ .tutorial-tip{margin-top:10px;padding:9px 10px;font-size:10px}
+ .tutorial-footer{margin-top:10px}
+ .tutorial-footer button{padding:8px 10px}
+}
+
+
+/* Contextual tutorial popovers: compact content, no nested scrolling, anchored to each spotlight. */
+.tutorial-layer{position:fixed;inset:0;z-index:3000;display:block;padding:0;pointer-events:none}
+.tutorial-scrim{position:fixed;inset:0;z-index:0;background:rgba(10,22,36,.68);pointer-events:none}
+.tutorial-focus{position:relative!important;z-index:3001!important;isolation:isolate;outline:4px solid #25b77e!important;outline-offset:3px!important;box-shadow:0 0 0 9999px rgba(8,20,34,.70)!important;border-radius:12px!important;scroll-margin:110px;pointer-events:auto!important}
+.tutorial-card{position:fixed;z-index:3002;box-sizing:border-box;width:370px;max-width:calc(100vw - 24px);max-height:none!important;overflow:visible!important;padding:17px 18px 14px;border:1px solid #dce9e3;border-radius:16px;background:#fff;box-shadow:0 16px 48px rgba(3,16,28,.34);pointer-events:auto}
+.tutorial-card-top{display:flex;align-items:center;justify-content:space-between;gap:10px;color:#147b58;font-size:9px;font-weight:900;letter-spacing:.7px}
+.tutorial-card-top button{flex:none;width:30px;height:30px;display:grid;place-items:center;border:0;border-radius:50%;background:#f1f5f7;color:#586779;font-size:21px;cursor:pointer}
+.tutorial-progress{height:4px;margin:10px 0 13px;overflow:hidden;border-radius:99px;background:#edf2ef}
+.tutorial-progress span{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#15986a,#56c596);transition:width .2s ease}
+.tutorial-step-meta{font-size:9px;letter-spacing:.7px;font-weight:900;color:#16845d}
+.tutorial-card h2{margin:6px 0 7px;font:800 17px/1.25 Manrope;color:#1b2c3c}
+.tutorial-card>p{margin:0;color:#536274;font-size:11px;line-height:1.5}
+.tutorial-tip{display:flex;gap:8px;margin-top:10px;padding:9px 10px;border:1px solid #dcefe5;border-radius:9px;background:#f2faf6;color:#476254;font-size:10px;line-height:1.45}
+.tutorial-tip>span:first-child{flex:none;color:#15986a;font-size:14px}
+.tutorial-footer{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:12px;padding-top:10px;border-top:1px solid #edf1f4}
+.tutorial-footer>div{display:flex;gap:7px}
+.tutorial-footer button{min-height:34px;border-radius:8px;padding:7px 10px;font-size:10px;font-weight:800;cursor:pointer}
+.tutorial-skip{border:0;background:transparent;color:#788596;padding-left:0!important}
+.tutorial-secondary{border:1px solid #dce4ea;background:#fff;color:#59697a}
+.tutorial-primary{border:0;background:#15986a;color:#fff}
+@media(max-width:760px){
+ .tutorial-card{padding:14px 15px 12px;border-radius:14px}
+ .tutorial-card h2{font-size:16px}
+ .tutorial-card>p{font-size:10.5px;line-height:1.4}
+ .tutorial-tip{margin-top:8px;padding:8px 9px;font-size:9.5px}
+ .tutorial-footer{margin-top:9px;padding-top:8px}
+ .tutorial-footer button{min-height:33px;padding:7px 9px}
+}
+
+
+/* Compact contextual practice coach: avoid the large white tutorial sheet. */
+.tutorial-layer{z-index:5000;pointer-events:none}
+.tutorial-scrim{background:rgba(8,18,29,.58);pointer-events:none}
+.tutorial-focus{z-index:5001!important;outline:3px solid #47d49a!important;outline-offset:3px!important;box-shadow:0 0 0 9999px rgba(8,18,29,.62)!important;border-radius:10px!important}
+.tutorial-card.tutorial-coach{z-index:5002;box-sizing:border-box;width:min(340px,calc(100vw - 24px));max-height:none!important;overflow:visible!important;padding:15px 16px 13px;border:1px solid #315c50;border-radius:14px;background:#142b35;color:#f4faf7;box-shadow:0 14px 42px rgba(0,0,0,.38)}
+.tutorial-coach .tutorial-card-top{color:#8ce0bb;font-size:9px;letter-spacing:.7px}
+.tutorial-coach .tutorial-card-top button{background:#25414a;color:#eaf7f1}
+.tutorial-coach .tutorial-progress{height:4px;margin:10px 0 12px;background:#2d4650}
+.tutorial-coach .tutorial-progress span{background:#47d49a}
+.tutorial-coach .tutorial-step-meta{color:#8ce0bb;font-size:9px}
+.tutorial-coach h2{margin:7px 0;color:#fff;font-size:16px;line-height:1.3}
+.tutorial-coach>p{color:#d0dfdc;font-size:11px;line-height:1.5}
+.tutorial-coach .tutorial-tip{margin-top:10px;padding:9px 10px;border:1px solid #34565a;background:#1d3a40;color:#d6ebe2;font-size:10px;line-height:1.45}
+.tutorial-coach .tutorial-tip>span:first-child{color:#75dfb0}
+.tutorial-coach .tutorial-footer{margin-top:10px;padding-top:9px;border-color:#34505a}
+.tutorial-coach .tutorial-skip{color:#b5c7c4}
+.tutorial-coach .tutorial-secondary{border-color:#47616a;background:#213c46;color:#e2eeeb}
+.tutorial-coach .tutorial-primary{background:#15986a;color:white}
+.tutorial-coach button:disabled{opacity:.4;cursor:not-allowed}
+@media(max-width:760px){.tutorial-card.tutorial-coach{padding:13px 14px 11px}.tutorial-coach h2{font-size:15px}.tutorial-coach>p{font-size:10.5px}.tutorial-coach .tutorial-tip{font-size:9.5px}}
+
+body:has(.tutorial-layer) .backdrop{z-index:5001!important}
