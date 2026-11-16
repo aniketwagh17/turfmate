@@ -276,3 +276,12 @@
 .session-detail-summary{grid-template-columns:repeat(2,minmax(0,1fr))}
 @media(min-width:700px){.session-detail-summary{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:620px){.session-expense-breakdown{padding:12px}.report-ledger-status{padding:12px}}
+
+
+/* Separate detailed and compact finance report actions */
+.report-download-actions{display:grid;grid-template-columns:1fr;gap:10px;margin-top:8px}
+.report-download-actions .report-download-button,.report-download-actions .report-summary-button{width:100%;min-height:46px;display:flex;align-items:center;justify-content:center;text-align:center}
+.report-download-actions .report-summary-button{border:1px solid #cfe9dc;background:#f0faf5;color:#147a56;font-weight:800}
+.report-download-actions .report-summary-button:hover:not(:disabled){background:#e2f5eb}
+.report-download-actions .report-summary-button:disabled{opacity:.45;cursor:not-allowed}
+@media(min-width:700px){.report-download-actions{grid-template-columns:1fr 1fr}}
