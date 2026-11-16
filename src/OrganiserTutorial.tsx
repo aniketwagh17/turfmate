@@ -33,23 +33,16 @@ const steps: Step[] = [
   },
   {
     target: "[data-tutorial='add-new-player']",
-    title: "Add a sample player",
-    body: "You can select people already in your roster, or add someone new from this same screen. For this walkthrough, we'll add one sample player.",
-    hint: "Tap Add New Player inside the Add players window.",
-    complete: event => event.type === "click" && !!(event.target as HTMLElement | null)?.closest("[data-tutorial='add-new-player']")
-  },
-  {
-    target: "[data-tutorial='quick-player-save']",
-    title: "Save the sample player",
-    body: "Enter a sample name and a valid 10-digit test mobile number. This creates a demo player only; it won't message anyone.",
-    hint: "Fill both fields, then tap Add player.",
+    title: "Add a player to this session",
+    body: "Select someone from the existing roster, or tap Add New Player and enter the sample player's details. Once TurfMate confirms the player was added, we'll move straight to saving the session changes.",
+    hint: "Add or select at least one player. The guide advances after the new player is successfully added.",
     complete: event => event.type === "tutorial:player-added"
   },
   {
     target: "[data-tutorial='save-attendance']",
-    title: "Save session attendance",
-    body: "The new sample player is selected automatically. You can select any other sample attendees too. Check the list before saving.",
-    hint: "Tap Save attendance to complete the actual session workflow.",
+    title: "Save changes",
+    body: "Your new player is selected automatically. Review the selected players, then save the attendance to apply the changes to this session.",
+    hint: "Tap Save attendance to save your changes and continue.",
     complete: event => event.type === "submit" && !!(event.target as HTMLElement | null)?.closest(".modal")
   },
   {
