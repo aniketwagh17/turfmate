@@ -428,3 +428,27 @@ body:has(.tutorial-layer) .backdrop{z-index:1000!important}
  .tutorial-coach .tutorial-tip{font-size:9px!important}
  .tutorial-coach .tutorial-live-status{font-size:8px!important}
 }
+
+
+/* Mobile practice coach: compact, movable and collapsible so form fields stay usable. */
+.tutorial-card.tutorial-coach{
+  top:auto!important;bottom:auto!important;
+  max-height:min(44vh,340px)!important;
+  overflow-y:auto!important;
+  touch-action:pan-y;
+}
+.tutorial-drag-handle{cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none}
+.tutorial-drag-handle:active{cursor:grabbing}
+.tutorial-window-actions{display:flex;align-items:center;gap:6px}
+.tutorial-window-actions button{width:29px;height:29px;display:grid;place-items:center;border:0;border-radius:50%;background:#25414a;color:#eaf7f1;font-size:20px;line-height:1}
+.tutorial-coach-minimized{width:auto!important;max-width:calc(100vw - 24px)!important;min-width:190px!important;max-height:none!important;overflow:visible!important;padding:9px 11px!important;border-radius:999px!important}
+.tutorial-coach-minimized .tutorial-card-top{gap:12px}
+.tutorial-coach-minimized .tutorial-card-top>span{font-size:8px;white-space:nowrap}
+@media(max-width:760px){
+ .tutorial-card.tutorial-coach{width:min(292px,calc(100vw - 24px))!important;max-height:min(42vh,320px)!important;padding:11px 12px 10px!important}
+ .tutorial-coach h2{font-size:14px!important}
+ .tutorial-coach>p{font-size:10px!important;line-height:1.38!important}
+ .tutorial-coach .tutorial-tip{font-size:9px!important;margin-top:7px!important;padding:7px 8px!important}
+ .tutorial-coach .tutorial-footer{margin-top:7px!important;padding-top:7px!important}
+ .tutorial-coach-minimized{width:auto!important;min-width:185px!important;max-height:none!important;padding:7px 9px!important}
+}
