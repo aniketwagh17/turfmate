@@ -346,3 +346,33 @@
  .tutorial-footer{margin-top:10px}
  .tutorial-footer button{padding:8px 10px}
 }
+
+
+/* Contextual tutorial popovers: compact content, no nested scrolling, anchored to each spotlight. */
+.tutorial-layer{position:fixed;inset:0;z-index:3000;display:block;padding:0;pointer-events:none}
+.tutorial-scrim{position:fixed;inset:0;z-index:0;background:rgba(10,22,36,.68);pointer-events:none}
+.tutorial-focus{position:relative!important;z-index:3001!important;isolation:isolate;outline:4px solid #25b77e!important;outline-offset:3px!important;box-shadow:0 0 0 9999px rgba(8,20,34,.70)!important;border-radius:12px!important;scroll-margin:110px;pointer-events:auto!important}
+.tutorial-card{position:fixed;z-index:3002;box-sizing:border-box;width:370px;max-width:calc(100vw - 24px);max-height:none!important;overflow:visible!important;padding:17px 18px 14px;border:1px solid #dce9e3;border-radius:16px;background:#fff;box-shadow:0 16px 48px rgba(3,16,28,.34);pointer-events:auto}
+.tutorial-card-top{display:flex;align-items:center;justify-content:space-between;gap:10px;color:#147b58;font-size:9px;font-weight:900;letter-spacing:.7px}
+.tutorial-card-top button{flex:none;width:30px;height:30px;display:grid;place-items:center;border:0;border-radius:50%;background:#f1f5f7;color:#586779;font-size:21px;cursor:pointer}
+.tutorial-progress{height:4px;margin:10px 0 13px;overflow:hidden;border-radius:99px;background:#edf2ef}
+.tutorial-progress span{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#15986a,#56c596);transition:width .2s ease}
+.tutorial-step-meta{font-size:9px;letter-spacing:.7px;font-weight:900;color:#16845d}
+.tutorial-card h2{margin:6px 0 7px;font:800 17px/1.25 Manrope;color:#1b2c3c}
+.tutorial-card>p{margin:0;color:#536274;font-size:11px;line-height:1.5}
+.tutorial-tip{display:flex;gap:8px;margin-top:10px;padding:9px 10px;border:1px solid #dcefe5;border-radius:9px;background:#f2faf6;color:#476254;font-size:10px;line-height:1.45}
+.tutorial-tip>span:first-child{flex:none;color:#15986a;font-size:14px}
+.tutorial-footer{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:12px;padding-top:10px;border-top:1px solid #edf1f4}
+.tutorial-footer>div{display:flex;gap:7px}
+.tutorial-footer button{min-height:34px;border-radius:8px;padding:7px 10px;font-size:10px;font-weight:800;cursor:pointer}
+.tutorial-skip{border:0;background:transparent;color:#788596;padding-left:0!important}
+.tutorial-secondary{border:1px solid #dce4ea;background:#fff;color:#59697a}
+.tutorial-primary{border:0;background:#15986a;color:#fff}
+@media(max-width:760px){
+ .tutorial-card{padding:14px 15px 12px;border-radius:14px}
+ .tutorial-card h2{font-size:16px}
+ .tutorial-card>p{font-size:10.5px;line-height:1.4}
+ .tutorial-tip{margin-top:8px;padding:8px 9px;font-size:9.5px}
+ .tutorial-footer{margin-top:9px;padding-top:8px}
+ .tutorial-footer button{min-height:33px;padding:7px 9px}
+}
