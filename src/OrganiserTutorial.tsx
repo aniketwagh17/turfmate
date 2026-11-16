@@ -83,7 +83,7 @@ export default function OrganiserTutorial({ onClose }: { onClose: () => void }) 
     const height = card.current?.getBoundingClientRect().height ?? 120;
     const left = Math.max(8, Math.min(window.innerWidth - width - 8, drag.current.left + event.clientX - drag.current.x));
     const top = Math.max(8, Math.min(window.innerHeight - height - 8, drag.current.top + event.clientY - drag.current.y));
-    setStyle(current => ({ ...current, left, top, visibility: "visible" }));
+    setStyle(current => ({ ...current, left, "--coach-top": `${top}px`, visibility: "visible" } as CSSProperties));
   };
   const endDrag = () => { drag.current = null; };
   const step = steps[index];
@@ -119,7 +119,7 @@ export default function OrganiserTutorial({ onClose }: { onClose: () => void }) 
           : Math.max(margin, rect.left - width - gap);
         top = Math.max(margin, Math.min(window.innerHeight - cardRect.height - margin, rect.top + rect.height / 2 - cardRect.height / 2));
       }
-      setStyle({ position: "fixed", left, top, width, visibility: "visible" });
+      setStyle({ position: "fixed", left, "--coach-top": `${top}px`, width, visibility: "visible" } as CSSProperties);
     };
 
     const locate = () => {
