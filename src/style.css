@@ -376,3 +376,25 @@
  .tutorial-footer{margin-top:9px;padding-top:8px}
  .tutorial-footer button{min-height:33px;padding:7px 9px}
 }
+
+
+/* Compact contextual practice coach: avoid the large white tutorial sheet. */
+.tutorial-layer{z-index:5000;pointer-events:none}
+.tutorial-scrim{background:rgba(8,18,29,.58);pointer-events:none}
+.tutorial-focus{z-index:5001!important;outline:3px solid #47d49a!important;outline-offset:3px!important;box-shadow:0 0 0 9999px rgba(8,18,29,.62)!important;border-radius:10px!important}
+.tutorial-card.tutorial-coach{z-index:5002;box-sizing:border-box;width:min(340px,calc(100vw - 24px));max-height:none!important;overflow:visible!important;padding:15px 16px 13px;border:1px solid #315c50;border-radius:14px;background:#142b35;color:#f4faf7;box-shadow:0 14px 42px rgba(0,0,0,.38)}
+.tutorial-coach .tutorial-card-top{color:#8ce0bb;font-size:9px;letter-spacing:.7px}
+.tutorial-coach .tutorial-card-top button{background:#25414a;color:#eaf7f1}
+.tutorial-coach .tutorial-progress{height:4px;margin:10px 0 12px;background:#2d4650}
+.tutorial-coach .tutorial-progress span{background:#47d49a}
+.tutorial-coach .tutorial-step-meta{color:#8ce0bb;font-size:9px}
+.tutorial-coach h2{margin:7px 0;color:#fff;font-size:16px;line-height:1.3}
+.tutorial-coach>p{color:#d0dfdc;font-size:11px;line-height:1.5}
+.tutorial-coach .tutorial-tip{margin-top:10px;padding:9px 10px;border:1px solid #34565a;background:#1d3a40;color:#d6ebe2;font-size:10px;line-height:1.45}
+.tutorial-coach .tutorial-tip>span:first-child{color:#75dfb0}
+.tutorial-coach .tutorial-footer{margin-top:10px;padding-top:9px;border-color:#34505a}
+.tutorial-coach .tutorial-skip{color:#b5c7c4}
+.tutorial-coach .tutorial-secondary{border-color:#47616a;background:#213c46;color:#e2eeeb}
+.tutorial-coach .tutorial-primary{background:#15986a;color:white}
+.tutorial-coach button:disabled{opacity:.4;cursor:not-allowed}
+@media(max-width:760px){.tutorial-card.tutorial-coach{padding:13px 14px 11px}.tutorial-coach h2{font-size:15px}.tutorial-coach>p{font-size:10.5px}.tutorial-coach .tutorial-tip{font-size:9.5px}}
