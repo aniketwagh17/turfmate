@@ -261,3 +261,18 @@
 .group-qr-cta .small-action{width:min(100%,340px);min-height:44px}
 .skip-share-button{display:block;width:100%;margin:12px auto 2px;padding:10px;border:0;background:transparent;color:#718096;font-size:12px;font-weight:700}
 .skip-share-button:hover{color:#147a56;text-decoration:underline}
+
+
+/* Session expense split and polished settled-ledger report */
+.session-expense-breakdown{display:flex;flex-direction:column;gap:7px;margin:2px 0 16px;padding:13px 15px;border:1px solid #cfe9dc;border-radius:11px;background:linear-gradient(135deg,#f0faf5,#f7fbff)}
+.session-expense-breakdown>div{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.session-expense-breakdown span{font-size:12px;color:#52675f;font-weight:600}
+.session-expense-breakdown strong{font:800 15px Manrope;color:#147a56;white-space:nowrap}
+.session-expense-breakdown>small{font-size:11px}
+.report-ledger-status{display:flex;flex-direction:column;gap:5px;margin:12px 0 16px;padding:14px 15px;border:1px solid #cfe9dc;border-radius:11px;background:linear-gradient(135deg,#f0faf5,#f7fbff)}
+.report-ledger-status strong{font:800 14px Manrope;color:#147a56}
+.report-ledger-status small{font-size:11px;line-height:1.5;color:#647568}
+.report-download-button:disabled{opacity:.48;cursor:not-allowed;box-shadow:none}
+.session-detail-summary{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media(min-width:700px){.session-detail-summary{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:620px){.session-expense-breakdown{padding:12px}.report-ledger-status{padding:12px}}
