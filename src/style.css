@@ -311,3 +311,8 @@
 .tutorial-primary:hover{background:#12583e}
 .tutorial-highlight{position:relative!important;z-index:2001!important;outline:3px solid #40c58c!important;outline-offset:4px!important;border-radius:10px!important;box-shadow:0 0 0 7px rgba(64,197,140,.18)!important}
 @media(max-width:600px){.tutorial-layer{padding:12px;align-items:flex-end}.tutorial-card{padding:18px 17px 15px;border-radius:16px}.tutorial-card h2{font-size:19px}.tutorial-card>p{font-size:12px}.tutorial-tip{font-size:11px;padding:11px}.tutorial-footer{align-items:flex-start;flex-direction:column}.tutorial-footer>div{width:100%}.tutorial-footer button{flex:1}.tutorial-launch{width:calc(100% - 20px);margin:14px 10px 10px}}
+
+
+/* Keep the organiser tutorial entry point visible on phones, where the sidebar is hidden. */
+.tutorial-header-launch{display:none;border:1px solid #bfe6d3;border-radius:8px;background:#effaf4;color:#176b4d;padding:7px 10px;font-size:11px;font-weight:800;white-space:nowrap;cursor:pointer}
+@media(max-width:580px){.tutorial-header-launch{display:inline-flex;align-items:center;gap:5px}.header-actions{display:flex;align-items:center;gap:7px}}
