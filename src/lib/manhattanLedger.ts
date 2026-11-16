@@ -190,7 +190,9 @@ export function downloadManhattanLedger({ templateBase64, sessions, players, pay
       if (sheet[address] && c === 1) sheet[address].z = "dd-mmm-yyyy";
       if (sheet[address] && c >= 2) sheet[address].z = c === 3 ? "0" : '"₹"#,##0.00;[Red]-"₹"#,##0.00';
     }
-    sheet["!rows"][rowIndex] = { hpt: 22 };
+    const rowMetadata = sheet["!rows"] || [];
+    rowMetadata[rowIndex] = { hpt: 22 };
+    sheet["!rows"] = rowMetadata;
 
     const detailSheet = makeSessionSheet(session, players, payments, turf, otherTotal, totalExpense, runningBalance, collections, closing);
     let detailName = (session.date.replace(/-/g, "") + " " + session.venue).replace(/[:\\/?*\[\]]/g, " ").slice(0, 31);
