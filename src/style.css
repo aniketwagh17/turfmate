@@ -319,10 +319,10 @@
 
 
 /* Contextual organiser tutorial: spotlight the real control and keep the explanation beside it. */
-.tutorial-layer{position:fixed;inset:0;z-index:auto;display:block;padding:0;pointer-events:none}
-.tutorial-scrim{position:fixed;inset:0;z-index:2000;background:rgba(10,22,36,.58);pointer-events:none}
-.tutorial-focus{position:relative!important;z-index:2001!important;isolation:isolate;outline:4px solid #25b77e!important;outline-offset:3px!important;box-shadow:0 0 0 9999px rgba(8,20,34,.70)!important;border-radius:12px!important;scroll-margin:100px}
-.tutorial-card{position:fixed;z-index:2002;width:min(370px,calc(100vw - 24px));max-height:min(82vh,540px);overflow-y:auto;padding:20px 21px 16px;border:1px solid #dce9e3;border-radius:18px;background:#fff;box-shadow:0 20px 70px rgba(3,16,28,.35);pointer-events:auto}
+.tutorial-layer{position:fixed;inset:0;z-index:1000;display:block;padding:0;pointer-events:none}
+.tutorial-scrim{position:fixed;inset:0;z-index:0;background:rgba(10,22,36,.66);pointer-events:auto}
+.tutorial-focus{position:relative!important;z-index:1001!important;isolation:isolate;outline:4px solid #25b77e!important;outline-offset:3px!important;box-shadow:0 0 0 9999px rgba(8,20,34,.70)!important;border-radius:12px!important;scroll-margin:100px}
+.tutorial-card{position:fixed;z-index:2;width:min(370px,calc(100vw - 24px));max-height:min(82vh,540px);overflow-y:auto;padding:20px 21px 16px;border:1px solid #dce9e3;border-radius:18px;background:#fff;box-shadow:0 20px 70px rgba(3,16,28,.35);pointer-events:auto}
 .tutorial-card-top{display:flex;align-items:center;justify-content:space-between;color:#147b58;font-size:10px;font-weight:900;letter-spacing:.8px}
 .tutorial-card-top button{width:32px;height:32px;display:grid;place-items:center;border:0;border-radius:50%;background:#f1f5f7;color:#586779;font-size:22px;cursor:pointer}
 .tutorial-progress{height:5px;margin:13px 0 17px;overflow:hidden;border-radius:99px;background:#edf2ef}
@@ -339,7 +339,7 @@
 .tutorial-secondary{border:1px solid #dce4ea;background:white;color:#59697a}
 .tutorial-primary{border:0;background:#15986a;color:white}
 @media(max-width:760px){
- .tutorial-card{left:12px!important;right:12px!important;bottom:max(12px,env(safe-area-inset-bottom))!important;top:auto!important;width:auto!important;max-height:min(46vh,390px);padding:16px 17px 13px}
+ .tutorial-card{left:12px!important;right:12px!important;bottom:calc(78px + env(safe-area-inset-bottom))!important;top:auto!important;width:auto!important;max-height:min(48vh,410px);padding:16px 17px 13px}
  .tutorial-card h2{font-size:17px;margin:6px 0}
  .tutorial-card>p{font-size:11px;line-height:1.45}
  .tutorial-tip{margin-top:10px;padding:9px 10px;font-size:10px}
