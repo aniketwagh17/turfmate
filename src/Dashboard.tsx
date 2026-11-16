@@ -127,7 +127,7 @@ export default function Dashboard({ email }: { email: string }) {
    return {session:s,opening,collections,totalExpense,closing,turfExpense:s.turfCharges??s.total,otherExpense:Math.max(0,s.total-(s.turfCharges??s.total))};
   });
   const rows=ledgerRows.filter(row=>row.session.date>=reportStart&&row.session.date<=reportEnd);
-  const openingBalance=rows.length?rows[0].opening:(ledgerRows.filter(row=>row.session.date<reportStart).at(-1)?.closing??ledgerOpeningBalance);
+  const priorRows=ledgerRows.filter(row=>row.session.date<reportStart);const openingBalance=rows.length?rows[0].opening:(priorRows.length?priorRows[priorRows.length-1].closing:ledgerOpeningBalance);
   const closingBalance=rows.length?rows[rows.length-1].closing:openingBalance;
   if(!rows.length){void Swal.fire({icon:"info",title:"No settled sessions in this period",text:"Only sessions with all player dues cleared and any organiser advance settled are included in the report."});return;}
   const totalCollections=rows.reduce((sum,row)=>sum+row.collections,0);
