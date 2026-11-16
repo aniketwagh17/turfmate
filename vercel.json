@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/pay",
+      "destination": "/api/payment-preview"
+    }
+  ]
+}
