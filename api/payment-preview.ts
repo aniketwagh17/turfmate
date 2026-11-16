@@ -39,11 +39,27 @@ export default function handler(req: Request, res: Response) {
   }
 
   const query = req.query || {};
-  const name = value(query, "name").slice(0, 80) || "TurfMate player";
-  const amount = Number(value(query, "amount"));
-  const upi = value(query, "upi").slice(0, 100);
-  const payee = value(query, "payee").slice(0, 80) || "TurfMate";
-  const note = value(query, "note").slice(0, 80) || "TurfMate contribution";
+  let paymentData: Record<string, string> = {};
+  const token = value(params, "d");
+  if (token) {
+    try {
+      const base64 = token.replace(/-/g, "+").replace(/_/g, "/");
+      const binary = atob(base64);
+      const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0));
+      const decoded = JSON.parse(new TextDecoder().decode(bytes)) as Record<string, unknown>;
+      paymentData = Object.fromEntries(
+        Object.entries(decoded).map(([key, item]) => [key, String(item ?? "")])
+      );
+    } catch {
+      return res.status(400).send("Invalid payment link.");
+    }
+  }
+  const params = { ...query, ...paymentData };
+  const name = value(params, "name").slice(0, 80) || "TurfMate player";
+  const amount = Number(value(params, "amount"));
+  const upi = value(params, "upi").slice(0, 100);
+  const payee = value(params, "payee").slice(0, 80) || "TurfMate";
+  const note = value(params, "note").slice(0, 80) || "TurfMate contribution";
 
   if (!Number.isFinite(amount) || amount <= 0 || !/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+$/.test(upi)) {
     return res.status(400).send("Invalid payment QR details.");
@@ -60,7 +76,7 @@ export default function handler(req: Request, res: Response) {
     "https://api.qrserver.com/v1/create-qr-code/?size=900x900&format=png&margin=18&data=" +
     encodeURIComponent(paymentUri.toString());
 
-  const sessions = value(query, "sessions")
+  const sessions = value(params, "sessions")
     .split("~")
     .filter(Boolean)
     .slice(0, 12)
@@ -81,7 +97,7 @@ export default function handler(req: Request, res: Response) {
     : "<li><span>Cricket contribution</span><strong>" + escapeHtml(money(amount)) + "</strong></li>";
 
   const title = "TurfMate | Payment QR";
-  const description = "View your pending cricket contribution and scan your personalised UPI payment QR code.";
+  const description = `Your cricket payment QR is ready. View the amount and scan the personalised QR to pay${name ? ` for ${name}` : ""}.`;
   const hostHeader = req.headers?.["x-forwarded-host"] || req.headers?.host || "turfmate.vercel.app";
   const host = (Array.isArray(hostHeader) ? hostHeader[0] : hostHeader).split(",")[0].trim();
   const protocolHeader = req.headers?.["x-forwarded-proto"] || "https";
@@ -97,7 +113,7 @@ export default function handler(req: Request, res: Response) {
 <title>${escapeHtml(title)}</title>
 <meta name="description" content="${escapeHtml(description)}">
 <meta property="og:type" content="website">
-<meta property="og:title" content="${escapeHtml(title)}">
+<meta property="og:title" content="Your TurfMate payment QR is ready">
 <meta property="og:description" content="${escapeHtml(description)}">
 <meta property="og:url" content="${escapeHtml(canonicalUrl)}">
 <meta property="og:image" content="${escapeHtml(qrImageUrl)}">
@@ -107,7 +123,7 @@ export default function handler(req: Request, res: Response) {
 <meta property="og:image:height" content="900">
 <meta property="og:image:alt" content="Personalised UPI payment QR for ${escapeHtml(name)}">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="${escapeHtml(title)}">
+<meta name="twitter:title" content="Your TurfMate payment QR is ready">
 <meta name="twitter:description" content="${escapeHtml(description)}">
 <meta name="twitter:image" content="${escapeHtml(qrImageUrl)}">
 <style>
