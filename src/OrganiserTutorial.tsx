@@ -7,38 +7,66 @@ type TutorialStep = {
   detail: string;
   tab: string;
   target: string;
+  fallback: string;
   section?: string;
 };
 
 const steps: TutorialStep[] = [
-  { eyebrow: "WELCOME TO TURFMATE", title: "Your organiser's quick-start guide", description: "This interactive walkthrough takes you through the main areas of TurfMate, in the order you will normally use them.", detail: "You can close the guide at any time and replay it later from the sidebar. Your sessions, players and payment records are not changed by this tutorial.", tab: "Overview", target: "[data-tutorial='nav-overview']" },
-  { eyebrow: "01 · OVERVIEW", title: "Your cricket control centre", description: "The Overview gives you a quick snapshot of your cricket activity: fund balance, turf spend, collections and outstanding dues.", detail: "Recent sessions appear below the summary. Open any session to manage its players, payments and sharing actions.", tab: "Overview", target: ".stats" },
-  { eyebrow: "02 · SESSIONS", title: "Create a turf session", description: "Open Sessions and choose Add session. Enter the date, venue, start/end time and total session expenses.", detail: "Enter the actual turf amount separately. TurfMate calculates the difference as additional expenses such as water and balls. Choose the contribution model and per-player amount when applicable.", tab: "Sessions", target: "[data-tutorial='create-session']" },
-  { eyebrow: "03 · PLAYERS IN A SESSION", title: "Select who played", description: "After creating a session, add the participating players from the session details page. You can select existing players or add a new player right there.", detail: "Save attendance when the list is correct. The player list drives the session contribution calculation and payment tracking.", tab: "Sessions", target: "[data-tutorial='nav-sessions']" },
-  { eyebrow: "04 · SHARE WITH YOUR GROUP", title: "Share the session details", description: "Once players are added, TurfMate can prepare a WhatsApp group message with the session timing, player list and payment QR details.", detail: "Sharing is optional. You can skip it and return to the session later; the session and attendance remain saved.", tab: "Sessions", target: "[data-tutorial='nav-sessions']" },
-  { eyebrow: "05 · PLAYER ROSTER", title: "Keep your player list organised", description: "The Players tab is your master roster. Add a player with their name and WhatsApp number, edit details when they change, or deactivate someone who no longer plays.", detail: "Removing a player from the active roster keeps their historical attendance and payment records intact.", tab: "Players", target: "[data-tutorial='nav-players']" },
-  { eyebrow: "06 · PAYMENTS", title: "Record and verify contributions", description: "Use Payments to record money received from a player against a session. You can choose UPI or cash, enter a partial amount, and add a note.", detail: "Review payment history and outstanding dues before sending a reminder. Only record a payment once you have actually received it.", tab: "Payments", target: "[data-tutorial='nav-payments']" },
-  { eyebrow: "07 · PAYMENT REMINDERS", title: "Follow up without confusion", description: "From player/session payment views, use the reminder action to prepare a personalised WhatsApp message and payment QR link.", detail: "Check the player name, number and amount before opening WhatsApp. TurfMate prepares the message; you remain in control of sending it.", tab: "Payments", target: "[data-tutorial='nav-payments']" },
-  { eyebrow: "08 · FINANCE & FUND ACTIVITY", title: "Keep the cricket fund transparent", description: "Finance brings together reports and payment details. If your workspace has the shared cricket fund enabled, Fund activity also lets you record manual contributions or withdrawals and review the running balance.", detail: "Use clear notes for manual entries so another organiser can understand why money moved in or out.", tab: "Finance", target: "[data-tutorial='nav-finance']" },
-  { eyebrow: "09 · DOWNLOAD REPORTS", title: "Share a clear financial report", section: "Download reports", description: "Download reports offers two views: a detailed finance report for payment and fund reconciliation, and a quick turf summary for a compact period-wise overview.", detail: "Choose the date range before downloading. The quick summary includes only fully settled sessions, so confirm player dues and organiser advances are settled first.", tab: "Finance", target: ".finance-subnav" },
-  { eyebrow: "10 · PAYMENT DETAILS", title: "Keep QR and payee information current", section: "Payment details", description: "Payment details is where you maintain the UPI ID, payee name and fund manager contact details used in payment and reminder workflows.", detail: "Review these details whenever the receiving account or fund manager changes. Make sure the details are correct before sharing a QR or reminder.", tab: "Finance", target: ".finance-subnav" },
-  { eyebrow: "YOU'RE READY", title: "Run your next session with confidence", description: "The usual flow is: create session → add players → share if needed → record payments → settle the balance → download reports.", detail: "You can revisit this walkthrough whenever you need a refresher. Enjoy the game — TurfMate will help keep the accounts clear.", tab: "Overview", target: "[data-tutorial='nav-overview']" }
+  { eyebrow: "WELCOME", title: "Welcome to TurfMate", description: "I'll walk you through the actual screens you will use to organise your cricket group.", detail: "The highlighted area is the part we're discussing. Use Next to move through the app. You can skip the guide at any time; it never changes your records.", tab: "Overview", target: "[data-tutorial='nav-overview']", fallback: "main header" },
+  { eyebrow: "01 · OVERVIEW", title: "Start from your cricket dashboard", description: "This is your quick snapshot of the group: cricket fund, turf spend, collections and outstanding dues.", detail: "These figures update as you add sessions and record payments. Recent sessions appear underneath.", tab: "Overview", target: "[data-tutorial='overview-stats']", fallback: ".hero" },
+  { eyebrow: "02 · CREATE A SESSION", title: "Add your turf booking", description: "Tap Add session to enter the date, venue, timing and total expenses for the booking.", detail: "Enter the actual turf charge separately. TurfMate works out additional costs such as water and balls. Choose the contribution model for the group.", tab: "Sessions", target: "[data-tutorial='create-session']", fallback: ".pagehead" },
+  { eyebrow: "03 · ADD PLAYERS", title: "Choose who played", description: "After creating a session, open that session and use Add players to select the people who attended.", detail: "You can select players already in your roster or add a new player from the same screen. If this is a brand-new workspace, create your first session before this action becomes available.", tab: "Sessions", target: "[data-tutorial='session-add-players']", fallback: "[data-tutorial='create-session']" },
+  { eyebrow: "04 · SHARE THE SESSION", title: "Send the session to your group", description: "On a session's detail screen, Share session & player list prepares the WhatsApp message and payment QR details.", detail: "Sharing is optional. You can skip it and return to the session later. This action appears after a session has players, so create a session and add attendance first.", tab: "Sessions", target: "[data-tutorial='share-session']", fallback: "[data-tutorial='session-add-players']" },
+  { eyebrow: "05 · PLAYER ROSTER", title: "Maintain your player list", description: "Players is your master roster. Add a player, update their name or WhatsApp number, and remove players who no longer play.", detail: "Removing a player from the active roster does not erase their historical session or payment records.", tab: "Players", target: "[data-tutorial='add-player']", fallback: ".pagehead" },
+  { eyebrow: "06 · RECORD PAYMENTS", title: "Record money received", description: "In Payments, select the session and player, enter the amount received, and choose UPI or cash.", detail: "You can record partial payments too. Only record money after it has actually reached the organiser. The payment history appears beside the form.", tab: "Payments", target: "[data-tutorial='payment-form']", fallback: ".pagehead" },
+  { eyebrow: "07 · SEND REMINDERS", title: "Follow up on pending dues", description: "Use the payment reminder action from the player or session payment view to prepare a personal WhatsApp message.", detail: "Check the player, phone number and amount before opening WhatsApp. TurfMate prepares the message and QR link; you decide whether to send it.", tab: "Players", target: "[data-tutorial='player-reminder']", fallback: "[data-tutorial='add-player']" },
+  { eyebrow: "08 · FINANCE", title: "Keep the cricket fund transparent", description: "Finance brings together fund activity, downloadable reports and the organiser's payment details.", detail: "If your group maintains a shared fund, use Fund activity to record manual contributions or withdrawals with a clear note.", tab: "Finance", target: ".finance-subnav", fallback: ".pagehead", section: "Fund activity" },
+  { eyebrow: "09 · REPORTS", title: "Download your cricket reports", description: "Choose Download reports to create either a detailed finance report or a compact turf summary PDF.", detail: "Select the date range first. The quick turf summary includes only fully settled sessions, so clear player dues and organiser advances before relying on it.", tab: "Finance", target: "[data-tutorial='report-panel']", fallback: ".finance-subnav", section: "Download reports" },
+  { eyebrow: "10 · PAYMENT DETAILS", title: "Keep QR and payee details correct", description: "Payment details contains the payee name, UPI ID and cricket fund manager contact information used by payment and reminder flows.", detail: "Update these whenever the receiving account or fund manager changes. Always verify the details before sharing a QR code.", tab: "Finance", target: "[data-tutorial='payee-panel']", fallback: ".finance-subnav", section: "Payment details" },
+  { eyebrow: "YOU'RE READY", title: "That's the organiser workflow", description: "Create a session → add players → share if needed → record payments → settle balances → download reports.", detail: "You can replay this guide any time from the Guide button. Have a great game!", tab: "Overview", target: "[data-tutorial='create-session']", fallback: ".hero" }
 ];
 
 export default function OrganiserTutorial({ onClose, onComplete, onNavigate }: { onClose: () => void; onComplete: () => void; onNavigate: (tab: string, section?: string) => void }) {
   const [index, setIndex] = useState(0);
+  const [cardStyle, setCardStyle] = useState<React.CSSProperties>({});
   const step = steps[index];
 
   useEffect(() => {
     onNavigate(step.tab, step.section);
-    const frame = window.requestAnimationFrame(() => {
-      const target = document.querySelector<HTMLElement>(step.target);
-      target?.scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" });
-      target?.classList.add("tutorial-highlight");
-    });
+    let frame = 0;
+    let attempts = 0;
+    let activeTarget: HTMLElement | null = null;
+    const placeCard = (target: HTMLElement) => {
+      const rect = target.getBoundingClientRect();
+      if (window.innerWidth <= 760) {
+        setCardStyle({ left: 12, right: 12, bottom: "max(12px, env(safe-area-inset-bottom))" });
+      } else {
+        const width = 370;
+        const left = rect.right + width + 24 < window.innerWidth ? rect.right + 18 : Math.max(16, rect.left - width - 18);
+        const estimatedHeight = 360;
+        const top = Math.max(16, Math.min(window.innerHeight - estimatedHeight - 16, rect.top + rect.height / 2 - estimatedHeight / 2));
+        setCardStyle({ left, top, width });
+      }
+    };
+    const locate = () => {
+      attempts += 1;
+      const target = document.querySelector<HTMLElement>(step.target) || document.querySelector<HTMLElement>(step.fallback);
+      if (target) {
+        activeTarget = target;
+        target.scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" });
+        target.classList.add("tutorial-focus");
+        window.setTimeout(() => { if (activeTarget) placeCard(activeTarget); }, 220);
+      } else if (attempts < 12) {
+        frame = window.requestAnimationFrame(locate);
+      }
+    };
+    frame = window.requestAnimationFrame(locate);
+    const onResize = () => { if (activeTarget) placeCard(activeTarget); };
+    window.addEventListener("resize", onResize);
     return () => {
       window.cancelAnimationFrame(frame);
-      document.querySelectorAll(".tutorial-highlight").forEach(node => node.classList.remove("tutorial-highlight"));
+      window.removeEventListener("resize", onResize);
+      document.querySelectorAll(".tutorial-focus").forEach(node => node.classList.remove("tutorial-focus"));
     };
   }, [index]);
 
@@ -46,18 +74,18 @@ export default function OrganiserTutorial({ onClose, onComplete, onNavigate }: {
 
   return <div className="tutorial-layer" role="dialog" aria-modal="true" aria-label="TurfMate organiser tutorial">
     <div className="tutorial-scrim" />
-    <section className="tutorial-card">
-      <div className="tutorial-card-top"><span>🏏 TURFMATE GUIDE</span><button type="button" aria-label="Close tutorial" onClick={onClose}>×</button></div>
+    <section className="tutorial-card" style={cardStyle}>
+      <div className="tutorial-card-top"><span>🏏 TURFMATE · ORGANISER GUIDE</span><button type="button" aria-label="Skip tutorial" onClick={onClose}>×</button></div>
       <div className="tutorial-progress"><span style={{ width: ((index + 1) / steps.length * 100) + "%" }} /></div>
-      <div className="tutorial-step-meta">{step.eyebrow}</div>
+      <div className="tutorial-step-meta">STEP {index + 1} OF {steps.length} · {step.eyebrow}</div>
       <h2>{step.title}</h2>
       <p>{step.description}</p>
       <div className="tutorial-tip"><span aria-hidden="true">✦</span><span>{step.detail}</span></div>
-      <div className="tutorial-footer"><span>{index + 1} of {steps.length}</span><div>
-        <button type="button" className="tutorial-secondary" onClick={() => index === 0 ? onClose() : move(index - 1)}>{index === 0 ? "Maybe later" : "Back"}</button>
+      <div className="tutorial-footer"><button type="button" className="tutorial-skip" onClick={onClose}>Skip guide</button><div>
+        <button type="button" className="tutorial-secondary" onClick={() => index === 0 ? onClose() : move(index - 1)}>{index === 0 ? "Close" : "Back"}</button>
         {index < steps.length - 1
-          ? <button type="button" className="tutorial-primary" onClick={() => move(index + 1)}>Next step <span aria-hidden="true">→</span></button>
-          : <button type="button" className="tutorial-primary" onClick={onComplete}>Finish tutorial ✓</button>}
+          ? <button type="button" className="tutorial-primary" onClick={() => move(index + 1)}>Next <span aria-hidden="true">→</span></button>
+          : <button type="button" className="tutorial-primary" onClick={onComplete}>Finish ✓</button>}
       </div></div>
     </section>
   </div>;
