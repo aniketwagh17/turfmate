@@ -432,7 +432,7 @@ body:has(.tutorial-layer) .backdrop{z-index:1000!important}
 
 /* Mobile practice coach: compact, movable and collapsible so form fields stay usable. */
 .tutorial-card.tutorial-coach{
-  top:auto!important;bottom:auto!important;
+  top:var(--coach-top)!important;bottom:auto!important;
   max-height:min(44vh,340px)!important;
   overflow-y:auto!important;
   touch-action:pan-y;
