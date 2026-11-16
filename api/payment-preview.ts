@@ -40,7 +40,7 @@ export default function handler(req: Request, res: Response) {
 
   const query = req.query || {};
   let paymentData: Record<string, string> = {};
-  const token = value(params, "d");
+  const token = value(query, "d");
   if (token) {
     try {
       const base64 = token.replace(/-/g, "+").replace(/_/g, "/");
