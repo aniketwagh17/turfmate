@@ -200,7 +200,7 @@ export default function Dashboard({ email }: { email: string }) {
   y+=27;
   const headers=["DATE","OPENING\nBALANCE","PLAYERS","TURF\nEXPENSE","WATER /\nBALLS","TOTAL\nEXPENSE","COLLECTIONS","TOTAL\nBALANCE"];
   const widths=[27,36,22,34,34,36,37,47];
-  const drawTableHeader=()=>{doc.setFillColor(...navy);doc.roundedRect(L,y,tableW,13,1.5,1.5,"F");doc.setFont("helvetica","bold");doc.setFontSize(6.6);setText(white);let x=L;headers.forEach((label,index)=>{doc.text(label.split("\\n"),x+widths[index]/2,y+5.2,{align:"center",lineHeightFactor:1.15});x+=widths[index];});y+=13;};
+  const drawTableHeader=()=>{doc.setFillColor(...navy);doc.roundedRect(L,y,tableW,13,1.5,1.5,"F");doc.setFont("helvetica","bold");doc.setFontSize(6.6);setText(white);let x=L;headers.forEach((label,index)=>{doc.text(label.split("\n"),x+widths[index]/2,y+5.2,{align:"center",lineHeightFactor:1.15});x+=widths[index];});y+=13;};
   drawTableHeader();
   rows.forEach((row,index)=>{
    if(y+11>190){doc.addPage("a4","landscape");header();y=42;drawTableHeader();}
