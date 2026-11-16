@@ -80,8 +80,8 @@ export default function handler(req: Request, res: Response) {
       ).join("")
     : "<li><span>Cricket contribution</span><strong>" + escapeHtml(money(amount)) + "</strong></li>";
 
-  const title = `TurfMate payment QR for ${name}`;
-  const description = `Personalised UPI payment QR for ${name}. Amount due: ${money(amount)}. Pay to ${payee}.`;
+  const title = "TurfMate | Payment QR";
+  const description = "View your pending cricket contribution and scan your personalised UPI payment QR code.";
   const hostHeader = req.headers?.["x-forwarded-host"] || req.headers?.host || "turfmate.vercel.app";
   const host = (Array.isArray(hostHeader) ? hostHeader[0] : hostHeader).split(",")[0].trim();
   const protocolHeader = req.headers?.["x-forwarded-proto"] || "https";
