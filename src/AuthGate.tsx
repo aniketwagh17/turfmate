@@ -42,13 +42,18 @@ export default function AuthGate() {
   const [busy, setBusy] = useState(false);
   const [whatsappPhone, setWhatsappPhone] = useState("");
   const [phoneSaved, setPhoneSaved] = useState(false);
+  const [startTutorialAfterLogin, setStartTutorialAfterLogin] = useState(false);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
       setSession(data.session);
       setLoading(false);
     });
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, next) => setSession(next));
+    const { data: listener } = supabase.auth.onAuthStateChange((event, next) => {
+      setSession(next);
+      if (event === "SIGNED_IN") setStartTutorialAfterLogin(true);
+      if (event === "SIGNED_OUT") setStartTutorialAfterLogin(false);
+    });
     return () => listener.subscription.unsubscribe();
   }, []);
 
@@ -139,7 +144,7 @@ export default function AuthGate() {
     </form></div></>;
   }
 
-  if (session) return <><InstallAppButton /><Dashboard email={session.user.email ?? "Signed in"} /></>;
+  if (session) return <><InstallAppButton /><Dashboard email={session.user.email ?? "Signed in"} startTutorial={startTutorialAfterLogin} /></>;
   return <><InstallAppButton /><div className="auth-screen"><form className="auth-card" onSubmit={submit}>
     <div className="auth-brand">🏏 <span>TurfMate</span></div>
     <p className="auth-subtitle">MANHATTAN CRICKET</p>
