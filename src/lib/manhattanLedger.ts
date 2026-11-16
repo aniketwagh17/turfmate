@@ -63,7 +63,8 @@ const sectionStyle = {
 };
 
 function styleCell(sheet: any, address: string, style: any) {
-  if (sheet[address]) sheet[address].s = style;
+  if (!sheet[address]) sheet[address] = { t: "s", v: "", s: style };
+  else sheet[address].s = style;
 }
 
 function makeSessionSheet(
