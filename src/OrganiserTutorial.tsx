@@ -64,7 +64,28 @@ const steps: Step[] = [
 export default function OrganiserTutorial({ onClose }: { onClose: () => void }) {
   const [index, setIndex] = useState(0);
   const [style, setStyle] = useState<CSSProperties>({ visibility: "hidden" });
+  const [minimized, setMinimized] = useState(false);
   const card = useRef<HTMLElement>(null);
+  const drag = useRef<{ x: number; y: number; left: number; top: number } | null>(null);
+  const manuallyMoved = useRef(false);
+
+  const startDrag = (event: React.PointerEvent<HTMLDivElement>) => {
+    if ((event.target as HTMLElement).closest("button")) return;
+    const rect = card.current?.getBoundingClientRect();
+    if (!rect) return;
+    drag.current = { x: event.clientX, y: event.clientY, left: rect.left, top: rect.top };
+    event.currentTarget.setPointerCapture(event.pointerId);
+  };
+  const moveDrag = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (!drag.current) return;
+    manuallyMoved.current = true;
+    const width = card.current?.getBoundingClientRect().width ?? 300;
+    const height = card.current?.getBoundingClientRect().height ?? 120;
+    const left = Math.max(8, Math.min(window.innerWidth - width - 8, drag.current.left + event.clientX - drag.current.x));
+    const top = Math.max(8, Math.min(window.innerHeight - height - 8, drag.current.top + event.clientY - drag.current.y));
+    setStyle(current => ({ ...current, left, top, visibility: "visible" }));
+  };
+  const endDrag = () => { drag.current = null; };
   const step = steps[index];
 
   useEffect(() => {
@@ -74,13 +95,13 @@ export default function OrganiserTutorial({ onClose }: { onClose: () => void }) 
     let target: HTMLElement | null = null;
 
     const place = () => {
-      if (cancelled || !target || !card.current) return;
+      if (cancelled || !target || !card.current || manuallyMoved.current) return;
       const rect = target.getBoundingClientRect();
       const cardRect = card.current.getBoundingClientRect();
       const margin = 12;
       const gap = 14;
       const mobile = window.innerWidth <= 760;
-      const width = mobile ? Math.min(340, window.innerWidth - 24) : 340;
+      const width = mobile ? Math.min(292, window.innerWidth - 24) : 320;
       let left: number;
       let top: number;
 
@@ -88,7 +109,8 @@ export default function OrganiserTutorial({ onClose }: { onClose: () => void }) 
         left = Math.max(margin, (window.innerWidth - width) / 2);
         const roomBelow = window.innerHeight - rect.bottom - gap;
         const roomAbove = rect.top - gap;
-        top = roomBelow >= cardRect.height || roomBelow >= roomAbove
+        // Prefer the side with more free space; the coach can be dragged if it still covers a field.
+        top = roomBelow >= roomAbove
           ? Math.min(window.innerHeight - cardRect.height - margin, rect.bottom + gap)
           : Math.max(margin, rect.top - cardRect.height - gap);
       } else {
@@ -148,20 +170,32 @@ export default function OrganiserTutorial({ onClose }: { onClose: () => void }) 
   return createPortal(
     <div className="tutorial-layer" role="dialog" aria-modal="false" aria-label="TurfMate guided practice">
       <div className="tutorial-scrim" />
-      <section ref={card} className="tutorial-card tutorial-coach" style={style}>
-        <div className="tutorial-card-top">
-          <span>🏏 TURFMATE · LIVE PRACTICE</span>
-          <button type="button" aria-label="Close guide" onClick={onClose}>×</button>
+      <section ref={card} className={`tutorial-card tutorial-coach${minimized ? " tutorial-coach-minimized" : ""}`} style={style}>
+        <div
+          className="tutorial-card-top tutorial-drag-handle"
+          onPointerDown={startDrag}
+          onPointerMove={moveDrag}
+          onPointerUp={endDrag}
+          onPointerCancel={endDrag}
+          title="Drag to move this guide"
+        >
+          <span>⠿ &nbsp;🏏 TURFMATE · LIVE PRACTICE</span>
+          <div className="tutorial-window-actions">
+            <button type="button" aria-label={minimized ? "Expand guide" : "Minimise guide"} onClick={() => setMinimized(value => !value)}>{minimized ? "＋" : "−"}</button>
+            <button type="button" aria-label="Close guide" onClick={onClose}>×</button>
+          </div>
         </div>
-        <div className="tutorial-progress"><span style={{ width: ((index + 1) / steps.length * 100) + "%" }} /></div>
-        <div className="tutorial-step-meta">STEP {index + 1} OF {steps.length}</div>
-        <h2>{step.title}</h2>
-        <p>{step.body}</p>
-        <div className="tutorial-tip"><span>✦</span><span>{step.hint}</span></div>
-        <div className="tutorial-footer">
-          <span className="tutorial-live-status">Complete this action to continue</span>
-          <button type="button" className="tutorial-skip" onClick={onClose}>Exit guide</button>
-        </div>
+        {!minimized && <>
+          <div className="tutorial-progress"><span style={{ width: ((index + 1) / steps.length * 100) + "%" }} /></div>
+          <div className="tutorial-step-meta">STEP {index + 1} OF {steps.length}</div>
+          <h2>{step.title}</h2>
+          <p>{step.body}</p>
+          <div className="tutorial-tip"><span>✦</span><span>{step.hint}</span></div>
+          <div className="tutorial-footer">
+            <span className="tutorial-live-status">Do the action to continue</span>
+            <button type="button" className="tutorial-skip" onClick={onClose}>Exit guide</button>
+          </div>
+        </>}
       </section>
     </div>,
     document.body
