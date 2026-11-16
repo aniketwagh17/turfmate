@@ -398,3 +398,5 @@
 .tutorial-coach .tutorial-primary{background:#15986a;color:white}
 .tutorial-coach button:disabled{opacity:.4;cursor:not-allowed}
 @media(max-width:760px){.tutorial-card.tutorial-coach{padding:13px 14px 11px}.tutorial-coach h2{font-size:15px}.tutorial-coach>p{font-size:10.5px}.tutorial-coach .tutorial-tip{font-size:9.5px}}
+
+body:has(.tutorial-layer) .backdrop{z-index:5001!important}
