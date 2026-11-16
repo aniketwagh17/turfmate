@@ -213,13 +213,24 @@ export default function Dashboard({ email }: { email: string }) {
    cells.forEach((cell,cellIndex)=>{const centered=cellIndex===0||cellIndex===2;doc.text(cell,centered?x+widths[cellIndex]/2:x+widths[cellIndex]-3,rowY+7.7,{align:centered?"center":"right"});x+=widths[cellIndex];});
    doc.setDrawColor(...line);let divider=L;for(let col=0;col<widths.length-1;col++){divider+=widths[col];doc.line(divider,rowY,divider,rowY+12);}doc.line(L,rowY+12,L+tableW,rowY+12);y+=12;
   });
-  if(y+17>188){doc.addPage("a4","landscape");header();y=42;drawTableHeader();}
+  if(y+20>188){doc.addPage("a4","landscape");header();y=42;drawTableHeader();}
   const totalY=y,totals=["PERIOD TOTALS",fmtMoney(firstOpening),String(totalPlayers),fmtMoney(totalTurf),fmtMoney(totalOther),fmtMoney(totalExpense),fmtMoney(totalCollections),fmtMoney(closingBalance)];
-  doc.setFillColor(...navy);doc.roundedRect(L,totalY,tableW,15,1.5,1.5,"F");
-  let x=L;totals.forEach((cell,index)=>{const centered=index===2;doc.setFont("helvetica","bold");doc.setFontSize(index===0?6.5:6.7);setText(index===7?white:[220,235,229] as [number,number,number]);doc.text(cell,centered?x+widths[index]/2:x+widths[index]-3,totalY+9.5,{align:centered?"center":"right"});x+=widths[index];});
-  const closingX=L+widths.slice(0,7).reduce((sum,width)=>sum+width,0);doc.setFillColor(...green);doc.roundedRect(closingX,totalY,widths[7],15,1.5,1.5,"F");doc.setFont("helvetica","bold");doc.setFontSize(6.7);setText(white);doc.text(fmtMoney(closingBalance),closingX+widths[7]-3,totalY+9.5,{align:"right"});
-  y+=22;
-  if(y+15<190){doc.setFillColor(...pale);doc.roundedRect(L,y,tableW,12,2,2,"F");doc.setFont("helvetica","normal");doc.setFontSize(7);setText(ink);doc.text("BALANCE ROLLFORWARD",L+4,y+5);doc.setFont("helvetica","bold");setText(green);doc.text(fmtMoney(firstOpening)+" opening  →  "+fmtMoney(closingBalance)+" closing",L+tableW-4,y+5,{align:"right"});doc.setFont("helvetica","normal");doc.setFontSize(6.5);setText(muted);doc.text("Only fully settled sessions are included. Other expenses = total session expenses − actual turf charges.",L+4,y+9.5);}
+  // A restrained, high-contrast totals band keeps every figure readable without an oversized solid-green cell.
+  doc.setFillColor(239,244,247);doc.roundedRect(L,totalY,tableW,15,1.5,1.5,"F");
+  doc.setFillColor(...green);doc.roundedRect(L,totalY,2,15,1,1,"F");
+  const closingX=L+widths.slice(0,7).reduce((sum,width)=>sum+width,0);
+  doc.setFillColor(226,244,235);doc.roundedRect(closingX,totalY,widths[7],15,1.5,1.5,"F");
+  doc.setDrawColor(205,218,225);doc.line(L,totalY,L+tableW,totalY);doc.line(L,totalY+15,L+tableW,totalY+15);
+  let x=L;totals.forEach((cell,index)=>{const centered=index===2;doc.setFont("helvetica","bold");doc.setFontSize(index===0?6.5:6.7);setText(index===7?green:navy);doc.text(cell,centered?x+widths[index]/2:x+(index===0?4:widths[index]-3),totalY+9.5,{align:index===0?"left":centered?"center":"right"});x+=widths[index];});
+  y+=21;
+  // Keep the rollforward copy inside the card and deliberately split it into two clear lines.
+  if(y+19<190){
+   doc.setFillColor(...pale);doc.roundedRect(L,y,tableW,18,2,2,"F");
+   doc.setFillColor(...green);doc.roundedRect(L,y,2,18,1,1,"F");
+   doc.setFont("helvetica","bold");doc.setFontSize(7);setText(navy);doc.text("BALANCE ROLLFORWARD",L+5,y+6);
+   doc.setFont("helvetica","bold");doc.setFontSize(8);setText(green);
+   doc.text("Opening balance  "+fmtMoney(firstOpening)+"     →     Closing balance  "+fmtMoney(closingBalance),L+5,y+13.5);
+  }
   footer();
   doc.save("TurfMate-Turf-Summary-"+reportStart+"-to-"+reportEnd+".pdf");
  }
