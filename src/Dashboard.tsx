@@ -78,7 +78,6 @@ export default function Dashboard({ email }: { email: string }) {
  const manualFundNet=fundTransactions.reduce((n,t)=>n+(t.type==="Contribution"?t.amount:-t.amount),0);
  const fundBalance=openingFund+fundCollected-fundSpend+manualFundNet+sessions.filter(s=>s.mode==="fund"&&!s.organiserAdvanceSettled).reduce((n,s)=>n+sessionOrganiserAdvance(s),0);
  const showFundFeatures=hasCricketFund;
- const fundManagerDue=sessions.filter(s=>s.mode==="fund"&&!s.organiserAdvanceSettled).reduce((sum,s)=>sum+sessionOrganiserAdvance(s),0);
   const totalSessionPages=Math.max(1,Math.ceil(sessions.length/5));
   const paginatedSessions=sessions.slice((sessionPage-1)*5,sessionPage*5);
   useEffect(()=>{if(sessionPage>totalSessionPages)setSessionPage(totalSessionPages);},[sessionPage,totalSessionPages]);
@@ -178,8 +177,6 @@ export default function Dashboard({ email }: { email: string }) {
  useEffect(()=>{if(!reminderPlayerId||reminderPaymentNote.trim())return;const player=players.find(p=>p.id===reminderPlayerId);const session=sessions.find(s=>s.id===sessionReminderId);setReminderPaymentNote("TurfMate "+(session?.venue||"Cricket")+" - "+(player?.name||"Player"));},[reminderPlayerId,sessionReminderId,players,sessions,reminderPaymentNote]);
   const reminderQrLink=reminderPlayer?personalPaymentPreviewUrl(reminderPlayer,reminderDue,reminderPaymentNote.trim()||"TurfMate contribution",reminderSessions):"";
   const reminderMessage=reminderPlayer?("Hi "+reminderPlayer.name+" 👋\n\n*Pending cricket contributions* 🏏\n\n"+reminderSessions.map((s,index)=>"*Session "+(index+1)+" — "+s.venue+"*\nDate: "+s.date+"\nTime: "+formatSessionTime(s.startTime)+" to "+formatSessionTime(s.endTime)+"\n*Pending: "+money(amountDueForSession(reminderPlayer.id,s.id))+"*").join("\n\n")+"\n\n━━━━━━━━━━━━━━\n*Total outstanding: "+money(reminderDue)+"*\n*UPI payment note: "+(reminderPaymentNote.trim()||"TurfMate contribution")+"*\n\n*Open my payment QR:*\n"+reminderQrLink+"\n\nThe QR has your payment amount and note prefilled. If you have already paid, please ignore this reminder. Thanks!"):"";
-  const fundManagerQrLink=(()=>{const payload={n:"Cricket fund settlement",a:fundManagerDue.toFixed(2),u:upiId,p:payeeName,t:"TurfMate fund settlement - "+fundManagerName};const bytes=new TextEncoder().encode(JSON.stringify(payload));let binary="";bytes.forEach(byte=>binary+=String.fromCharCode(byte));const token=btoa(binary).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/g,"");return window.location.origin+"/p/"+token;})();
-  const fundManagerReminderMessage="Hi "+fundManagerName+" 👋\n\nThis is a reminder to settle the pending TurfMate cricket fund amount. 🏏\n\n*Amount to transfer: "+money(fundManagerDue)+"*\n\nPlease use the payment QR below. The amount and settlement note are prefilled.\n"+fundManagerQrLink+"\n\nI’ll mark the relevant advance as settled in TurfMate once the transfer is received. Thank you!";
   async function buildPersonalQrCard(qrBlob:Blob):Promise<Blob>{
    const imageUrl=URL.createObjectURL(qrBlob);
    try{
