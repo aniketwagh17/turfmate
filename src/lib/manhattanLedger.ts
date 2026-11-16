@@ -16,7 +16,6 @@ type ExportArgs = {
 
 const START_DATE = "2026-11-01";
 const SUMMARY_NAME = "Turf summary";
-const HEADERS = ["Date", "Opening balance", "Players", "Turf expense", "Water/balls", "Total Expense", "Collections", "Total balance"];
 const moneyNumber = (value: number) => Math.round((Number(value) || 0) * 100) / 100;
 
 function readTemplate(base64: string) {
@@ -130,7 +129,7 @@ function makeSessionSheet(
 }
 
 export function downloadManhattanLedger({ templateBase64, sessions, players, payments, openingBalance }: ExportArgs) {
-  const { workbook, sheetName, sheet, rows, headerIndex } = readTemplate(templateBase64);
+  const { workbook, sheet, rows, headerIndex } = readTemplate(templateBase64);
   const included = sessions.filter(session => session.ledgerCompleted && session.date >= START_DATE)
     .slice().sort((a, b) => a.date.localeCompare(b.date) || a.id.localeCompare(b.id));
   if (!included.length) {
@@ -140,7 +139,6 @@ export function downloadManhattanLedger({ templateBase64, sessions, players, pay
   // Retain the uploaded historical workbook and every historical sheet. The summary
   // continues in the same B:I columns; column J (Balance with Aniket) is excluded.
   const range = XLSX.utils.decode_range(sheet["!ref"] || "B1:J1");
-  const lastColumn = Math.max(range.e.c, 9);
   for (let r = 0; r <= range.e.r; r++) delete sheet[XLSX.utils.encode_cell({ r, c: 9 })];
   if (Array.isArray(sheet["!cols"])) sheet["!cols"] = sheet["!cols"].slice(0, 9);
   sheet["!ref"] = XLSX.utils.encode_range({ s: { r: range.s.r, c: 1 }, e: { r: range.e.r, c: 8 } });
@@ -177,7 +175,7 @@ export function downloadManhattanLedger({ templateBase64, sessions, players, pay
       .reduce((sum, payment) => sum + moneyNumber(payment.amount), 0));
     const closing = moneyNumber(runningBalance + collections - totalExpense);
     const values = [new Date(session.date + "T00:00:00"), runningBalance, session.participants.length, turf, otherTotal, totalExpense, collections, closing];
-    XLSX.utils.sheet_add_aoa(sheet, [values], { origin: { r: rowIndex, c: 1 }, cellDates: true });
+    XLSX.utils.sheet_add_aoa(sheet, [values], { origin: { r: rowIndex, c: 1 } });
     const totalCell = sheet[XLSX.utils.encode_cell({ r: rowIndex, c: 6 })];
     totalCell.f = `SUM(E${excelRow}:F${excelRow})`;
     totalCell.v = totalExpense;
@@ -207,7 +205,8 @@ export function downloadManhattanLedger({ templateBase64, sessions, players, pay
     { wch: 3 }, { wch: 14 }, { wch: 18 }, { wch: 10 }, { wch: 15 },
     { wch: 15 }, { wch: 17 }, { wch: 15 }, { wch: 17 },
   ];
-  workbook.Workbook = workbook.Workbook || {};
-  workbook.Workbook.CalcPr = { calcMode: "auto", fullCalcOnLoad: true, forceFullCalc: true };
+  const workbookProperties: any = workbook.Workbook || {};
+  workbookProperties.CalcPr = { calcMode: "auto", fullCalcOnLoad: true, forceFullCalc: true };
+  workbook.Workbook = workbookProperties;
   XLSX.writeFile(workbook, "Manhattan-Building-Turf-Ledger.xlsx", { bookType: "xlsx", cellStyles: true });
 }
