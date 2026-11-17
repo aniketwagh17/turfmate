@@ -104,6 +104,7 @@ export default function handler(req: Request, res: Response) {
       ).join("")
     : "<li><span>Cricket contribution</span><strong>" + escapeHtml(money(amount)) + "</strong></li>";
 
+  const safeDownloadName = name.replace(/[^a-zA-Z0-9_-]+/g, "-").replace(/^-+|-+$/g, "") || "player";
   const title = "TurfMate | Payment QR";
   const description = `Your cricket payment QR is ready. View the amount and scan the personalised QR to pay${name ? ` for ${name}` : ""}.`;
   const hostHeader = req.headers?.["x-forwarded-host"] || req.headers?.host || "turfmate.vercel.app";
@@ -181,7 +182,7 @@ if(downloadButton)downloadButton.addEventListener("click",async()=>{const old=do
  ctx.fillStyle="#344B42";ctx.font="700 19px Arial";ctx.fillText(items.length?"COVERS "+items.length+" PENDING SESSION"+(items.length===1?"":"S"):"TURFMATE CONTRIBUTION",78,494);
  items.forEach((item,index)=>{const col=index%3,row=Math.floor(index/3),x=70+col*294,y=520+row*76;rounded(x,y,276,52,13,"#F3F6F5");ctx.fillStyle="#43594F";ctx.font="700 17px Arial";ctx.fillText((item.venue||"Session")+" · "+(item.date||""),x+14,y+33,248);});
  rounded(280,qrTop-22,440,440,22,"#FFFFFF");ctx.drawImage(qrImage,290,qrTop,420,420);ctx.fillStyle="#263E34";ctx.font="700 19px Arial";ctx.textAlign="center";ctx.fillText("SCAN TO PAY · AMOUNT PREFILLED",500,qrTop+qrSize+58);ctx.fillStyle="#738178";ctx.font="16px Arial";ctx.fillText("Pay to "+${JSON.stringify(payee)},500,qrTop+qrSize+102);ctx.fillStyle="#147A59";ctx.font="700 20px Arial";ctx.fillText(${JSON.stringify(upi)},500,qrTop+qrSize+139,850);ctx.fillStyle="#8A9690";ctx.font="15px Arial";ctx.fillText("If already paid, please ignore this reminder.",500,qrTop+qrSize+184);ctx.textAlign="left";
- const card=await new Promise((resolve,reject)=>canvas.toBlob(blob=>blob?resolve(blob):reject(new Error("Unable to render card")),"image/png"));const objectUrl=URL.createObjectURL(card),link=document.createElement("a");link.href=objectUrl;link.download="TurfMate-${safeName(name)}-personalised-payment.png";document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(objectUrl),1500);
+ const card=await new Promise((resolve,reject)=>canvas.toBlob(blob=>blob?resolve(blob):reject(new Error("Unable to render card")),"image/png"));const objectUrl=URL.createObjectURL(card),link=document.createElement("a");link.href=objectUrl;link.download="TurfMate-${safeDownloadName}-personalised-payment.png";document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(objectUrl),1500);
  }finally{URL.revokeObjectURL(qrUrl);}
  }catch(error){const status=document.getElementById("copy-status");if(status)status.textContent="Could not prepare the personalised QR card. Please try again.";console.error(error);}finally{downloadButton.disabled=false;downloadButton.textContent=old;}});
 </script>
