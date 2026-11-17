@@ -285,3 +285,8 @@
 .report-download-actions .report-summary-button:hover:not(:disabled){background:#e2f5eb}
 .report-download-actions .report-summary-button:disabled{opacity:.45;cursor:not-allowed}
 @media(min-width:700px){.report-download-actions{grid-template-columns:1fr 1fr}}
+
+
+/* Keep the detailed report prominent and pair the two quick-summary formats */
+.report-download-actions .report-download-button{grid-column:1/-1}
+@media(min-width:700px){.report-download-actions{grid-template-columns:repeat(2,minmax(0,1fr))}}
