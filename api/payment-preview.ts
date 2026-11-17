@@ -92,9 +92,12 @@ export default function handler(req: Request, res: Response) {
     "intent://pay" + paymentQuery +
     "#Intent;scheme=upi;package=com.phonepe.app;end";
 
+  // QR scanners expect the standard UPI payment URI, not an Android
+  // intent:// browser-launch URL. Keep the QR payload identical in format
+  // to the dashboard QR and keep intent links only for the Pay buttons.
   const qrImageUrl =
     "https://api.qrserver.com/v1/create-qr-code/?size=900x900&format=png&margin=18&data=" +
-    encodeURIComponent(genericPaymentLink);
+    encodeURIComponent(paymentUri.toString());
 
   const sessions = value(params, "sessions")
     .split("~")
