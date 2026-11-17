@@ -298,3 +298,7 @@
 
 /* Refined player accordion affordance */
 .player-expand-trigger{gap:12px}.player-expand-chevron{width:30px;height:30px;flex:0 0 30px;margin-left:auto;display:grid;place-items:center;border:1px solid #dcebe2;border-radius:50%;background:#f2f8f4;color:#28765a;transition:transform .2s ease,background .2s ease,border-color .2s ease}.player-expand-chevron svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:transform .2s ease}.player-expand-chevron.expanded{transform:none;background:#e2f2e9;border-color:#b9ddc9;color:#176b4d}.player-expand-chevron.expanded svg{transform:rotate(180deg)}.player-expand-trigger:focus-visible{outline:2px solid #56a887;outline-offset:3px;border-radius:8px}
+
+
+/* Locked WhatsApp recipient in personalised reminders */
+.locked-recipient-number{background:#f3f7f4!important;border:1px solid #dfe9e2!important;color:#40574b!important;cursor:not-allowed!important;opacity:1!important;box-shadow:none!important}.locked-recipient-number:focus{outline:none!important;border-color:#dfe9e2!important}
