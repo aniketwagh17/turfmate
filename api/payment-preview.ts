@@ -78,19 +78,12 @@ export default function handler(req: Request, res: Response) {
   paymentUri.searchParams.set("cu", "INR");
   paymentUri.searchParams.set("tn", note);
 
-  // Keep the QR payload as the standard UPI URI. For browser-to-app launches
-  // on Android, use Chrome's Android Intent URL format so the OS resolves the
-  // UPI scheme and (for app-specific buttons) the exact target package.
-  // This is different from navigating directly to tez:// or phonepe:// URLs.
-  const paymentQuery = paymentUri.search;
-  const genericPaymentLink =
-    "intent://pay" + paymentQuery + "#Intent;scheme=upi;end";
-  const gpayPaymentLink =
-    "intent://pay" + paymentQuery +
-    "#Intent;scheme=upi;package=com.google.android.apps.nbu.paisa.user;end";
-  const phonePePaymentLink =
-    "intent://pay" + paymentQuery +
-    "#Intent;scheme=upi;package=com.phonepe.app;end";
+  // Use the exact standard UPI URI for every Pay button, matching the
+  // payload encoded in the QR. Avoid Android intent:// wrappers and
+  // package-specific routing during this controlled compatibility test.
+  const genericPaymentLink = paymentUri.toString();
+  const gpayPaymentLink = paymentUri.toString();
+  const phonePePaymentLink = paymentUri.toString();
 
   // QR scanners expect the standard UPI payment URI, not an Android
   // intent:// browser-launch URL. Keep the QR payload identical in format
