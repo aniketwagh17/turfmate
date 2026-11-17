@@ -279,9 +279,9 @@ export default function Dashboard({ email }: { email: string }) {
    {header:"Collections",key:"collections",width:19},
    {header:"Closing balance",key:"closing",width:21}
   ];
-  const navy="FF132A3D",green="FF189769",pale="FFEFF7F3",light="FFF5F8FA",ink="FF2B3948",muted="FF70808F",white="FFFFFFFF",black="FF000000",softGreen="FFE7F7EF";
+  const navy="FF24476B",blue="FF3977A8",pale="FFEAF3FB",light="FFF4F8FC",ink="FF30465C",muted="FF71869A",white="FFFFFFFF",borderBlue="FF9FB6CC",softBlue="FFDCEAF7",softGreen="FFE3F2EA",green="FF247A58";
   const currencyFormat='"₹"#,##0;[Red]-"₹"#,##0';
-  const border={top:{style:"thin",color:{argb:black}},left:{style:"thin",color:{argb:black}},bottom:{style:"thin",color:{argb:black}},right:{style:"thin",color:{argb:black}}} as const;
+  const border={top:{style:"thin",color:{argb:borderBlue}},left:{style:"thin",color:{argb:borderBlue}},bottom:{style:"thin",color:{argb:borderBlue}},right:{style:"thin",color:{argb:borderBlue}}} as const;
   const paintRange=(row:number,start:number,end:number,fill:string)=>{
    for(let col=start;col<=end;col++){
     const cell=sheet.getCell(row,col);
@@ -326,8 +326,8 @@ export default function Dashboard({ email }: { email: string }) {
   const headerRow=sheet.addRow(["Date","Opening balance","Players","Turf expense","Water / balls","Total expense","Collections","Closing balance"]);
   headerRow.height=34;
   headerRow.eachCell((cell,col)=>{
-   cell.font={name:"Aptos",size:10,bold:true,color:{argb:white}};
-   cell.fill={type:"pattern",pattern:"solid",fgColor:{argb:col===8?green:navy}};
+   cell.font={name:"Aptos",size:10,bold:true,color:{argb:col===8?white:navy}};
+   cell.fill={type:"pattern",pattern:"solid",fgColor:{argb:col===8?blue:"FFDCEAF7"}};
    cell.alignment={horizontal:"center",vertical:"middle",wrapText:true};
    cell.border=border;
   });
@@ -339,7 +339,7 @@ export default function Dashboard({ email }: { email: string }) {
    excelRow.height=25;
    excelRow.eachCell((cell,col)=>{
     cell.font={name:"Aptos",size:10,color:{argb:ink}};
-    cell.fill={type:"pattern",pattern:"solid",fgColor:{argb:index%2===0?"FFFFFFFF":"FFF4F7F9"}};
+    cell.fill={type:"pattern",pattern:"solid",fgColor:{argb:index%2===0?"FFFFFFFF":"FFF3F7FB"}};
     cell.border=border;
     cell.alignment={vertical:"middle",horizontal:col===1||col===3?"center":"right"};
     if(col===1)cell.numFmt="dd mmm yyyy";
@@ -350,9 +350,9 @@ export default function Dashboard({ email }: { email: string }) {
   const totalRow=sheet.addRow(["PERIOD TOTALS",firstOpening,totalPlayers,totalTurf,totalOther,totalExpense,totalCollections,closingBalance]);
   totalRow.height=30;
   totalRow.eachCell((cell,col)=>{
-   cell.font={name:"Aptos",size:10,bold:true,color:{argb:white}};
-   cell.fill={type:"pattern",pattern:"solid",fgColor:{argb:col===8?green:navy}};
-   cell.border={top:{style:"medium",color:{argb:black}},left:{style:"thin",color:{argb:black}},bottom:{style:"medium",color:{argb:black}},right:{style:"thin",color:{argb:black}}};
+   cell.font={name:"Aptos",size:10,bold:true,color:{argb:col===8?white:navy}};
+   cell.fill={type:"pattern",pattern:"solid",fgColor:{argb:col===8?blue:"FFE5EFF8"}};
+   cell.border={top:{style:"medium",color:{argb:borderBlue}},left:{style:"thin",color:{argb:borderBlue}},bottom:{style:"medium",color:{argb:borderBlue}},right:{style:"thin",color:{argb:borderBlue}}};
    cell.alignment={vertical:"middle",horizontal:col===1||col===3?"center":"right"};
    if(col>=2&&col!==3)cell.numFmt=currencyFormat;
   });
@@ -362,7 +362,7 @@ export default function Dashboard({ email }: { email: string }) {
   rollforward.value="BALANCE ROLLFORWARD     Opening balance: ₹"+Math.round(firstOpening).toLocaleString("en-IN")+"     →     Closing balance: ₹"+Math.round(closingBalance).toLocaleString("en-IN");
   rollforward.font={name:"Aptos",size:11,bold:true,color:{argb:green}};
   rollforward.alignment={horizontal:"left",vertical:"middle"};
-  for(let col=1;col<=8;col++){const cell=sheet.getCell(rollforwardRow,col);cell.fill={type:"pattern",pattern:"solid",fgColor:{argb:pale}};cell.border=border;}
+  for(let col=1;col<=8;col++){const cell=sheet.getCell(rollforwardRow,col);cell.fill={type:"pattern",pattern:"solid",fgColor:{argb:pale}};cell.border={top:{style:"thin",color:{argb:borderBlue}},left:{style:"thin",color:{argb:borderBlue}},bottom:{style:"thin",color:{argb:borderBlue}},right:{style:"thin",color:{argb:borderBlue}}};}
   sheet.getRow(rollforwardRow).height=30;
   const noteRow=rollforwardRow+2;
   sheet.mergeCells(noteRow,1,noteRow,8);
