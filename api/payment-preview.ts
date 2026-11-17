@@ -78,13 +78,19 @@ export default function handler(req: Request, res: Response) {
   paymentUri.searchParams.set("cu", "INR");
   paymentUri.searchParams.set("tn", note);
 
-  // Keep the QR on the standard generic UPI URI. Offer app-specific deep links
-  // as separate launch paths because some Android browsers/UPI handlers behave
-  // differently for generic and app-targeted intents.
+  // Keep the QR payload as the standard UPI URI. For browser-to-app launches
+  // on Android, use Chrome's Android Intent URL format so the OS resolves the
+  // UPI scheme and (for app-specific buttons) the exact target package.
+  // This is different from navigating directly to tez:// or phonepe:// URLs.
   const paymentQuery = paymentUri.search;
-  const genericPaymentLink = paymentUri.toString();
-  const gpayPaymentLink = "tez://upi/pay" + paymentQuery;
-  const phonePePaymentLink = "phonepe://pay" + paymentQuery;
+  const genericPaymentLink =
+    "intent://pay" + paymentQuery + "#Intent;scheme=upi;end";
+  const gpayPaymentLink =
+    "intent://pay" + paymentQuery +
+    "#Intent;scheme=upi;package=com.google.android.apps.nbu.paisa.user;end";
+  const phonePePaymentLink =
+    "intent://pay" + paymentQuery +
+    "#Intent;scheme=upi;package=com.phonepe.app;end";
 
   const qrImageUrl =
     "https://api.qrserver.com/v1/create-qr-code/?size=900x900&format=png&margin=18&data=" +
