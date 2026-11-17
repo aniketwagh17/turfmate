@@ -84,6 +84,8 @@ export default function handler(req: Request, res: Response) {
   const genericPaymentLink = paymentUri.toString();
   const gpayPaymentLink = paymentUri.toString();
   const phonePePaymentLink = paymentUri.toString();
+  // Open the installed Google Pay app itself; the player still chooses Scan QR > Gallery.
+  const gpayLaunchLink = "intent://#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;package=com.google.android.apps.nbu.paisa.user;end";
 
   // QR scanners expect the standard UPI payment URI, not an Android
   // intent:// browser-launch URL. Keep the QR payload identical in format
@@ -149,7 +151,7 @@ main{max-width:520px;margin:24px auto;padding:28px;background:#fff;border:1px so
 h1{margin:0;font-size:28px;overflow-wrap:anywhere}.amount{margin:18px 0;padding:18px;background:#eaf7f0;border-radius:14px}.amount small{display:block;color:#547466;font-size:11px;font-weight:700}.amount strong{display:block;margin-top:6px;color:#126b4c;font-size:32px}
 ul{list-style:none;padding:0;margin:20px 0}li{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid #edf1ee;font-size:13px}li span{overflow-wrap:anywhere}li strong{white-space:nowrap}
 .qr{display:block;width:min(100%,340px);height:auto;margin:20px auto 8px;padding:10px;border:1px solid #e5ece8;border-radius:12px}
-.hint{text-align:center;color:#718078;font-size:12px;line-height:1.5}.pay-options{display:grid;gap:10px;margin:18px 0}.pay{display:block;padding:14px 18px;border-radius:10px;background:#147a59;color:#fff;text-align:center;text-decoration:none;font-weight:700}.pay.secondary{background:#edf6f1;color:#176447;border:1px solid #d5e9dd}.pay-note{text-align:center;color:#718078;font-size:11px;line-height:1.5;margin:8px 0 0}
+.hint{text-align:center;color:#718078;font-size:12px;line-height:1.5}.pay-options{display:grid;gap:10px;margin:18px 0}.pay{display:block;width:100%;padding:14px 18px;border:0;border-radius:10px;background:#147a59;color:#fff;text-align:center;text-decoration:none;font-weight:700;font-size:15px;cursor:pointer}.pay.secondary{background:#edf6f1;color:#176447;border:1px solid #d5e9dd}.upi-details{margin:18px 0;padding:14px;background:#f6f8f7;border:1px solid #e5ece8;border-radius:12px}.upi-details small{display:block;color:#718078;font-size:11px;font-weight:700}.upi-value{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:7px;overflow-wrap:anywhere}.upi-value strong{font-size:14px;overflow-wrap:anywhere}.copy-button{flex:0 0 auto;border:1px solid #d5e9dd;background:#fff;color:#176447;border-radius:8px;padding:8px 10px;font-weight:700}.pay-note{text-align:center;color:#718078;font-size:11px;line-height:1.5;margin:8px 0 0}
 footer{margin-top:22px;text-align:center;color:#8a9690;font-size:11px}
 </style>
 </head>
@@ -162,11 +164,35 @@ footer{margin-top:22px;text-align:center;color:#8a9690;font-size:11px}
 <img class="qr" src="${escapeHtml(qrImageUrl)}" alt="UPI payment QR code for ${escapeHtml(name)}">
 <p class="hint">Scan this QR using any UPI app. The amount and payment note are already filled in.</p>
 <div class="pay-options">
-<a class="pay" href="${escapeHtml(genericPaymentLink)}">Pay using any UPI app</a>
-<a class="pay secondary" href="${escapeHtml(gpayPaymentLink)}">Pay using Google Pay</a>
-<a class="pay secondary" href="${escapeHtml(phonePePaymentLink)}">Pay using PhonePe</a>
+<button class="pay" type="button" id="download-qr">↓ Download personalised QR</button>
+<a class="pay secondary" href="${escapeHtml(gpayLaunchLink)}">Open Google Pay</a>
+<button class="pay secondary" type="button" id="copy-upi">Copy UPI ID</button>
 </div>
-<p class="pay-note">If a payment app does not open or payment fails, return here and scan the QR with that app.</p>
+<div class="upi-details"><small>PAYMENT DETAILS</small><div class="upi-value"><strong id="upi-value">${escapeHtml(upi)}</strong><button class="copy-button" type="button" id="copy-upi-small">Copy</button></div><p class="pay-note">Payee: ${escapeHtml(payee)}</p></div>
+<p class="pay-note">After downloading the QR, open Google Pay → Scan any QR code → Gallery, then select the downloaded image. You can also use the UPI ID above to pay manually. Google Pay opens to its home screen; TurfMate cannot automatically open its private gallery picker.</p>
+<script>
+(function(){
+ const upi=${JSON.stringify(upi)};
+ const player=${JSON.stringify(name)};
+ const download=document.getElementById("download-qr");
+ const copyButtons=[document.getElementById("copy-upi"),document.getElementById("copy-upi-small")];
+ download.addEventListener("click",async function(){
+  const old=download.textContent;download.disabled=true;download.textContent="Preparing QR…";
+  try{
+   const response=await fetch(${JSON.stringify(qrImageUrl)});
+   if(!response.ok)throw new Error("QR download failed");
+   const blob=await response.blob(),objectUrl=URL.createObjectURL(blob),link=document.createElement("a");
+   link.href=objectUrl;link.download="TurfMate-"+player.replace(/[^a-z0-9]+/gi,"-")+"-payment-QR.png";
+   document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(objectUrl),1500);
+   download.textContent="✓ QR downloaded";setTimeout(()=>{download.textContent=old;download.disabled=false;},2200);
+  }catch(error){download.textContent="Download failed — tap QR image";download.disabled=false;window.open(${JSON.stringify(qrImageUrl)},"_blank");}
+ });
+ copyButtons.forEach(button=>button.addEventListener("click",async function(){
+  try{await navigator.clipboard.writeText(upi);button.textContent="Copied ✓";setTimeout(()=>button.textContent=button.id==="copy-upi"?"Copy UPI ID":"Copy",1800);}
+  catch(error){window.prompt("Copy this UPI ID:",upi);}
+ }));
+})();
+</script>
 <footer>Shared securely from TurfMate · Pay to ${escapeHtml(payee)}</footer>
 </main></body></html>`;
 
