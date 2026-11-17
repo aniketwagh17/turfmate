@@ -281,7 +281,7 @@ export default function Dashboard({ email }: { email: string }) {
   ];
   const navy="FF132A3D",green="FF189769",pale="FFEFF7F3",light="FFF5F8FA",ink="FF2B3948",muted="FF70808F",white="FFFFFFFF",black="FF000000",softGreen="FFE7F7EF";
   const currencyFormat='"₹"#,##0;[Red]-"₹"#,##0';
-  const border={top:{style:"thin",color:{argb:black}},left:{style:"thin",color:{argb:black}},bottom:{style:"thin",color:{argb:black}},right:{style:"thin",color:{argb:black}}};
+  const border={top:{style:"thin",color:{argb:black}},left:{style:"thin",color:{argb:black}},bottom:{style:"thin",color:{argb:black}},right:{style:"thin",color:{argb:black}}} as const;
   const paintRange=(row:number,start:number,end:number,fill:string)=>{
    for(let col=start;col<=end;col++){
     const cell=sheet.getCell(row,col);
@@ -370,7 +370,7 @@ export default function Dashboard({ email }: { email: string }) {
   sheet.getCell(noteRow,1).font={name:"Aptos",size:9,color:{argb:muted},italic:true};
   sheet.getCell(noteRow,1).alignment={horizontal:"left",vertical:"middle"};
   sheet.autoFilter={from:"A8",to:"H"+(8+rows.length)};
-  sheet.pageSetup={orientation:"landscape",fitToPage:true,fitToWidth:1,fitToHeight:0,paperSize:sheet.PAPER_A4};
+  sheet.pageSetup={orientation:"landscape",fitToPage:true,fitToWidth:1,fitToHeight:0,paperSize:9};
   sheet.pageSetup.margins={left:0.25,right:0.25,top:0.5,bottom:0.5,header:0.2,footer:0.2};
   const buffer=await workbook.xlsx.writeBuffer();
   const blob=new Blob([buffer as BlobPart],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
