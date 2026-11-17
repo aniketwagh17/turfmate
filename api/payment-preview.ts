@@ -78,9 +78,17 @@ export default function handler(req: Request, res: Response) {
   paymentUri.searchParams.set("cu", "INR");
   paymentUri.searchParams.set("tn", note);
 
+  // Keep the QR on the standard generic UPI URI. Offer app-specific deep links
+  // as separate launch paths because some Android browsers/UPI handlers behave
+  // differently for generic and app-targeted intents.
+  const paymentQuery = paymentUri.search;
+  const genericPaymentLink = paymentUri.toString();
+  const gpayPaymentLink = "tez://upi/pay" + paymentQuery;
+  const phonePePaymentLink = "phonepe://pay" + paymentQuery;
+
   const qrImageUrl =
     "https://api.qrserver.com/v1/create-qr-code/?size=900x900&format=png&margin=18&data=" +
-    encodeURIComponent(paymentUri.toString());
+    encodeURIComponent(genericPaymentLink);
 
   const sessions = value(params, "sessions")
     .split("~")
@@ -139,7 +147,7 @@ main{max-width:520px;margin:24px auto;padding:28px;background:#fff;border:1px so
 h1{margin:0;font-size:28px;overflow-wrap:anywhere}.amount{margin:18px 0;padding:18px;background:#eaf7f0;border-radius:14px}.amount small{display:block;color:#547466;font-size:11px;font-weight:700}.amount strong{display:block;margin-top:6px;color:#126b4c;font-size:32px}
 ul{list-style:none;padding:0;margin:20px 0}li{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid #edf1ee;font-size:13px}li span{overflow-wrap:anywhere}li strong{white-space:nowrap}
 .qr{display:block;width:min(100%,340px);height:auto;margin:20px auto 8px;padding:10px;border:1px solid #e5ece8;border-radius:12px}
-.hint{text-align:center;color:#718078;font-size:12px;line-height:1.5}.pay{display:block;margin:18px auto 0;padding:14px 18px;border-radius:10px;background:#147a59;color:#fff;text-align:center;text-decoration:none;font-weight:700}
+.hint{text-align:center;color:#718078;font-size:12px;line-height:1.5}.pay-options{display:grid;gap:10px;margin:18px 0}.pay{display:block;padding:14px 18px;border-radius:10px;background:#147a59;color:#fff;text-align:center;text-decoration:none;font-weight:700}.pay.secondary{background:#edf6f1;color:#176447;border:1px solid #d5e9dd}.pay-note{text-align:center;color:#718078;font-size:11px;line-height:1.5;margin:8px 0 0}
 footer{margin-top:22px;text-align:center;color:#8a9690;font-size:11px}
 </style>
 </head>
@@ -151,7 +159,12 @@ footer{margin-top:22px;text-align:center;color:#8a9690;font-size:11px}
 <ul>${sessionRows}</ul>
 <img class="qr" src="${escapeHtml(qrImageUrl)}" alt="UPI payment QR code for ${escapeHtml(name)}">
 <p class="hint">Scan this QR using any UPI app. The amount and payment note are already filled in.</p>
-<a class="pay" href="${escapeHtml(paymentUri.toString())}">Open UPI app to pay</a>
+<div class="pay-options">
+<a class="pay" href="${escapeHtml(genericPaymentLink)}">Pay using any UPI app</a>
+<a class="pay secondary" href="${escapeHtml(gpayPaymentLink)}">Pay using Google Pay</a>
+<a class="pay secondary" href="${escapeHtml(phonePePaymentLink)}">Pay using PhonePe</a>
+</div>
+<p class="pay-note">If a payment app does not open or payment fails, return here and scan the QR with that app.</p>
 <footer>Shared securely from TurfMate · Pay to ${escapeHtml(payee)}</footer>
 </main></body></html>`;
 
