@@ -161,7 +161,7 @@ footer{margin-top:22px;text-align:center;color:#8a9690;font-size:11px}
 <p class="hint">Scan this QR using any UPI app. The amount and payment note are already filled in.</p>
 <div class="details">
 <div class="detail"><span>UPI ID</span><strong>${escapeHtml(upi)}</strong><button type="button" class="copy-inline" data-copy="${escapeHtml(upi)}" aria-label="Copy UPI ID"><span class="copy-label">Copy</span></button></div>
-${phone.length === 10 ? "<div class=\"detail\"><span>Mobile number</span><strong>"+escapeHtml(phone)+"</strong><button type=\"button\" data-copy=\""+escapeHtml(phone)+"\">Copy</button></div>" : ""}
+${phone.length === 10 ? "<div class=\"detail\"><span>Mobile number</span><strong>"+escapeHtml(phone)+"</strong><button type=\"button\" class=\"copy-inline\" data-copy=\""+escapeHtml(phone)+"\" aria-label=\"Copy mobile number\"><span class=\"copy-label\">Copy</span></button></div>" : ""}
 </div>
 ${downloadUrl ? "<button class=\"action wide\" id=\"download-personalised-qr\" type=\"button\">↓ Download personalised QR card</button>" : ""}
 <div class="actions"><a class="action secondary" href="${escapeHtml(gpayIntent)}">Open Google Pay</a><a class="action secondary" href="${escapeHtml(phonePeIntent)}">Open PhonePe</a></div>
