@@ -54,6 +54,7 @@ export default function handler(req: Request, res: Response) {
         upi: String(decoded.u ?? decoded.upi ?? ""),
         payee: String(decoded.p ?? decoded.payee ?? ""),
         note: String(decoded.t ?? decoded.note ?? ""),
+        phone: String(decoded.m ?? decoded.phone ?? ""),
         sessions: String(decoded.s ?? decoded.sessions ?? ""),
       };
     } catch {
@@ -66,6 +67,7 @@ export default function handler(req: Request, res: Response) {
   const upi = value(params, "upi").slice(0, 100);
   const payee = value(params, "payee").slice(0, 80) || "TurfMate";
   const note = value(params, "note").slice(0, 80) || "TurfMate contribution";
+  const phone = value(params, "phone").replace(/\D/g, "").slice(0, 10);
 
   if (!Number.isFinite(amount) || amount <= 0 || !/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+$/.test(upi)) {
     return res.status(400).send("Invalid payment QR details.");
@@ -110,6 +112,10 @@ export default function handler(req: Request, res: Response) {
   const protocol = (Array.isArray(protocolHeader) ? protocolHeader[0] : protocolHeader).split(",")[0].trim();
   const canonicalUrl = `${protocol}://${host}${req.url || "/api/payment-preview"}`;
 
+  const downloadUrl = token ? "/api/payment-qr?d=" + encodeURIComponent(token) : "";
+  const gpayIntent = "intent://#Intent;scheme=upi;package=com.google.android.apps.nbu.paisa.user;S.browser_fallback_url=" + encodeURIComponent("https://play.google.com/store/apps/details?id=com.google.android.apps.nbu.paisa.user") + ";end";
+  const phonePeIntent = "intent://#Intent;scheme=upi;package=com.phonepe.app;S.browser_fallback_url=" + encodeURIComponent("https://play.google.com/store/apps/details?id=com.phonepe.app") + ";end";
+
   const html = `<!doctype html>
 <html lang="en">
 <head>
@@ -139,7 +145,7 @@ main{max-width:520px;margin:24px auto;padding:28px;background:#fff;border:1px so
 h1{margin:0;font-size:28px;overflow-wrap:anywhere}.amount{margin:18px 0;padding:18px;background:#eaf7f0;border-radius:14px}.amount small{display:block;color:#547466;font-size:11px;font-weight:700}.amount strong{display:block;margin-top:6px;color:#126b4c;font-size:32px}
 ul{list-style:none;padding:0;margin:20px 0}li{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid #edf1ee;font-size:13px}li span{overflow-wrap:anywhere}li strong{white-space:nowrap}
 .qr{display:block;width:min(100%,340px);height:auto;margin:20px auto 8px;padding:10px;border:1px solid #e5ece8;border-radius:12px}
-.hint{text-align:center;color:#718078;font-size:12px;line-height:1.5}.pay{display:block;margin:18px auto 0;padding:14px 18px;border-radius:10px;background:#147a59;color:#fff;text-align:center;text-decoration:none;font-weight:700}
+.hint{text-align:center;color:#718078;font-size:12px;line-height:1.5}.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}.action{display:flex;align-items:center;justify-content:center;min-height:48px;padding:12px;border:0;border-radius:10px;background:#147a59;color:#fff;text-align:center;text-decoration:none;font-weight:700;font-size:14px;cursor:pointer}.action.secondary{background:#eef5f1;color:#176447;border:1px solid #d9e8df}.action.wide{grid-column:1/-1}.details{margin-top:18px;padding:14px;border:1px solid #e5ece8;border-radius:12px;background:#fbfdfc}.detail{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid #edf1ee;font-size:13px}.detail:last-child{border-bottom:0}.detail span{color:#66766e;overflow-wrap:anywhere}.detail strong{color:#203a32;overflow-wrap:anywhere;text-align:right}.detail button{border:0;border-radius:8px;padding:8px 10px;background:#eaf7f0;color:#126b4c;font-weight:700;white-space:nowrap}.instructions{margin:16px 0 0;padding:14px 14px 14px 32px;background:#f6f9f7;border-radius:12px;color:#52665b;font-size:13px;line-height:1.7}.status{text-align:center;min-height:18px;margin:10px 0 0;color:#147a59;font-size:12px}@media(max-width:420px){body{padding:12px}main{margin:10px auto;padding:20px}.actions{grid-template-columns:1fr}.action.wide{grid-column:auto}.detail{align-items:flex-start;flex-wrap:wrap}.detail strong{max-width:100%}}
 footer{margin-top:22px;text-align:center;color:#8a9690;font-size:11px}
 </style>
 </head>
@@ -151,7 +157,15 @@ footer{margin-top:22px;text-align:center;color:#8a9690;font-size:11px}
 <ul>${sessionRows}</ul>
 <img class="qr" src="${escapeHtml(qrImageUrl)}" alt="UPI payment QR code for ${escapeHtml(name)}">
 <p class="hint">Scan this QR using any UPI app. The amount and payment note are already filled in.</p>
-<a class="pay" href="${escapeHtml(paymentUri.toString())}">Open UPI app to pay</a>
+<div class="details">
+<div class="detail"><span>UPI ID</span><strong>${escapeHtml(upi)}</strong><button type="button" data-copy="${escapeHtml(upi)}">Copy</button></div>
+${phone.length === 10 ? "<div class=\"detail\"><span>Mobile number</span><strong>"+escapeHtml(phone)+"</strong><button type=\"button\" data-copy=\""+escapeHtml(phone)+"\">Copy</button></div>" : ""}
+</div>
+${downloadUrl ? "<a class=\"action wide\" href=\""+escapeHtml(downloadUrl)+"\">↓ Download personalised QR</a>" : ""}
+<div class="actions"><a class="action secondary" href="${escapeHtml(gpayIntent)}">Open Google Pay</a><a class="action secondary" href="${escapeHtml(phonePeIntent)}">Open PhonePe</a><button class="action secondary wide" type="button" data-copy="${escapeHtml(upi)}">Copy UPI ID</button></div>
+<ol class="instructions"><li>Download your personalised QR image.</li><li>Open GPay or PhonePe and choose Scan QR.</li><li>Tap the gallery / upload option and select the downloaded image.</li><li>Confirm the payee and amount before entering your UPI PIN.</li></ol>
+<p class="status" id="copy-status" aria-live="polite"></p>
+<script>async function copyValue(text,button){try{await navigator.clipboard.writeText(text);}catch(e){const input=document.createElement("textarea");input.value=text;document.body.appendChild(input);input.select();document.execCommand("copy");input.remove();}const status=document.getElementById("copy-status");if(status)status.textContent="Copied: "+text;if(button){const old=button.textContent;button.textContent="Copied";setTimeout(()=>button.textContent=old,1400);}}document.querySelectorAll("[data-copy]").forEach(button=>button.addEventListener("click",()=>copyValue(button.getAttribute("data-copy")||"",button)));</script>
 <footer>Shared securely from TurfMate · Pay to ${escapeHtml(payee)}</footer>
 </main></body></html>`;
 
