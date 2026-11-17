@@ -113,8 +113,9 @@ export default function handler(req: Request, res: Response) {
   const canonicalUrl = `${protocol}://${host}${req.url || "/api/payment-preview"}`;
 
   const downloadUrl = token ? "/api/payment-qr?d=" + encodeURIComponent(token) : "";
-  const gpayIntent = "intent://#Intent;scheme=upi;package=com.google.android.apps.nbu.paisa.user;S.browser_fallback_url=" + encodeURIComponent("https://play.google.com/store/apps/details?id=com.google.android.apps.nbu.paisa.user") + ";end";
-  const phonePeIntent = "intent://#Intent;scheme=upi;package=com.phonepe.app;S.browser_fallback_url=" + encodeURIComponent("https://play.google.com/store/apps/details?id=com.phonepe.app") + ";end";
+  // Launch the installed app's launcher activity directly. The Play Store is only a fallback if the app is not installed.
+  const gpayIntent = "intent://#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;package=com.google.android.apps.nbu.paisa.user;S.browser_fallback_url=" + encodeURIComponent("https://play.google.com/store/apps/details?id=com.google.android.apps.nbu.paisa.user") + ";end";
+  const phonePeIntent = "intent://#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;package=com.phonepe.app;S.browser_fallback_url=" + encodeURIComponent("https://play.google.com/store/apps/details?id=com.phonepe.app") + ";end";
 
   const html = `<!doctype html>
 <html lang="en">
