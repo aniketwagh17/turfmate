@@ -76,7 +76,7 @@ export default function handler(req: Request, res: Response) {
   paymentUri.searchParams.set("pn", payee);
   paymentUri.searchParams.set("am", amount.toFixed(2));
   paymentUri.searchParams.set("cu", "INR");
-  paymentUri.searchParams.set("tn", note);
+  // Transaction note intentionally omitted for UPI compatibility testing.
 
   // Use the exact standard UPI URI for every Pay button, matching the
   // payload encoded in the QR. Avoid Android intent:// wrappers and
