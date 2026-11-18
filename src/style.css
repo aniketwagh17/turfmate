@@ -343,3 +343,46 @@
 
 /* Subtle marker for players who attended the most recent session */
 .latest-session-tag{display:inline-flex;align-items:center;align-self:flex-start;width:max-content;margin-top:3px;padding:3px 7px;border:1px solid #cce9d8;border-radius:999px;background:#edf8f1;color:#16734f;font-size:9px;font-weight:800;line-height:1.2;letter-spacing:.01em}
+
+
+/* Player directory: searchable grouped roster, soft archive and continuous scrolling */
+.player-search-wrap{position:sticky;top:8px;z-index:20;display:grid;grid-template-columns:22px minmax(0,1fr) auto;align-items:center;gap:8px;margin:14px 0 20px;padding:10px 13px;border:1px solid #dce8e1;border-radius:13px;background:#fff;box-shadow:0 5px 18px #1b35210d}
+.player-search-wrap>span{font-size:23px;line-height:1;color:#668276;text-align:center}
+.player-search-wrap input{width:100%;min-width:0;border:0!important;outline:0!important;box-shadow:none!important;background:transparent!important;padding:5px 0!important;font-size:13px}
+.player-search-wrap>button{width:30px;height:30px;border:0;border-radius:50%;background:#eef4f0;color:#52675d;font-size:20px;line-height:1}
+.player-search-wrap>small{grid-column:2/-1;color:#829087;font-size:10px;margin-top:-3px}
+.player-roster-groups{display:flex;flex-direction:column;gap:20px}
+.player-group{min-width:0}
+.player-group-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 2px 9px}
+.player-group-heading h2{margin:0;color:#263c32;font:800 15px Manrope}
+.player-group-heading p{margin:4px 0 0;color:#829087;font-size:11px;line-height:1.4}
+.player-group-heading>span{display:grid;place-items:center;min-width:29px;height:27px;padding:0 8px;border-radius:999px;background:#edf3ef;color:#486658;font-size:11px;font-weight:800}
+.player-group-latest .player-group-heading>span{background:#e5f5eb;color:#16734f}
+.player-group-pending .player-group-heading>span{background:#fff4df;color:#986313}
+.player-group .player-roster-panel{margin:0}
+.player-group-empty{margin:0;padding:17px 14px;color:#87938b;font-size:12px;text-align:center}
+.player-row-actions{display:flex;align-items:center;gap:5px}
+.player-row-actions button{width:32px;height:32px;display:grid;place-items:center;border:0;border-radius:8px;background:transparent;font-size:20px;line-height:1;cursor:pointer}
+.player-row-actions button:hover{background:#f1f5f2}
+.player-row-actions .remove-player-action{color:#c44747;font-size:24px}
+.player-row-actions .restore-player-action{color:#16865f}
+.former-player-tag{display:inline-flex;align-items:center;align-self:flex-start;width:max-content;margin-top:3px;padding:3px 7px;border:1px solid #e6d9d9;border-radius:999px;background:#fbf2f2;color:#a34a4a;font-size:9px;font-weight:800;line-height:1.2}
+.removed-players-toggle{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 15px;border:1px solid #e5eae6;border-radius:11px;background:#f8faf8;color:#52675d;text-align:left}
+.removed-players-toggle>span:first-child{display:flex;flex-direction:column;gap:3px}
+.removed-players-toggle b{font-size:12px}
+.removed-players-toggle small{font-size:10px;color:#87938b}
+.removed-players-toggle>span:last-child{font-size:11px;font-weight:800}
+.player-removed-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border-bottom:1px solid #edf1ee}
+.player-removed-row>div{display:flex;flex-direction:column;gap:3px;min-width:0}
+.player-removed-row b{font-size:12px;color:#43564b}
+.player-removed-row small{font-size:10px;color:#87938b}
+.player-no-results{padding:24px;text-align:center}
+.player-no-results b{color:#34483e}
+.player-no-results p{margin:5px 0 0;color:#87938b;font-size:12px}
+@media(max-width:620px){
+ .player-search-wrap{top:4px;margin:10px 0 17px}
+ .player-group-heading h2{font-size:14px}
+ .player-group-heading p{max-width:270px}
+ .player-group .player-roster-panel{padding:5px 11px}
+ .player-row-actions{gap:2px}
+}
