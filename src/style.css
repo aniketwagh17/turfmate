@@ -568,3 +568,14 @@
   .player-stat-grid{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:14px}
   .player-history-row{gap:8px;min-height:56px}
 }
+
+
+/* Keep only the custom circular clear-search button; hide browser-native search X. */
+.player-search-simple input[type="search"]::-webkit-search-cancel-button,
+.player-search-simple input[type="search"]::-webkit-search-decoration,
+.player-search-simple input[type="search"]::-webkit-search-results-button,
+.player-search-simple input[type="search"]::-webkit-search-results-decoration{
+  -webkit-appearance:none;appearance:none;display:none;
+}
+.player-search-simple input[type="search"]::-ms-clear,
+.player-search-simple input[type="search"]::-ms-reveal{display:none;width:0;height:0}
