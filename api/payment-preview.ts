@@ -67,7 +67,6 @@ export default function handler(req: Request, res: Response) {
   const upi = value(params, "upi").slice(0, 100);
   const payee = value(params, "payee").slice(0, 80) || "TurfMate";
   const note = value(params, "note").slice(0, 80) || "TurfMate contribution";
-  const phone = value(params, "phone").replace(/\D/g, "").slice(0, 10);
 
   if (!Number.isFinite(amount) || amount <= 0 || !/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+$/.test(upi)) {
     return res.status(400).send("Invalid payment QR details.");
@@ -115,9 +114,7 @@ export default function handler(req: Request, res: Response) {
 
   const downloadUrl = token ? "/api/payment-qr?d=" + encodeURIComponent(token) : "";
   // Ask Android to launch the installed app directly. Do not send users to the Play Store as a browser fallback.
-  const gpayIntent = "intent:#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;package=com.google.android.apps.nbu.paisa.user;end";
-  const phonePeIntent = "intent:#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;package=com.phonepe.app;end";
-
+  
   const html = `<!doctype html>
 <html lang="en">
 <head>
@@ -161,24 +158,14 @@ footer{margin-top:22px;text-align:center;color:#8a9690;font-size:11px}
 <p class="hint">Scan this QR using any UPI app. The amount and payment note are already filled in.</p>
 <div class="details">
 <div class="detail"><div class="detail-value"><span>UPI ID</span><strong>${escapeHtml(upi)}</strong></div><button type="button" class="copy-inline" data-copy="${escapeHtml(upi)}" aria-label="Copy UPI ID"><span class="copy-label">Copy</span></button></div>
-${phone.length === 10 ? "<div class=\"detail\"><div class=\"detail-value\"><span>Mobile number</span><strong>"+escapeHtml(phone)+"</strong></div><button type=\"button\" class=\"copy-inline\" data-copy=\""+escapeHtml(phone)+"\" aria-label=\"Copy mobile number\"><span class=\"copy-label\">Copy</span></button></div>" : ""}
+
 </div>
 ${downloadUrl ? "<button class=\"action wide\" id=\"download-personalised-qr\" type=\"button\">↓ Download personalised QR card</button>" : ""}
-<div class="actions"><a class="action secondary" href="${escapeHtml(gpayIntent)}">Open Google Pay</a><a class="action secondary" href="${escapeHtml(phonePeIntent)}">Open PhonePe</a></div>
-<ol class="instructions"><li>Download your personalised QR image.</li><li>Open GPay or PhonePe and choose Scan QR.</li><li>Tap the gallery / upload option and select the downloaded image.</li><li>Confirm the payee and amount before entering your UPI PIN.</li></ol>
+<ol class="instructions"><li>Download your personalised QR image.</li><li>Open any UPI app and choose Scan QR → Gallery.</li><li>Select the downloaded QR image.</li><li>Verify the payee and amount before entering your UPI PIN.</li></ol>
+<p class="hint">Prefer manual payment? Copy the UPI ID above, open your UPI app and choose Pay to UPI ID. Enter the requested amount and verify the recipient before paying.</p>
 <p class="status" id="copy-status" aria-live="polite"></p>
 <script>
-(function configurePlatformAppLinks(){
-  const userAgent = navigator.userAgent || "";
-  const isIOS = /iPhone|iPad|iPod/i.test(userAgent) ||
-    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
-  if (!isIOS) return;
 
-  // Launch the installed app only. Do not pass UPI payment details; users scan the QR themselves.
-  const buttons = document.querySelectorAll('.actions a');
-  if (buttons[0]) buttons[0].href = "gpay://";
-  if (buttons[1]) buttons[1].href = "phonepe://";
-})();
 async function copyValue(text,button){let copied=false;try{if(navigator.clipboard&&navigator.clipboard.writeText){await navigator.clipboard.writeText(text);copied=true;}else{const input=document.createElement("textarea");input.value=text;input.setAttribute("readonly","");input.style.position="fixed";input.style.opacity="0";document.body.appendChild(input);input.select();copied=document.execCommand("copy");input.remove();}}catch(e){copied=false;}const status=document.getElementById("copy-status");if(!copied){if(status)status.textContent="Could not copy. Please select and copy manually.";return;}if(status){status.textContent="✓ Copied to clipboard";status.classList.add("success");}if(button){const label=button.querySelector(".copy-label");const old=label?label.textContent:button.textContent;if(label)label.textContent="✓ Copied";else button.textContent="✓ Copied";button.classList.add("copied");button.disabled=true;setTimeout(()=>{if(label)label.textContent=old;else button.textContent=old;button.classList.remove("copied");button.disabled=false;},1800);}}
 document.querySelectorAll("[data-copy]").forEach(button=>button.addEventListener("click",()=>copyValue(button.getAttribute("data-copy")||"",button)));
 const downloadButton=document.getElementById("download-personalised-qr");
