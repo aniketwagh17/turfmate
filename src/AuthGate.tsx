@@ -6,6 +6,13 @@ import Swal from "sweetalert2";
 
 type InstallPromptEvent = Event & { prompt: () => Promise<void>; userChoice: Promise<{ outcome: "accepted" | "dismissed"; platform: string }> };
 
+const publicPaymentTarget = (() => {
+  const match = window.location.pathname.match(/^\\/p\\/([^/]+)\\/?$/);
+  if (match) return `/api/payment-preview?d=${match[1]}`;
+  if (window.location.pathname === "/pay") return `/api/payment-preview${window.location.search}`;
+  return "";
+})();
+
 function InstallAppButton() {
   const [promptEvent, setPromptEvent] = useState<InstallPromptEvent | null>(null);
   const [installed, setInstalled] = useState(false);
@@ -42,6 +49,11 @@ export default function AuthGate() {
   const [busy, setBusy] = useState(false);
   const [whatsappPhone, setWhatsappPhone] = useState("");
   const [phoneSaved, setPhoneSaved] = useState(false);
+
+  useEffect(() => {
+    if (publicPaymentTarget) window.location.replace(publicPaymentTarget);
+  }, []);
+
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
@@ -120,6 +132,8 @@ export default function AuthGate() {
     setWhatsappPhone(normalized);
     setPhoneSaved(true);
   }
+
+  if (publicPaymentTarget) return <div className="auth-screen"><div className="auth-card">Opening payment request…</div></div>;
 
   if (loading || (session && profileLoading)) return <><InstallAppButton /><div className="auth-screen"><div className="auth-card">Loading TurfMate…</div></div></>;
 
