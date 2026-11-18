@@ -121,7 +121,11 @@ export default function AuthGate() {
     setPhoneSaved(true);
   }
 
-  if (loading || (session && profileLoading)) return <><InstallAppButton /><div className="auth-screen"><div className="auth-card">Loading TurfMate…</div></div></>;
+  if (loading || (session && profileLoading)) return <><InstallAppButton /><div className="auth-screen"><section className="turfmate-loader" role="status" aria-live="polite" aria-label="Loading TurfMate">
+    <div className="loader-brand"><span className="loader-brand-icon" aria-hidden="true">🏏</span><span>TurfMate</span></div>
+    <div className="loader-spinner-wrap" aria-hidden="true"><span className="loader-spinner"></span><span className="loader-spinner-ball">●</span></div>
+    <div className="loader-copy"><strong>Loading TurfMate</strong><span>Preparing your cricket workspace</span></div>
+  </section></div></>;
 
   if (session && !phoneSaved) {
     return <><InstallAppButton /><div className="auth-screen"><form className="auth-card" onSubmit={saveWhatsappPhone}>
