@@ -496,3 +496,25 @@
  .player-history-row{gap:8px}
  .player-history-amounts{font-size:10px}
 }
+
+/* Simple player roster: keep the familiar row layout, no status chips or filter controls */
+.player-search-simple{margin:18px 0 14px}
+.player-search-simple>button{display:grid;place-items:center;width:30px;height:30px;flex:0 0 30px;padding:0;border:0;border-radius:50%;background:#eef4f0;color:#52675d;cursor:pointer}
+.player-search-simple>button svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
+.player-search-simple>button:hover{background:#e1eee6;color:#176b4d}
+.player-row-actions button:disabled{opacity:.35;cursor:not-allowed;background:transparent!important;border-color:transparent!important}
+.player-list-row .player-expand-trigger{min-width:0}
+.player-list-row .player-identity{overflow:hidden}
+.player-list-row .player-identity b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.player-roster-item+.player-roster-item{border-top:1px solid #edf1ee}
+.player-list-row{border-bottom:0}
+@media(max-width:620px){
+ .player-search-simple{margin:15px 0 12px}
+ .player-list-row{grid-template-columns:minmax(0,1fr) auto;gap:8px}
+ .player-list-row .player-expand-trigger{grid-column:1;grid-row:1}
+ .player-list-row .player-due{grid-column:2;grid-row:1}
+ .player-list-row .player-reminder-action{grid-column:1;grid-row:2;justify-self:start;margin-left:0}
+ .player-list-row .player-row-actions{grid-column:2;grid-row:2;justify-self:end}
+ .player-expanded-panel{margin-left:0}
+ .player-stat-grid{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:14px}
+}
