@@ -281,8 +281,13 @@
 /* Separate detailed and compact finance report actions */
 .report-download-actions{display:grid;grid-template-columns:1fr;gap:10px;margin-top:8px}
 .report-download-actions .report-download-button,.report-download-actions .report-summary-button{width:100%;min-height:46px;display:flex;align-items:center;justify-content:center;text-align:center}
-.report-download-actions .report-summary-button{border:1px solid #cfe9dc;background:#f0faf5;color:#147a56;font-weight:800}
-.report-download-actions .report-summary-button:hover:not(:disabled){background:#e2f5eb}
+.report-download-actions .report-summary-button{border:1px solid #cfe9dc;background:#f0faf5;color:#147a56;font-weight:800;gap:8px;padding:11px 12px;border-radius:10px}
+.report-download-actions .report-summary-button:hover:not(:disabled){background:#e2f5eb;transform:translateY(-1px)}
+.report-summary-section .report-download-actions{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.report-summary-section .report-summary-button:first-child{background:#fff5f3;border-color:#f2d8d2;color:#a54836}
+.report-summary-section .report-summary-button:first-child:hover:not(:disabled){background:#ffebe7}
+.report-summary-section .report-summary-button:last-child{background:#eef8f1;border-color:#cfe9d9;color:#16734f}
+.report-summary-section .report-summary-button:last-child:hover:not(:disabled){background:#e1f3e7}
 .report-download-actions .report-summary-button:disabled{opacity:.45;cursor:not-allowed}
 @media(min-width:700px){.report-download-actions{grid-template-columns:1fr 1fr}}
 
@@ -322,4 +327,15 @@
 .report-summary-stat-pending b,.report-summary-stat-pending small{color:#946516}
 .report-summary-section .report-download-actions{margin-top:8px}
 .report-summary-section .field-hint{display:block;margin:12px 0 0;line-height:1.5}
-@media(max-width:520px){.report-summary-section{padding:14px}.report-summary-heading{flex-direction:column}.report-summary-breakdown{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.report-summary-stat{min-height:78px;padding:10px 6px}.report-summary-stat b{font-size:20px}.report-summary-stat small{font-size:10px}}
+@media(max-width:520px){.report-summary-section{padding:14px}.report-summary-heading{flex-direction:column}.report-summary-breakdown{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.report-summary-stat{min-height:76px;padding:9px 4px}.report-summary-stat b{font-size:19px}.report-summary-stat small{font-size:9px;overflow-wrap:anywhere}}
+
+
+/* Player roster count and lightweight pagination */
+.player-roster-count{display:flex;align-items:center;gap:6px;margin-top:7px;color:#748078;font-size:11px}
+.player-roster-count strong{font:800 15px Manrope;color:#176b4d}
+.player-pagination{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 4px 6px;border-top:1px solid #edf1ee;color:#718078;font-size:11px}
+.player-pagination>div{display:flex;align-items:center;gap:9px}
+.player-pagination b{white-space:nowrap;color:#34483e;font-size:11px}
+.player-pagination button{min-height:34px;padding:7px 10px}
+.player-pagination button:disabled{opacity:.4;cursor:not-allowed}
+@media(max-width:520px){.player-pagination{align-items:stretch;flex-direction:column}.player-pagination>div{justify-content:space-between}.player-pagination>span{text-align:center}}
