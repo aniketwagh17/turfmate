@@ -302,3 +302,18 @@
 
 /* Locked WhatsApp recipient in personalised reminders */
 .locked-recipient-number{background:#f3f7f4!important;border:1px solid #dfe9e2!important;color:#40574b!important;cursor:not-allowed!important;opacity:1!important;box-shadow:none!important}.locked-recipient-number:focus{outline:none!important;border-color:#dfe9e2!important}
+
+
+/* Clear separation between period-based detailed reports and the all-time ledger */
+.report-summary-section{margin-top:22px;padding:18px;border:1px solid #dcebe2;border-radius:14px;background:#f7fbf8}
+.report-summary-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.report-summary-heading h3{margin:0 0 5px;font-size:16px;color:#203a32}
+.report-summary-heading p{margin:0;font-size:12px;line-height:1.5;color:#718078}
+.report-summary-count{flex:0 0 auto;padding:6px 10px;border-radius:999px;background:#e4f2e9;color:#176b4d;font-size:12px;font-weight:800}
+.report-summary-breakdown{display:flex;gap:28px;margin:16px 0}
+.report-summary-breakdown>span{display:flex;flex-direction:column;gap:3px}
+.report-summary-breakdown b{font-size:21px;color:#203a32}
+.report-summary-breakdown small{font-size:11px;color:#718078}
+.report-summary-section .report-download-actions{margin-top:8px}
+.report-summary-section .field-hint{display:block;margin:12px 0 0;line-height:1.5}
+@media(max-width:520px){.report-summary-section{padding:14px}.report-summary-heading{flex-direction:column}.report-summary-breakdown{gap:22px}.report-summary-breakdown b{font-size:19px}}
