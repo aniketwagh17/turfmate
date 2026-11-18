@@ -79,6 +79,7 @@ export default function handler(req: Request, res: Response) {
   paymentUri.searchParams.set("am", amount.toFixed(2));
   paymentUri.searchParams.set("cu", "INR");
   paymentUri.searchParams.set("tn", note);
+  const paymentQuery = paymentUri.search;
 
   const qrImageUrl =
     "https://api.qrserver.com/v1/create-qr-code/?size=900x900&format=png&margin=18&data=" +
@@ -168,6 +169,18 @@ ${downloadUrl ? "<button class=\"action wide\" id=\"download-personalised-qr\" t
 <ol class="instructions"><li>Download your personalised QR image.</li><li>Open GPay or PhonePe and choose Scan QR.</li><li>Tap the gallery / upload option and select the downloaded image.</li><li>Confirm the payee and amount before entering your UPI PIN.</li></ol>
 <p class="status" id="copy-status" aria-live="polite"></p>
 <script>
+(function configurePlatformPaymentLinks(){
+  const userAgent = navigator.userAgent || "";
+  const isIOS = /iPhone|iPad|iPod/i.test(userAgent) ||
+    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  if (!isIOS) return;
+
+  // Keep Android's existing intent URLs unchanged; iOS uses app-specific UPI URL schemes.
+  const paymentQuery = ${JSON.stringify(paymentQuery)};
+  const buttons = document.querySelectorAll('.actions a');
+  if (buttons[0]) buttons[0].href = "gpay://upi/pay" + paymentQuery;
+  if (buttons[1]) buttons[1].href = "phonepe://upi/pay" + paymentQuery;
+})();
 async function copyValue(text,button){let copied=false;try{if(navigator.clipboard&&navigator.clipboard.writeText){await navigator.clipboard.writeText(text);copied=true;}else{const input=document.createElement("textarea");input.value=text;input.setAttribute("readonly","");input.style.position="fixed";input.style.opacity="0";document.body.appendChild(input);input.select();copied=document.execCommand("copy");input.remove();}}catch(e){copied=false;}const status=document.getElementById("copy-status");if(!copied){if(status)status.textContent="Could not copy. Please select and copy manually.";return;}if(status){status.textContent="✓ Copied to clipboard";status.classList.add("success");}if(button){const label=button.querySelector(".copy-label");const old=label?label.textContent:button.textContent;if(label)label.textContent="✓ Copied";else button.textContent="✓ Copied";button.classList.add("copied");button.disabled=true;setTimeout(()=>{if(label)label.textContent=old;else button.textContent=old;button.classList.remove("copied");button.disabled=false;},1800);}}
 document.querySelectorAll("[data-copy]").forEach(button=>button.addEventListener("click",()=>copyValue(button.getAttribute("data-copy")||"",button)));
 const downloadButton=document.getElementById("download-personalised-qr");
