@@ -339,3 +339,7 @@
 .player-pagination button{min-height:34px;padding:7px 10px}
 .player-pagination button:disabled{opacity:.4;cursor:not-allowed}
 @media(max-width:520px){.player-pagination{align-items:stretch;flex-direction:column}.player-pagination>div{justify-content:space-between}.player-pagination>span{text-align:center}}
+
+
+/* Subtle marker for players who attended the most recent session */
+.latest-session-tag{display:inline-flex;align-items:center;align-self:flex-start;width:max-content;margin-top:3px;padding:3px 7px;border:1px solid #cce9d8;border-radius:999px;background:#edf8f1;color:#16734f;font-size:9px;font-weight:800;line-height:1.2;letter-spacing:.01em}
