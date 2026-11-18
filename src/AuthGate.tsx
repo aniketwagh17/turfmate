@@ -7,7 +7,7 @@ import Swal from "sweetalert2";
 type InstallPromptEvent = Event & { prompt: () => Promise<void>; userChoice: Promise<{ outcome: "accepted" | "dismissed"; platform: string }> };
 
 const publicPaymentTarget = (() => {
-  const match = window.location.pathname.match(/^\\/p\\/([^/]+)\\/?$/);
+  const match = window.location.pathname.match(/^\/p\/([^/]+)\/?$/);
   if (match) return `/api/payment-preview?d=${match[1]}`;
   if (window.location.pathname === "/pay") return `/api/payment-preview${window.location.search}`;
   return "";
