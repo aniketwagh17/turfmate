@@ -122,28 +122,9 @@ export default function AuthGate() {
   }
 
   if (loading || (session && profileLoading)) return <><InstallAppButton /><div className="auth-screen"><section className="turfmate-loader" role="status" aria-live="polite" aria-label="Loading TurfMate">
-    <div className="loader-brand"><span className="loader-brand-icon">🏏</span><span>TurfMate</span></div>
-    <div className="cricket-loader-scene" aria-hidden="true">
-      <div className="loader-stadium-glow"></div>
-      <div className="loader-pitch"></div>
-      <svg className="loader-batter" viewBox="0 0 180 120" fill="none">
-        <circle cx="75" cy="22" r="10" fill="#F0C9A5"/>
-        <path d="M66 18c2-10 18-12 22-1l-2 5H67z" fill="#1D6548"/>
-        <path d="M69 34c-7 3-11 10-10 19l4 19h29l-1-25c0-8-8-15-16-13z" fill="#23835B"/>
-        <path d="M63 42 48 57 34 48" stroke="#F0C9A5" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="m88 43 13 10 13-14" stroke="#F0C9A5" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="m67 70-5 25-14 13" stroke="#234B3A" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="m83 70 9 24 15 8" stroke="#234B3A" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="m112 39 27-27" stroke="#B98245" stroke-width="7" stroke-linecap="round"/>
-        <path d="m135 13 8-8" stroke="#D9B17C" stroke-width="4" stroke-linecap="round"/>
-        <path d="M42 108h-9m79 0h-10" stroke="#234B3A" stroke-width="5" stroke-linecap="round"/>
-      </svg>
-      <span className="loader-ball"></span>
-      <span className="loader-stumps"><i></i><i></i><i></i></span>
-    </div>
-    <div className="loader-copy"><strong>Getting the team ready</strong><span>Setting up your cricket workspace<span className="loader-ellipsis"><i></i><i></i><i></i></span></span></div>
-    <div className="loader-progress"><span></span></div>
-    <small className="loader-footnote">A moment before the next innings 🏏</small>
+    <div className="loader-brand"><span className="loader-brand-icon" aria-hidden="true">🏏</span><span>TurfMate</span></div>
+    <div className="loader-spinner-wrap" aria-hidden="true"><span className="loader-spinner"></span><span className="loader-spinner-ball">●</span></div>
+    <div className="loader-copy"><strong>Loading TurfMate</strong><span>Preparing your cricket workspace</span></div>
   </section></div></>;
 
   if (session && !phoneSaved) {
