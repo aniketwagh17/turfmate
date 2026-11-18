@@ -161,7 +161,7 @@ footer{margin-top:22px;text-align:center;color:#8a9690;font-size:11px}
 
 </div>
 ${downloadUrl ? "<button class=\"action wide\" id=\"download-personalised-qr\" type=\"button\">↓ Download personalised QR card</button>" : ""}
-<ol class="instructions"><li>Download your personalised QR image.</li><li>Open any UPI app and choose Scan QR → Gallery.</li><li>Select the downloaded QR image.</li><li>Verify the payee and amount before entering your UPI PIN.</li></ol>
+<ol class="instructions"><li>Download your personalised QR image.</li><li>Open any UPI app and choose Scan QR → Gallery.</li><li>Select the downloaded QR image.</li><li>Verify the payee and amount before entering your UPI PIN.</li></ol><p class="hint">On iPhone, if the QR download does not save to Photos, take a screenshot of the QR displayed above. In your UPI app, choose Scan QR → Gallery/Photos and select the screenshot, if that app supports it.</p>
 <p class="hint">Prefer manual payment? Copy the UPI ID above, open your UPI app and choose Pay to UPI ID. Enter the requested amount and verify the recipient before paying.</p>
 <p class="status" id="copy-status" aria-live="polite"></p>
 <script>
