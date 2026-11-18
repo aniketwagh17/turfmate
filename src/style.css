@@ -310,10 +310,16 @@
 .report-summary-heading h3{margin:0 0 5px;font-size:16px;color:#203a32}
 .report-summary-heading p{margin:0;font-size:12px;line-height:1.5;color:#718078}
 .report-summary-count{flex:0 0 auto;padding:6px 10px;border-radius:999px;background:#e4f2e9;color:#176b4d;font-size:12px;font-weight:800}
-.report-summary-breakdown{display:flex;gap:28px;margin:16px 0}
-.report-summary-breakdown>span{display:flex;flex-direction:column;gap:3px}
-.report-summary-breakdown b{font-size:21px;color:#203a32}
-.report-summary-breakdown small{font-size:11px;color:#718078}
+.report-summary-breakdown{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:16px 0}
+.report-summary-stat{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;min-width:0;min-height:86px;padding:12px 8px;border:1px solid transparent;border-radius:11px;text-align:center}
+.report-summary-stat b{font:800 23px Manrope;line-height:1.1}
+.report-summary-stat small{font-size:11px;line-height:1.35;font-weight:700}
+.report-summary-stat-history{background:#f0f5fa;border-color:#dce7f1}
+.report-summary-stat-history b,.report-summary-stat-history small{color:#49657e}
+.report-summary-stat-settled{background:#edf8f1;border-color:#cfe9d9}
+.report-summary-stat-settled b,.report-summary-stat-settled small{color:#16734f}
+.report-summary-stat-pending{background:#fff8e8;border-color:#f3dfad}
+.report-summary-stat-pending b,.report-summary-stat-pending small{color:#946516}
 .report-summary-section .report-download-actions{margin-top:8px}
 .report-summary-section .field-hint{display:block;margin:12px 0 0;line-height:1.5}
-@media(max-width:520px){.report-summary-section{padding:14px}.report-summary-heading{flex-direction:column}.report-summary-breakdown{gap:22px}.report-summary-breakdown b{font-size:19px}}
+@media(max-width:520px){.report-summary-section{padding:14px}.report-summary-heading{flex-direction:column}.report-summary-breakdown{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.report-summary-stat{min-height:78px;padding:10px 6px}.report-summary-stat b{font-size:20px}.report-summary-stat small{font-size:10px}}
