@@ -79,7 +79,6 @@ export default function handler(req: Request, res: Response) {
   paymentUri.searchParams.set("am", amount.toFixed(2));
   paymentUri.searchParams.set("cu", "INR");
   paymentUri.searchParams.set("tn", note);
-  const paymentQuery = paymentUri.search;
 
   const qrImageUrl =
     "https://api.qrserver.com/v1/create-qr-code/?size=900x900&format=png&margin=18&data=" +
@@ -175,11 +174,10 @@ ${downloadUrl ? "<button class=\"action wide\" id=\"download-personalised-qr\" t
     (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
   if (!isIOS) return;
 
-  // Keep Android's existing intent URLs unchanged; iOS uses app-specific UPI URL schemes.
-  const paymentQuery = ${JSON.stringify(paymentQuery)};
+  // Launch the installed app only. Do not pass UPI payment details to either app.
   const buttons = document.querySelectorAll('.actions a');
-  if (buttons[0]) buttons[0].href = "gpay://upi/pay" + paymentQuery;
-  if (buttons[1]) buttons[1].href = "phonepe://upi/pay" + paymentQuery;
+  if (buttons[0]) buttons[0].href = "gpay://";
+  if (buttons[1]) buttons[1].href = "phonepe://";
 })();
 async function copyValue(text,button){let copied=false;try{if(navigator.clipboard&&navigator.clipboard.writeText){await navigator.clipboard.writeText(text);copied=true;}else{const input=document.createElement("textarea");input.value=text;input.setAttribute("readonly","");input.style.position="fixed";input.style.opacity="0";document.body.appendChild(input);input.select();copied=document.execCommand("copy");input.remove();}}catch(e){copied=false;}const status=document.getElementById("copy-status");if(!copied){if(status)status.textContent="Could not copy. Please select and copy manually.";return;}if(status){status.textContent="✓ Copied to clipboard";status.classList.add("success");}if(button){const label=button.querySelector(".copy-label");const old=label?label.textContent:button.textContent;if(label)label.textContent="✓ Copied";else button.textContent="✓ Copied";button.classList.add("copied");button.disabled=true;setTimeout(()=>{if(label)label.textContent=old;else button.textContent=old;button.classList.remove("copied");button.disabled=false;},1800);}}
 document.querySelectorAll("[data-copy]").forEach(button=>button.addEventListener("click",()=>copyValue(button.getAttribute("data-copy")||"",button)));
