@@ -62,8 +62,6 @@ export default function Dashboard({ email }: { email: string }) {
  useEffect(()=>localStorage.setItem("tm-upi-id",upiId),[upiId]); useEffect(()=>localStorage.setItem("tm-payee-name",payeeName),[payeeName]); useEffect(()=>localStorage.setItem("tm-payment-phone",paymentPhone),[paymentPhone]);
 
  const activePlayers=players.filter(p=>p.active!==false);
- const latestSessionWithPlayers=sessions.filter(s=>s.participants.length>0).sort((a,b)=>b.date.localeCompare(a.date))[0];
- const latestSessionPlayerIds=new Set(latestSessionWithPlayers?.participants||[]);
  const paymentPlayers=paySession?(sessions.find(s=>s.id===paySession)?.participants||[]).map(id=>players.find(p=>p.id===id)).filter((p):p is Player=>Boolean(p)):[];
  const paymentNameOptions=[...new Map(paymentPlayers.map(p=>[p.name.trim().toLowerCase(),p.name])).values()];
  const sameNamePaymentPlayers=paymentPlayers.filter(p=>p.name.trim().toLowerCase()===payPlayerName.trim().toLowerCase());
@@ -82,7 +80,6 @@ export default function Dashboard({ email }: { email: string }) {
  const dues=useMemo(()=>{const d:Record<string,number>={};players.forEach(p=>d[p.id]=0);sessions.forEach(s=>{if(s.mode==="fund"){s.participants.forEach(id=>d[id]=(d[id]||0)+(s.attendance?.[id]||1)*s.contribution);}else{const heads=s.participants.reduce((n,id)=>n+(s.attendance?.[id]||1),0);if(!heads)return;const each=s.total/heads;s.participants.forEach(id=>d[id]=(d[id]||0)+each*(s.attendance?.[id]||1));}});payments.forEach(p=>d[p.playerId]=(d[p.playerId]||0)-p.amount);return d;},[players,sessions,payments]);
   const playerMatches=(p:Player)=>{const q=playerSearch.trim().toLowerCase();return !q||p.name.toLowerCase().includes(q)||(p.phone||"").includes(q);};
   const filteredPlayers=activePlayers.filter(playerMatches).sort((a,b)=>a.name.localeCompare(b.name));
-  const matchingCount=filteredPlayers.length;
 
  const spend=sessions.reduce((n,s)=>n+s.total,0), collected=payments.reduce((n,p)=>n+p.amount,0), outstanding=players.reduce((n,p)=>n+Math.max(0,dues[p.id]||0),0);
  const fundCollected=payments.filter(p=>sessions.find(s=>s.id===p.sessionId)?.mode==="fund").reduce((n,p)=>n+p.amount,0);
