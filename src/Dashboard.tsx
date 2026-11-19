@@ -63,7 +63,6 @@ export default function Dashboard({ email }: { email: string }) {
  ];
  function startTutorial(){setTutorialStep(0);setTutorialOpen(true);}
  function moveTutorial(next:number){setTutorialStep(Math.max(0,Math.min(tutorialSteps.length-1,next)));}
- useEffect(()=>{const app=document.querySelector<HTMLElement>(".shell");if(!app||!tutorialOpen)return;const wasInert=app.inert;app.inert=true;return()=>{app.inert=wasInert;};},[tutorialOpen]);
  useEffect(()=>{if(!notice)return;void Swal.fire({toast:true,position:"top-end",icon:"info",title:notice,showConfirmButton:false,timer:2800,timerProgressBar:true});setNotice("");},[notice]);
  useEffect(()=>localStorage.setItem("tm-players",JSON.stringify(players)),[players]);
  useEffect(()=>{localStorage.setItem("tm-player-modal-open",String(showPlayer));localStorage.setItem("tm-player-draft-name",name);localStorage.setItem("tm-player-draft-phone",phone);localStorage.setItem("tm-player-draft-editing-id",editingPlayerId);},[tab,showPlayer,name,phone,editingPlayerId]);
@@ -590,7 +589,7 @@ function GuidedDemo({step,steps,onBack,onNext,onClose}:{step:number;steps:Guided
  const current=steps[step];
  const players=["Rohan Mehta","Aarav Shah","Kabir Patil","Dev Kulkarni","Neel Joshi"];
  const [expanded,setExpanded]=useState(false);
- useEffect(()=>{setExpanded(false);},[step]);
+ useEffect(()=>{setExpanded(false);const root=document.querySelector<HTMLElement>(".guided-demo-overlay");const first=root?.querySelector<HTMLElement>("button:not(:disabled)");first?.focus();const onKey=(event:KeyboardEvent)=>{if(event.key==="Escape"){onClose();return;}if(event.key!=="Tab"||!root)return;const items=Array.from(root.querySelectorAll<HTMLElement>('button:not(:disabled),[href],input,select,textarea,[tabindex]:not([tabindex="-1"])')).filter(el=>!el.hasAttribute("disabled"));if(!items.length)return;const firstItem=items[0],lastItem=items[items.length-1];if(event.shiftKey&&document.activeElement===firstItem){event.preventDefault();lastItem.focus();}else if(!event.shiftKey&&document.activeElement===lastItem){event.preventDefault();firstItem.focus();}};document.addEventListener("keydown",onKey);return()=>document.removeEventListener("keydown",onKey);},[step,onClose]);
  const row=(label:string,value:string)=><div className="tour-preview-row" key={label}><span>{label}</span><b>{value}</b></div>;
  const button=(label:string,primary=false)=><span className={primary?"tour-preview-button primary":"tour-preview-button"}>{label}</span>;
  const modal=(title:string,children:ReactNode)=><div className="tour-preview-modal"><div className="tour-preview-modal-head"><b>{title}</b><span>×</span></div>{children}</div>;
