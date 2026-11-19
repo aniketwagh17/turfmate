@@ -5,6 +5,7 @@ type DemoModal = "session" | "attendance" | "quick-player" | "share" | "reminder
 type TourStep = { tab: DemoTab; section: string; title: string; body: string; target: string; modal?: DemoModal; finance?: string };
 
 const TOUR_STEPS: TourStep[] = [
+ {tab:"Overview",section:"NAVIGATION",title:"Overview tab",body:"The Overview tab is your starting point. It gives you a quick snapshot of the group's activity and the most recent turf bookings.",target:"nav-overview"},
  {tab:"Overview",section:"OVERVIEW",title:"Your organiser dashboard",body:"This is your cricket group command centre. At a glance, you can see recent sessions, total turf spend, collections and pending contributions. We’ll walk through the complete organiser journey using a separate sample workspace.",target:"overview-hero"},
  {tab:"Overview",section:"OVERVIEW",title:"Start a new session",body:"Whenever a turf booking is confirmed, start here. Add session opens the booking form. The walkthrough uses a sample booking and never writes anything to your real account.",target:"add-session"},
  {tab:"Overview",section:"CREATE A SESSION",title:"Choose the booking date",body:"Select the date of your turf booking. This date is used throughout the session summary, player contributions and reports.",target:"session-date",modal:"session"},
@@ -15,9 +16,11 @@ const TOUR_STEPS: TourStep[] = [
  {tab:"Overview",section:"CREATE A SESSION",title:"Enter total session expenses",body:"Include all session costs here, such as turf, water and balls. This is the complete expense amount used for the session calculation.",target:"session-total",modal:"session"},
  {tab:"Overview",section:"CREATE A SESSION",title:"Enter actual turf charges",body:"Enter only the amount paid to the turf. TurfMate separates this from other expenses so the organiser can understand the cost breakdown.",target:"session-turf",modal:"session"},
  {tab:"Overview",section:"CREATE A SESSION",title:"Create the session",body:"Once the details are ready, Create session saves the booking and takes the organiser to its session workspace. In this tour, the button is illustrative only.",target:"session-create",modal:"session"},
+ {tab:"Sessions",section:"NAVIGATION",title:"Sessions tab",body:"All bookings live under Sessions. From here you can open a booking and continue managing its players, payments and settlement.",target:"nav-sessions"},
  {tab:"Sessions",section:"SESSIONS",title:"Your session list",body:"The Sessions tab keeps all bookings together. Each card shows the venue, date, time, selected players and session cost. You can return to a session whenever you need to manage it.",target:"sessions-heading"},
  {tab:"Sessions",section:"SESSIONS",title:"Add a session from this tab",body:"The Add session action is also available here, so you can create a booking while reviewing your session list.",target:"sessions-add"},
  {tab:"Sessions",section:"SESSIONS",title:"Session summary card",body:"This card gives you the key information without opening the session. The sample session has six players and a ₹4,500 total expense.",target:"session-card"},
+ {tab:"Sessions",section:"SESSIONS",title:"Open session details",body:"Open the session card to move into its workspace. This is where all actions for that booking are grouped.",target:"session-card-open"},
  {tab:"Session details",section:"SESSION DETAILS",title:"Open a session workspace",body:"A session workspace brings booking details, attendance, sharing, payment collection and settlement into one place. The sample session is already populated so every feature can be demonstrated.",target:"session-detail-heading"},
  {tab:"Session details",section:"SESSION DETAILS",title:"Booking summary and report",body:"The summary confirms the booking date, timing and turf expense. Download PDF creates a session report that can be kept or shared with the group.",target:"session-pdf"},
  {tab:"Session details",section:"SESSION DETAILS",title:"Manage payments shortcut",body:"This shortcut takes you directly to the payment management area for this session, where you can record contributions and review pending amounts.",target:"manage-payments"},
@@ -42,6 +45,7 @@ const TOUR_STEPS: TourStep[] = [
  {tab:"Session details",section:"PAYMENT REMINDER",title:"WhatsApp is always a manual step",body:"This action would open the selected player's WhatsApp chat with the message prefilled. The organiser still reviews the recipient and taps Send. This demo will not open WhatsApp.",target:"reminder-send",modal:"reminder"},
  {tab:"Session details",section:"SETTLEMENT",title:"Understand organiser advance",body:"If the organiser pays more upfront than the player contributions cover, TurfMate tracks the difference as an organiser advance. It remains visible until reconciled.",target:"organiser-advance"},
  {tab:"Session details",section:"SETTLEMENT",title:"Settle the organiser advance",body:"After the group contributions are collected and the advance is validated, mark it as settled. TurfMate records the settlement state so the session accounts remain clear.",target:"settle-advance"},
+ {tab:"Players",section:"NAVIGATION",title:"Players tab",body:"The Players tab contains your full group roster. Player details are reused across sessions, attendance and payment reminders.",target:"nav-players"},
  {tab:"Players",section:"PLAYERS",title:"Your player directory",body:"The Players tab is the master roster for your cricket group. Player details are reused in attendance, payments and reminders.",target:"players-heading"},
  {tab:"Players",section:"PLAYERS",title:"Find a player quickly",body:"Search by name or mobile number to find someone in a larger roster. The list updates as you type.",target:"players-search"},
  {tab:"Players",section:"PLAYERS",title:"Register a new player",body:"Add Player opens the player form. Each player needs a name and a valid WhatsApp number for payment reminders.",target:"players-add"},
@@ -51,6 +55,7 @@ const TOUR_STEPS: TourStep[] = [
  {tab:"Players",section:"PLAYERS",title:"Review a player profile",body:"Player cards show roster details and can expand to show session history and payment context.",target:"player-row"},
  {tab:"Players",section:"PLAYERS",title:"View session history",body:"Expand a player to review the sessions they participated in. This helps explain past contributions and outstanding amounts.",target:"player-history"},
  {tab:"Players",section:"PLAYERS",title:"Edit or remove a roster entry",body:"Edit updates a player's contact details. Remove makes the player inactive for future sessions while preserving historical records.",target:"player-actions"},
+ {tab:"Payments",section:"NAVIGATION",title:"Payments tab",body:"The Payments tab gives you a consolidated transaction view across sessions.",target:"nav-payments"},
  {tab:"Payments",section:"PAYMENTS",title:"Consolidated payment management",body:"The Payments tab is the organiser's central transaction view. Record a new UPI or cash payment and review the history from one place.",target:"payments-heading"},
  {tab:"Payments",section:"RECORD PAYMENT",title:"Choose the session",body:"Select the session for which the money was received. TurfMate uses the session roster to populate the player choices.",target:"payment-session"},
  {tab:"Payments",section:"RECORD PAYMENT",title:"Choose the player",body:"Select the player who made the payment. The amount due is calculated from their session contribution and previous payments.",target:"payment-player"},
@@ -60,6 +65,7 @@ const TOUR_STEPS: TourStep[] = [
  {tab:"Payments",section:"RECORD PAYMENT",title:"Record the payment",body:"Record payment adds the transaction to the session and player history. In the real app, this updates the outstanding balance.",target:"payment-record"},
  {tab:"Payments",section:"PAYMENT HISTORY",title:"Edit or delete a transaction",body:"Use the row actions to correct a recorded amount or remove an entry that was added by mistake. Review the transaction before changing it.",target:"payment-history-actions"},
  {tab:"Payments",section:"PAYMENT HISTORY",title:"Review payment history",body:"The history lists recorded transactions with player, method, date, session and note. Use the row actions to edit or delete an entry when needed.",target:"payment-history"},
+ {tab:"Finance",section:"NAVIGATION",title:"Finance tab",body:"Finance contains reports, shared fund activity and organiser payment settings.",target:"nav-finance"},
  {tab:"Finance",section:"FINANCE",title:"Your finance workspace",body:"Finance brings reports, cricket fund activity and organiser payment details together. Use the sub-tabs to move between these areas.",target:"finance-subnav",finance:"Download reports"},
  {tab:"Finance",section:"DOWNLOAD REPORTS",title:"Choose a reporting period",body:"Select a date range to focus the report on the period you want to review. The sample workspace includes session and payment history.",target:"report-range",finance:"Download reports"},
  {tab:"Finance",section:"DOWNLOAD REPORTS",title:"Set the report start date",body:"Choose the first day to include in your report.",target:"report-start",finance:"Download reports"},
@@ -116,7 +122,7 @@ export default function GuidedTour({onClose}:{onClose:()=>void}){
   let timer=0;
   setPositionReady(false);
   const frame=requestAnimationFrame(()=>{
-   const target=overlayRef.current?.querySelector<HTMLElement>('[data-tour-target="'+step.target+'"]');
+   const target=Array.from(overlayRef.current?.querySelectorAll<HTMLElement>('[data-tour-target="'+step.target+'"]')||[]).find(el=>el.getClientRects().length>0);
    if(!target){setPositionReady(true);return;}
    target.scrollIntoView({behavior:"smooth",block:"center",inline:"nearest"});
    timer=window.setTimeout(()=>{
@@ -164,7 +170,7 @@ export default function GuidedTour({onClose}:{onClose:()=>void}){
    <aside className="tm-guide-sidebar">
     <div className="tm-guide-brand"><span>🏏</span><div><b>TurfMate</b><small>MANHATTAN CRICKET</small></div></div>
     <small className="tm-guide-workspace">WORKSPACE</small>
-    {navTabs.map(tab=><div key={tab} className={"tm-guide-nav "+(step.tab===tab||(step.tab==="Session details"&&tab==="Sessions")?"active":"")}>{tab==="Overview"?"⌂":tab==="Sessions"?"◷":tab==="Players"?"♙":tab==="Payments"?"₹":"▤"}<span>{tab}</span></div>)}
+    {navTabs.map(tab=><div key={tab} data-tour-target={"nav-"+tab.toLowerCase()} className={"tm-guide-nav "+(step.tab===tab||(step.tab==="Session details"&&tab==="Sessions")?"active":"")}>{tab==="Overview"?"⌂":tab==="Sessions"?"◷":tab==="Players"?"♙":tab==="Payments"?"₹":"▤"}<span>{tab}</span></div>)}
     <div className="tm-guide-sidebar-foot"><b>Organiser workspace</b><small>Sample data · Tour only</small></div>
    </aside>
    <main className="tm-guide-main">
@@ -177,7 +183,7 @@ export default function GuidedTour({onClose}:{onClose:()=>void}){
      </div>}
      {step.tab==="Sessions"&&<div className="tm-guide-view">
       <div className="tm-guide-page-head" data-tour-target="sessions-heading"><div><h1>Sessions</h1><p>All your turf bookings in one place.</p></div><DemoButton id="sessions-add" primary>＋ Add session</DemoButton></div>
-      <div className="tm-guide-card tm-guide-session-card" data-tour-target="session-card"><div className="tm-guide-card-title"><b>Titans Turf</b><span>₹4,500</span></div><small>19 Nov 2026 · 9:00 PM – 12:00 AM</small><p>6 players selected · 3 pending payments</p><div className="tm-guide-card-actions"><span>Manage players</span><span>Share info</span><span>Manage payments</span></div><div className="tm-guide-card-open">View session details →</div></div>
+      <div className="tm-guide-card tm-guide-session-card" data-tour-target="session-card"><div className="tm-guide-card-title"><b>Titans Turf</b><span>₹4,500</span></div><small>19 Nov 2026 · 9:00 PM – 12:00 AM</small><p>6 players selected · 3 pending payments</p><div className="tm-guide-card-actions"><span>Manage players</span><span>Share info</span><span>Manage payments</span></div><div className="tm-guide-card-open" data-tour-target="session-card-open">View session details →</div></div>
      </div>}
      {step.tab==="Session details"&&<div className="tm-guide-view">
       <div className="tm-guide-page-head" data-tour-target="session-detail-heading"><div><span className="tm-guide-back-link">← Back to sessions</span><h1>Titans Turf</h1><p>19 Nov 2026 · 9:00 PM to 12:00 AM</p></div><DemoButton id="session-pdf">↓ Download PDF</DemoButton></div>
@@ -206,7 +212,7 @@ export default function GuidedTour({onClose}:{onClose:()=>void}){
       {step.finance==="Payment details"&&<section className="tm-guide-panel" data-tour-target="payment-details"><h2>Organiser payment details</h2><div data-tour-target="upi-fields"><Field id="upi-id" label="UPI ID" value="organiser@upi"/><Field id="payee-name" label="Payee name" value="TurfMate Organiser"/><Field id="payee-phone" label="Contact number (optional)" value="9876543210"/></div><DemoButton id="payment-details-save" primary>Save payment details</DemoButton></section>}
      </div>}
     </div>
-    <nav className="tm-guide-mobile-nav">{navTabs.map(tab=><span key={tab} className={step.tab===tab||(step.tab==="Session details"&&tab==="Sessions")?"active":""}>{tab==="Overview"?"Home":tab}</span>)}</nav>
+    <nav className="tm-guide-mobile-nav">{navTabs.map(tab=><span key={tab} data-tour-target={"nav-"+tab.toLowerCase()} className={step.tab===tab||(step.tab==="Session details"&&tab==="Sessions")?"active":""}>{tab==="Overview"?"Home":tab}</span>)}</nav>
    </main>
    {step.modal&&<div className="tm-guide-modal-layer"><section className="tm-guide-modal">
     <div className="tm-guide-modal-head"><div><small>GUIDED DEMO · SAMPLE DATA</small><h2>{step.modal==="session"?"Add session":step.modal==="attendance"?"Manage session players":step.modal==="quick-player"?"Add a player to the roster":step.modal==="share"?"Share session & player list":step.modal==="reminder"?"Personalised payment reminder":"Register Player"}</h2></div><span>×</span></div>
