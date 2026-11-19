@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 
 type DemoTab = "Overview" | "Sessions" | "Session details" | "Players" | "Payments" | "Finance";
 type DemoModal = "session" | "attendance" | "quick-player" | "share" | "reminder" | "player" | null;
@@ -74,7 +74,7 @@ const demoPlayers = [
 function Field({id,label,value,hint}:{id:string;label:string;value:string;hint?:string}){
  return <div className="tm-guide-field" data-tour-target={id}><label>{label}</label><div className="tm-guide-input">{value}</div>{hint&&<small>{hint}</small>}</div>;
 }
-function DemoButton({id,children,primary=false}:{id:string;children:React.ReactNode;primary?:boolean}){
+function DemoButton({id,children,primary=false}:{id:string;children:ReactNode;primary?:boolean}){
  return <div className={primary?"tm-guide-button primary":"tm-guide-button"} data-tour-target={id}>{children}</div>;
 }
 function DemoRow({id,name,detail,amount,status}:{id?:string;name:string;detail:string;amount:string;status:string}){
@@ -83,7 +83,7 @@ function DemoRow({id,name,detail,amount,status}:{id?:string;name:string;detail:s
 
 export default function GuidedTour({onClose}:{onClose:()=>void}){
  const [index,setIndex]=useState(0);
- const [placement,setPlacement]=useState<{top:number;left:number;width:number;compact:boolean}>({top:12,left:12,width:360,compact:false});
+ const [placement,setPlacement]=useState<{top:number;left:number;width:number;compact:boolean}>({top:12,left:12,width:360,compact:false});\n const [positionReady,setPositionReady]=useState(false);\n const [layoutTick,setLayoutTick]=useState(0);
  const overlayRef=useRef<HTMLDivElement>(null);
  const cardRef=useRef<HTMLDivElement>(null);
  const step=TOUR_STEPS[index];
@@ -93,11 +93,13 @@ export default function GuidedTour({onClose}:{onClose:()=>void}){
 
  useEffect(()=>{
   let cancelled=false;
+  let timer=0;
+  setPositionReady(false);
   const frame=requestAnimationFrame(()=>{
    const target=overlayRef.current?.querySelector<HTMLElement>('[data-tour-target="'+step.target+'"]');
-   if(!target)return;
+   if(!target){setPositionReady(true);return;}
    target.scrollIntoView({behavior:"smooth",block:"center",inline:"nearest"});
-   requestAnimationFrame(()=>{
+   timer=window.setTimeout(()=>{
     if(cancelled)return;
     target.classList.add("tm-guide-focus");
     const card=cardRef.current;
@@ -105,29 +107,31 @@ export default function GuidedTour({onClose}:{onClose:()=>void}){
     const vw=window.innerWidth,vh=window.innerHeight,pad=12,gap=14;
     const width=Math.min(380,vw-24);
     const cardHeight=card?.getBoundingClientRect().height||220;
+    const centeredLeft=Math.max(pad,Math.min(rect.left+(rect.width-width)/2,vw-width-pad));
     const candidates=[
-     {top:rect.bottom+gap,left:Math.max(pad,Math.min(rect.left+(rect.width-width)/2,vw-width-pad)),side:"below"},
-     {top:rect.top-cardHeight-gap,left:Math.max(pad,Math.min(rect.left+(rect.width-width)/2,vw-width-pad)),side:"above"},
+     {top:rect.bottom+gap,left:centeredLeft,side:"below"},
+     {top:rect.top-cardHeight-gap,left:centeredLeft,side:"above"},
      {top:Math.max(pad,Math.min(rect.top+(rect.height-cardHeight)/2,vh-cardHeight-pad)),left:rect.right+gap,side:"right"},
      {top:Math.max(pad,Math.min(rect.top+(rect.height-cardHeight)/2,vh-cardHeight-pad)),left:rect.left-width-gap,side:"left"}
     ];
-    const valid=candidates.filter(c=>c.top>=pad&&c.left>=pad&&c.top+cardHeight<=vh-pad&&c.left+width<=vw-pad&&!(c.left<rect.right+8&&c.left+width>rect.left-8&&c.top<rect.bottom+8&&c.top+cardHeight>rect.top-8));
-    if(valid.length){const preferred=valid.find(c=>c.side==="below")||valid.find(c=>c.side==="above")||valid[0];setPlacement({top:preferred.top,left:preferred.left,width,compact:false});}
+    const overlaps=(x:{top:number;left:number},w:number,h:number)=>x.left<rect.right+8&&x.left+w>rect.left-8&&x.top<rect.bottom+8&&x.top+h>rect.top-8;
+    const valid=candidates.filter(x=>x.top>=pad&&x.left>=pad&&x.top+cardHeight<=vh-pad&&x.left+width<=vw-pad&&!overlaps(x,width,cardHeight));
+    if(valid.length){const preferred=valid.find(x=>x.side==="below")||valid.find(x=>x.side==="above")||valid[0];setPlacement({top:preferred.top,left:preferred.left,width,compact:false});}
     else{
-     const compactHeight=54;
-     const topSpace=rect.top-pad,bottomSpace=vh-rect.bottom-pad;
-     const putTop=topSpace>=bottomSpace;
-     const compactTop=putTop?pad:vh-compactHeight-pad;
-     const compactLeft=Math.max(pad,(vw-Math.min(340,vw-24))/2);
-     setPlacement({top:compactTop,left:compactLeft,width:Math.min(340,vw-24),compact:true});
+     const compactHeight=54,compactWidth=Math.min(340,vw-24),compactLeft=Math.max(pad,(vw-compactWidth)/2);
+     const topSpot={top:pad,left:compactLeft},bottomSpot={top:vh-compactHeight-pad,left:compactLeft};
+     const topFree=!overlaps(topSpot,compactWidth,compactHeight),bottomFree=!overlaps(bottomSpot,compactWidth,compactHeight);
+     const chosen=topFree&&bottomFree?(rect.top>vh/2?topSpot:bottomSpot):topFree?topSpot:bottomFree?bottomSpot:(rect.top>vh/2?topSpot:bottomSpot);
+     setPlacement({top:chosen.top,left:chosen.left,width:compactWidth,compact:true});
     }
-   });
+    setPositionReady(true);
+   },220);
   });
-  return()=>{cancelled=true;cancelAnimationFrame(frame);overlayRef.current?.querySelectorAll(".tm-guide-focus").forEach(el=>el.classList.remove("tm-guide-focus"));};
- },[index,step.target,step.modal]);
+  return()=>{cancelled=true;cancelAnimationFrame(frame);window.clearTimeout(timer);overlayRef.current?.querySelectorAll(".tm-guide-focus").forEach(el=>el.classList.remove("tm-guide-focus"));};
+ },[index,step.target,step.modal,layoutTick]);
 
  useEffect(()=>{
-  const reposition=()=>setIndex(current=>current);
+  const reposition=()=>setLayoutTick(t=>t+1);
   window.addEventListener("resize",reposition);
   return()=>window.removeEventListener("resize",reposition);
  },[]);
@@ -194,7 +198,7 @@ export default function GuidedTour({onClose}:{onClose:()=>void}){
     {step.modal==="player"&&<div className="tm-guide-modal-fields"><Field id="player-name" label="Full name" value="Rohan"/><Field id="player-phone" label="WhatsApp number" value="9876543212"/><DemoButton id="player-save" primary>Add Player</DemoButton></div>}
    </section></div>}
   </div>
-  <div className="tm-guide-tooltip" ref={cardRef} style={{top:placement.top,left:placement.left,width:placement.width,visibility:"visible"}} data-compact={placement.compact?"true":"false"}>
+  <div className="tm-guide-tooltip" ref={cardRef} style={{top:placement.top,left:placement.left,width:placement.width,visibility:positionReady?"visible":"hidden"}} data-compact={placement.compact?"true":"false"}>
    {placement.compact?<div className="tm-guide-compact"><span>🏏</span><b>Continue tutorial</b><small>{index+1}/{total}</small><button type="button" onClick={next} aria-label="Continue to next step">→</button><button type="button" onClick={onClose} aria-label="Exit tutorial">×</button></div>:<>
     <div className="tm-guide-tooltip-top"><span>🏏 TURFMATE WALKTHROUGH</span><span>STEP {index+1} OF {total}</span><button type="button" onClick={onClose} aria-label="Exit tutorial">×</button></div>
     <div className="tm-guide-progress"><span style={{width:progress+"%"}}/></div>
