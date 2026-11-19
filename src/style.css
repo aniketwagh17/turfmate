@@ -1187,3 +1187,8 @@
 .tm-guide-summary-stats small{color:#809086;font-size:8px}
 .tm-guide-report-summary .tm-guide-export-actions{display:flex;flex-wrap:wrap;gap:8px}
 @media(max-width:420px){.tm-guide-summary-stats{gap:5px}.tm-guide-summary-stats span{padding:8px 6px}.tm-guide-summary-stats b{font-size:14px}.tm-guide-summary-stats small{font-size:7px}}
+
+.tm-guide-card-actions .tm-guide-button{min-height:30px;padding:0 9px;font-size:9px}
+.tm-guide-player-actions .tm-guide-button{min-height:29px;padding:0 9px;font-size:9px}
+.tm-guide-settlement-actions{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
+@media(max-width:520px){.tm-guide-settlement-actions{justify-content:flex-start}.tm-guide-card-actions{gap:6px}}
