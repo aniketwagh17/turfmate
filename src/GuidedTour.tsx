@@ -108,8 +108,11 @@ function DemoRow({id,name,detail,amount,status}:{id?:string;name:string;detail:s
 }
 
 export default function GuidedTour({onClose}:{onClose:()=>void}){
- const [index,setIndex]=useState(0);\n const [complete,setComplete]=useState(false);
- const [placement,setPlacement]=useState<{top:number;left:number;width:number;compact:boolean}>({top:12,left:12,width:360,compact:false});\n const [positionReady,setPositionReady]=useState(false);\n const [layoutTick,setLayoutTick]=useState(0);
+ const [index,setIndex]=useState(0);
+ const [complete,setComplete]=useState(false);
+ const [placement,setPlacement]=useState<{top:number;left:number;width:number;compact:boolean}>({top:12,left:12,width:360,compact:false});
+ const [positionReady,setPositionReady]=useState(false);
+ const [layoutTick,setLayoutTick]=useState(0);
  const overlayRef=useRef<HTMLDivElement>(null);
  const cardRef=useRef<HTMLDivElement>(null);
  const step=TOUR_STEPS[index];
@@ -220,7 +223,18 @@ export default function GuidedTour({onClose}:{onClose:()=>void}){
     {step.modal==="session"&&<div className="tm-guide-modal-fields"><Field id="session-date" label="Date" value="19 Nov 2026"/><Field id="session-venue" label="Venue" value="Titans Turf"/><div className="tm-guide-fields-two" data-tour-target="session-time"><Field id="session-start" label="Start time" value="09:00 PM"/><Field id="session-end" label="End time" value="12:00 AM"/></div><div className="tm-guide-choice-group" data-tour-target="session-mode"><b>Does your group maintain a cricket fund?</b><span className="selected">● Yes, we maintain a shared cricket fund</span><span>○ No, split the turf expense equally</span></div><Field id="session-contribution" label="Fixed contribution per person (₹)" value="250" hint="Default contribution expected from each player."/><Field id="session-total" label="Total session expenses (₹)" value="4,500" hint="Includes turf, water, balls and other costs."/><Field id="session-turf" label="Actual turf charges paid (₹)" value="4,200"/><DemoButton id="session-create" primary>Create session</DemoButton></div>}
     {step.modal==="attendance"&&<><div className="tm-guide-search" data-tour-target="attendance-search">⌕ <span>Search name or mobile</span></div><div className="tm-guide-roster" data-tour-target="attendance-roster">{demoPlayers.map((p,i)=><div className="tm-guide-roster-item" key={p.name}><span className="tm-guide-checkbox">{i<4?"✓":""}</span><span><b>{p.name}</b><small>{p.phone}</small></span></div>)}</div><div className="tm-guide-inline-action" data-tour-target="attendance-add-player">＋ Add New Player</div><DemoButton id="attendance-save" primary>Save attendance</DemoButton></>}
     {step.modal==="quick-player"&&<div className="tm-guide-modal-fields"><Field id="quick-player-name" label="Name" value="Rohan"/><Field id="quick-player-phone" label="WhatsApp number" value="9876543212"/><DemoButton id="quick-player-save" primary>Add player</DemoButton></div>}
-    {step.modal==="share"&&<><div className="tm-guide-share-prompt">Session details are ready to share. Review the date, timing and player list before sending.</div><div className="tm-guide-whatsapp-preview" data-tour-target="share-message"><b>WhatsApp · Session message</b><pre>🏏 *Titans Turf*\n19 Nov 2026 · 9:00 PM – 12:00 AM\n\nPlayers playing:\n1. Aniket\n2. Ajit\n3. Suhas\n4. Sameet\n5. Krunal\n6. Mohak\n\nContribution: ₹250 per player</pre><div className="tm-guide-qr-placeholder">▦<small>COMMON PAYMENT QR</small></div></div><div className="tm-guide-share-actions" data-tour-target="share-actions"><DemoButton id="share-whatsapp" primary>Open WhatsApp &amp; Send</DemoButton><DemoButton id="share-qr">Share payment QR</DemoButton></div><div className="tm-guide-inline-action" data-tour-target="share-skip">Skip for now</div></>}
+    {step.modal==="share"&&<><div className="tm-guide-share-prompt">Session details are ready to share. Review the date, timing and player list before sending.</div><div className="tm-guide-whatsapp-preview" data-tour-target="share-message"><b>WhatsApp · Session message</b><pre>🏏 *Titans Turf*
+19 Nov 2026 · 9:00 PM – 12:00 AM
+
+Players playing:
+1. Aniket
+2. Ajit
+3. Suhas
+4. Sameet
+5. Krunal
+6. Mohak
+
+Contribution: ₹250 per player</pre><div className="tm-guide-qr-placeholder">▦<small>COMMON PAYMENT QR</small></div></div><div className="tm-guide-share-actions" data-tour-target="share-actions"><DemoButton id="share-whatsapp" primary>Open WhatsApp &amp; Send</DemoButton><DemoButton id="share-qr">Share payment QR</DemoButton></div><div className="tm-guide-inline-action" data-tour-target="share-skip">Skip for now</div></>}
     {step.modal==="reminder"&&<><div className="tm-guide-share-prompt" data-tour-target="reminder-message"><b>Ready for Ajit.</b><p>Pending cricket contribution · ₹250</p><small>Hi Ajit 👋 Your ₹250 contribution for Titans Turf is pending. Please scan the payment QR or use the payment link.</small></div><div className="tm-guide-qr-placeholder">▦<small>PERSONALISED PAYMENT QR</small></div><div data-tour-target="reminder-send"><DemoButton id="reminder-whatsapp" primary>Open Ajit's WhatsApp &amp; Send</DemoButton><small className="tm-guide-disclaimer">WhatsApp will not open during this guided demo.</small></div></>}
     {step.modal==="player"&&<div className="tm-guide-modal-fields"><Field id="player-name" label="Full name" value="Rohan"/><Field id="player-phone" label="WhatsApp number" value="9876543212"/><DemoButton id="player-save" primary>Add Player</DemoButton></div>}
    </section></div>}
