@@ -778,3 +778,19 @@
   width:15px!important;height:15px!important;fill:none!important;
   stroke:currentColor!important;stroke-width:2!important;stroke-linecap:round!important;
 }
+
+
+/* Use only the custom clear button in the session player search.
+   Hide the browser's native search-field clear control. */
+.attendance-picker-toolbar .attendance-player-search input[type="search"]::-webkit-search-cancel-button,
+.attendance-picker-toolbar .attendance-player-search input[type="search"]::-webkit-search-decoration,
+.attendance-picker-toolbar .attendance-player-search input[type="search"]::-webkit-search-results-button,
+.attendance-picker-toolbar .attendance-player-search input[type="search"]::-webkit-search-results-decoration{
+  -webkit-appearance:none;
+  appearance:none;
+  display:none;
+}
+.attendance-picker-toolbar .attendance-player-search input[type="search"]{
+  -webkit-appearance:none;
+  appearance:none;
+}
