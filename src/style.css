@@ -843,3 +843,26 @@
 .session-pdf-button{background:#fff5f3;border:1px solid #f2d8d2;color:#a54836;border-radius:9px;font-weight:700;transition:background .15s ease,border-color .15s ease,transform .15s ease}
 .session-pdf-button:hover{background:#ffebe7;border-color:#eac4bb;transform:translateY(-1px)}
 .session-pdf-button svg{stroke:currentColor}
+
+
+/* Overview entry point and guided organiser tutorial */
+.overview-hero-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.guide-button{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:44px;padding:0 16px;border:1px solid #cfe3d7;border-radius:11px;background:#fff;color:#24734f;font:700 13px Manrope,sans-serif;box-shadow:0 3px 10px #173e2b0a;transition:background .16s ease,border-color .16s ease,transform .16s ease}
+.guide-button:hover{background:#f0f8f3;border-color:#9fcab0;transform:translateY(-1px)}
+.guide-button:focus-visible,.tutorial-card button:focus-visible{outline:3px solid #a9dec1;outline-offset:2px}
+.tutorial-backdrop{position:fixed;inset:0;z-index:1200;display:grid;place-items:center;padding:20px;background:rgba(12,27,22,.56);backdrop-filter:blur(3px)}
+.tutorial-card{width:min(100%,490px);padding:22px;border:1px solid #e0ebe4;border-radius:20px;background:#fff;box-shadow:0 24px 80px #071b1250;color:#25382e}
+.tutorial-topline{display:flex;align-items:center;justify-content:space-between;gap:12px;color:#43815e;font-size:10px;font-weight:800;letter-spacing:.09em}
+.tutorial-close{width:32px;height:32px;border:0;border-radius:50%;background:#f1f5f2;color:#53665a;font-size:23px;line-height:1;cursor:pointer}
+.tutorial-progress{height:5px;margin:18px 0 17px;overflow:hidden;border-radius:10px;background:#edf2ee}
+.tutorial-progress span{display:block;height:100%;border-radius:10px;background:#2e9663;transition:width .2s ease}
+.tutorial-step-count{color:#7c8c82;font-size:10px;font-weight:800;letter-spacing:.08em}
+.tutorial-card h2{margin:9px 0 9px;color:#1f392b;font:800 22px/1.25 Manrope,sans-serif}
+.tutorial-card>p{margin:0;color:#53665a;font-size:14px;line-height:1.7}
+.tutorial-note{margin-top:17px;padding:11px 12px;border:1px solid #e2eee6;border-radius:10px;background:#f6faf7;color:#63766a;font-size:11px;line-height:1.55}
+.tutorial-actions{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:22px}
+.tutorial-actions>div{display:flex;gap:8px}
+.tutorial-skip,.tutorial-back{min-height:40px;padding:0 13px;border:1px solid #dce7df;border-radius:9px;background:#fff;color:#52665a;font-size:12px;font-weight:700;cursor:pointer}
+.tutorial-back:disabled{opacity:.4;cursor:not-allowed}
+.tutorial-next{min-height:40px;padding:0 18px;border-radius:9px}
+@media(max-width:520px){.overview-hero-actions{width:100%;display:grid;grid-template-columns:auto 1fr}.overview-hero-actions button{width:100%}.tutorial-backdrop{align-items:end;padding:12px}.tutorial-card{padding:19px 17px 16px;border-radius:18px}.tutorial-card h2{font-size:20px}.tutorial-card>p{font-size:13px}}
