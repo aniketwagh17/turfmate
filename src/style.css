@@ -1198,3 +1198,10 @@
 .tm-guide-player-filter span{color:#405c49;font-size:10px;font-weight:800}
 .tm-guide-player-history-rows{display:grid;gap:7px;margin-top:10px}
 .tm-guide-player-history-rows small{padding-top:7px;border-top:1px solid #e9efeb;color:#74857a;font-size:9px}
+
+.tm-guide-confirmation{padding:8px 2px 2px}
+.tm-guide-confirmation p{margin:0 0 9px;color:#344c3b;font-size:13px;font-weight:800;line-height:1.5}
+.tm-guide-confirmation>small{display:block;color:#78887d;font-size:10px;line-height:1.55}
+.tm-guide-confirmation>div{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:8px;margin-top:18px}
+.tm-guide-confirmation .tm-guide-button{min-height:38px}
+.tm-guide-confirmation .tm-guide-button.primary{border-color:#c43f3f;background:#c43f3f;color:#fff}
