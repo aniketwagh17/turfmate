@@ -108,7 +108,7 @@ function DemoRow({id,name,detail,amount,status}:{id?:string;name:string;detail:s
 }
 
 export default function GuidedTour({onClose}:{onClose:()=>void}){
- const [index,setIndex]=useState(0);
+ const [index,setIndex]=useState(0);\n const [complete,setComplete]=useState(false);
  const [placement,setPlacement]=useState<{top:number;left:number;width:number;compact:boolean}>({top:12,left:12,width:360,compact:false});\n const [positionReady,setPositionReady]=useState(false);\n const [layoutTick,setLayoutTick]=useState(0);
  const overlayRef=useRef<HTMLDivElement>(null);
  const cardRef=useRef<HTMLDivElement>(null);
@@ -151,7 +151,7 @@ export default function GuidedTour({onClose}:{onClose:()=>void}){
      setPlacement({top:chosen.top,left:chosen.left,width:compactWidth,compact:true});
     }
     setPositionReady(true);
-   },220);
+   },360);
   });
   return()=>{cancelled=true;cancelAnimationFrame(frame);window.clearTimeout(timer);overlayRef.current?.querySelectorAll(".tm-guide-focus").forEach(el=>el.classList.remove("tm-guide-focus"));};
  },[index,step.target,step.modal,layoutTick]);
@@ -162,9 +162,10 @@ export default function GuidedTour({onClose}:{onClose:()=>void}){
   return()=>window.removeEventListener("resize",reposition);
  },[]);
 
- const next=()=>{if(index===total-1)onClose();else setIndex(n=>n+1);};
+ const next=()=>{if(index===total-1)setComplete(true);else setIndex(n=>n+1);};
  const back=()=>setIndex(n=>Math.max(0,n-1));
 
+ if(complete)return <div className="tm-guide-overlay tm-guide-complete-overlay" role="dialog" aria-modal="true" aria-label="Tour complete"><section className="tm-guide-complete-card"><div className="tm-guide-complete-ball">🏏</div><small>GUIDED TOUR COMPLETE</small><h1>You’re ready to run your next session.</h1><p>You’ve explored the organiser journey from creating a booking to managing players, collecting payments and keeping the cricket fund in order.</p><div className="tm-guide-complete-summary"><span>✓ 81 guided steps</span><span>✓ Sample data only</span><span>✓ Your real workspace untouched</span></div><button type="button" onClick={onClose}>Return to TurfMate →</button></section></div>;
  return <div className="tm-guide-overlay" ref={overlayRef} role="dialog" aria-modal="true" aria-label="TurfMate guided product tour">
   <div className="tm-guide-app">
    <aside className="tm-guide-sidebar">
@@ -224,7 +225,7 @@ export default function GuidedTour({onClose}:{onClose:()=>void}){
     {step.modal==="player"&&<div className="tm-guide-modal-fields"><Field id="player-name" label="Full name" value="Rohan"/><Field id="player-phone" label="WhatsApp number" value="9876543212"/><DemoButton id="player-save" primary>Add Player</DemoButton></div>}
    </section></div>}
   </div>
-  <div className="tm-guide-tooltip" ref={cardRef} style={{top:placement.top,left:placement.left,width:placement.width,visibility:positionReady?"visible":"hidden"}} data-compact={placement.compact?"true":"false"}>
+  <div key={index} className="tm-guide-tooltip" ref={cardRef} style={{top:placement.top,left:placement.left,width:placement.width,visibility:positionReady?"visible":"hidden"}} data-compact={placement.compact?"true":"false"}>
    {placement.compact?<div className="tm-guide-compact"><span>🏏</span><b>Continue tutorial</b><small>{index+1}/{total}</small><button type="button" onClick={next} aria-label="Continue to next step">→</button><button type="button" onClick={onClose} aria-label="Exit tutorial">×</button></div>:<>
     <div className="tm-guide-tooltip-top"><span>🏏 TURFMATE WALKTHROUGH</span><span>STEP {index+1} OF {total}</span><button type="button" onClick={onClose} aria-label="Exit tutorial">×</button></div>
     <div className="tm-guide-progress"><span style={{width:progress+"%"}}/></div>
