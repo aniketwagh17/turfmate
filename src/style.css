@@ -653,3 +653,19 @@
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 @media(max-width:760px){.session-action-grid{grid-template-columns:1fr;gap:9px}.session-action-card{min-height:74px;padding:12px}.session-payment-heading{align-items:flex-start;flex-direction:column}.session-payment-heading>.small-action{width:100%}}
 @media(max-width:520px){.attendance-picker-toolbar{align-items:stretch;flex-direction:column}.attendance-picker-count{align-items:flex-start;flex-direction:row;gap:7px}.attendance-picker-count span{margin-top:0}.player-select-grid{grid-template-columns:1fr;max-height:42vh}}
+
+
+/* Session detail and attendance picker polish */
+.attendance-player-search{position:relative;top:auto;z-index:auto;flex:1 1 220px;margin:0!important;min-width:0}
+.attendance-player-search>svg{width:20px;height:20px;fill:none;stroke:#668276;stroke-width:1.8}
+.attendance-player-search input{min-height:32px}
+.session-action-card-primary{border-color:#8bd5b5;background:linear-gradient(135deg,#effbf5,#ffffff);box-shadow:0 4px 15px #16865f12}
+.session-action-card-primary .session-action-icon{background:#16865f;color:#fff}
+.session-action-card-primary .session-action-copy b{color:#087d57}
+.session-action-card-primary .session-action-copy small{color:#4f8d73}
+.session-back-button{display:inline-flex;align-items:center;gap:9px;min-height:38px;margin:0 0 12px;padding:8px 13px;border:1px solid #d7e7df;border-radius:9px;background:#f3faf6;color:#167a56;font-size:12px;font-weight:800;cursor:pointer;transition:background .16s ease,border-color .16s ease,transform .16s ease}
+.session-back-button:hover{background:#e7f6ee;border-color:#9bd5b9;transform:translateX(-2px)}
+.session-back-button:focus-visible{outline:3px solid #b9e7d5;outline-offset:2px}
+.session-back-button span{font-size:18px;line-height:1}
+@media(max-width:520px){.player-select-grid{grid-template-columns:repeat(2,minmax(0,1fr));max-height:42vh}.player-select-card{padding:9px 8px!important;gap:7px}.player-select-card b{font-size:11px}.player-select-card small{font-size:9px}.attendance-picker-toolbar{align-items:stretch;flex-direction:column}.attendance-picker-count{align-items:flex-start;flex-direction:row;gap:7px}.attendance-picker-count span{margin-top:0}}
+@media(max-width:380px){.player-select-grid{grid-template-columns:1fr}}
