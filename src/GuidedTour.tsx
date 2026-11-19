@@ -123,51 +123,76 @@ export default function GuidedTour({onClose}:{onClose:()=>void}){
  useEffect(()=>{
   let cancelled=false;
   let timer=0;
+  let frame=0;
   setPositionReady(false);
-  const frame=requestAnimationFrame(()=>{
+  frame=requestAnimationFrame(()=>{
    const target=Array.from(overlayRef.current?.querySelectorAll<HTMLElement>('[data-tour-target="'+step.target+'"]')||[]).find(el=>el.getClientRects().length>0);
    if(!target){setPositionReady(true);return;}
    target.scrollIntoView({behavior:"smooth",block:"center",inline:"nearest"});
-   timer=window.setTimeout(()=>{
+   const placeTooltip=()=>{
     if(cancelled)return;
-    target.classList.add("tm-guide-focus");
     const card=cardRef.current;
     const rect=target.getBoundingClientRect();
-    const vw=window.innerWidth,vh=window.innerHeight,pad=12,gap=14;
-    const width=Math.min(380,vw-24);
+    const vw=window.visualViewport?.width||window.innerWidth;
+    const vh=window.visualViewport?.height||window.innerHeight;
+    const pad=12,gap=14,width=Math.min(380,vw-24);
     if(card)card.style.width=width+"px";
-    const cardHeight=card?.getBoundingClientRect().height||220;
-    const centeredLeft=Math.max(pad,Math.min(rect.left+(rect.width-width)/2,vw-width-pad));
+    const cardHeight=Math.min(card?.getBoundingClientRect().height||220,vh-2*pad);
+    const clamp=(value:number,min:number,max:number)=>Math.max(min,Math.min(value,max));
+    const centeredLeft=clamp(rect.left+(rect.width-width)/2,pad,vw-width-pad);
+    const centeredTop=clamp(rect.top+(rect.height-cardHeight)/2,pad,vh-cardHeight-pad);
     const candidates=[
      {top:rect.bottom+gap,left:centeredLeft,side:"below"},
      {top:rect.top-cardHeight-gap,left:centeredLeft,side:"above"},
-     {top:Math.max(pad,Math.min(rect.top+(rect.height-cardHeight)/2,vh-cardHeight-pad)),left:rect.right+gap,side:"right"},
-     {top:Math.max(pad,Math.min(rect.top+(rect.height-cardHeight)/2,vh-cardHeight-pad)),left:rect.left-width-gap,side:"left"}
+     {top:centeredTop,left:rect.right+gap,side:"right"},
+     {top:centeredTop,left:rect.left-width-gap,side:"left"}
     ];
-    const overlaps=(x:{top:number;left:number},w:number,h:number)=>x.left<rect.right+8&&x.left+w>rect.left-8&&x.top<rect.bottom+8&&x.top+h>rect.top-8;
-    const valid=candidates.filter(x=>x.top>=pad&&x.left>=pad&&x.top+cardHeight<=vh-pad&&x.left+width<=vw-pad&&!overlaps(x,width,cardHeight));
-    if(valid.length){const preferred=valid.find(x=>x.side==="below")||valid.find(x=>x.side==="above")||valid[0];setPlacement({top:preferred.top,left:preferred.left,width,compact:false});}
-    else{
-     const compactHeight=52,compactWidth=Math.min(320,vw-24),compactLeft=Math.max(pad,(vw-compactWidth)/2);
-     const sideWidth=Math.min(260,vw-24);
-     const centerTop=Math.max(pad,Math.min(rect.top+(rect.height-compactHeight)/2,vh-compactHeight-pad));
-     const spots=[
-      {top:pad,left:compactLeft,width:compactWidth},
-      {top:vh-compactHeight-pad,left:compactLeft,width:compactWidth},
-      {top:centerTop,left:rect.right+gap,width:sideWidth},
-      {top:centerTop,left:rect.left-sideWidth-gap,width:sideWidth}
-     ];
-     const safeSpots=spots.filter(x=>x.top>=pad&&x.left>=pad&&x.top+compactHeight<=vh-pad&&x.left+x.width<=vw-pad&&!overlaps(x,x.width,compactHeight));
-     const chosen=safeSpots.find(x=>x.top===pad&&rect.top>vh/2)||safeSpots.find(x=>x.top>vh/2)||safeSpots[0];
-     const fallback=chosen||{top:rect.top>vh/2?pad:vh-compactHeight-pad,left:compactLeft,width:compactWidth};
-     setPlacement({top:fallback.top,left:fallback.left,width:fallback.width,compact:true});
+    const overlaps=(x:{top:number;left:number},w:number,h:number)=>x.left<rect.right+9&&x.left+w>rect.left-9&&x.top<rect.bottom+9&&x.top+h>rect.top-9;
+    const fits=(x:{top:number;left:number},w:number,h:number)=>x.top>=pad&&x.left>=pad&&x.top+h<=vh-pad&&x.left+w<=vw-pad&&!overlaps(x,w,h);
+    const valid=candidates.filter(x=>fits(x,width,cardHeight));
+    if(valid.length){
+     const below=valid.find(x=>x.side==="below"),above=valid.find(x=>x.side==="above");
+     const chosen=below||above||valid[0];
+     setPlacement({top:chosen.top,left:chosen.left,width,compact:false});
+     setPositionReady(true);
+     return;
     }
-    setPositionReady(true);
-   },360);
+    const compactHeight=48,compactWidth=Math.min(310,vw-24),compactLeft=clamp((vw-compactWidth)/2,pad,vw-compactWidth-pad);
+    const compactCandidates=[
+     {top:pad,left:compactLeft,width:compactWidth},
+     {top:vh-compactHeight-pad,left:compactLeft,width:compactWidth},
+     {top:centeredTop,left:rect.right+gap,width:Math.min(250,vw-24)},
+     {top:centeredTop,left:rect.left-Math.min(250,vw-24)-gap,width:Math.min(250,vw-24)}
+    ];
+    const safe=compactCandidates.filter(x=>fits(x,x.width,compactHeight));
+    if(safe.length){
+     const chosen=safe.find(x=>x.top===pad&&rect.top>vh/2)||safe.find(x=>x.top>vh/2)||safe[0];
+     setPlacement({top:chosen.top,left:chosen.left,width:chosen.width,compact:true});
+     setPositionReady(true);
+     return;
+    }
+    // If the highlighted control fills the viewport, move it toward one edge to create a safe
+    // strip for the compact cricket-ball control instead of placing the tooltip over the target.
+    target.scrollIntoView({behavior:"smooth",block:rect.top>vh/2?"start":"end",inline:"nearest"});
+    timer=window.setTimeout(()=>{
+     if(cancelled)return;
+     const moved=target.getBoundingClientRect();
+     const topSafe=moved.top>compactHeight+pad;
+     const bottomSafe=vh-moved.bottom>compactHeight+pad;
+     const top=topSafe?pad:bottomSafe?vh-compactHeight-pad:pad;
+     setPlacement({top,left:compactLeft,width:compactWidth,compact:true});
+     setPositionReady(true);
+    },420);
+   };
+   timer=window.setTimeout(placeTooltip,520);
   });
-  return()=>{cancelled=true;cancelAnimationFrame(frame);window.clearTimeout(timer);overlayRef.current?.querySelectorAll(".tm-guide-focus").forEach(el=>el.classList.remove("tm-guide-focus"));};
+  return()=>{
+   cancelled=true;
+   cancelAnimationFrame(frame);
+   window.clearTimeout(timer);
+   overlayRef.current?.querySelectorAll(".tm-guide-focus").forEach(el=>el.classList.remove("tm-guide-focus"));
+  };
  },[index,step.target,step.modal,layoutTick]);
-
  useEffect(()=>{
   const reposition=()=>setLayoutTick(t=>t+1);
   window.addEventListener("resize",reposition);
@@ -177,7 +202,7 @@ export default function GuidedTour({onClose}:{onClose:()=>void}){
  const next=()=>{if(index===total-1)setComplete(true);else setIndex(n=>n+1);};
  const back=()=>setIndex(n=>Math.max(0,n-1));
 
- if(complete)return <div className="tm-guide-overlay tm-guide-complete-overlay" role="dialog" aria-modal="true" aria-label="Tour complete"><section className="tm-guide-complete-card"><div className="tm-guide-complete-ball">🏏</div><small>GUIDED TOUR COMPLETE</small><h1>You’re ready to run your next session.</h1><p>You’ve explored the organiser journey from creating a booking to managing players, collecting payments and keeping the cricket fund in order.</p><div className="tm-guide-complete-summary"><span>✓ 81 guided steps</span><span>✓ Sample data only</span><span>✓ Your real workspace untouched</span></div><button type="button" onClick={onClose}>Return to TurfMate →</button></section></div>;
+ if(complete)return <div className="tm-guide-overlay tm-guide-complete-overlay" role="dialog" aria-modal="true" aria-label="Tour complete"><section className="tm-guide-complete-card"><div className="tm-guide-complete-ball">🏏</div><small>GUIDED TOUR COMPLETE</small><h1>You’re ready to run your next session.</h1><p>You’ve explored the organiser journey from creating a booking to managing players, collecting payments and keeping the cricket fund in order.</p><div className="tm-guide-complete-summary"><span>✓ {total} guided steps</span><span>✓ Sample data only</span><span>✓ Your real workspace untouched</span></div><button type="button" onClick={onClose}>Return to TurfMate →</button></section></div>;
  return <div className="tm-guide-overlay" ref={overlayRef} role="dialog" aria-modal="true" aria-label="TurfMate guided product tour">
   <div className="tm-guide-app">
    <aside className="tm-guide-sidebar">
