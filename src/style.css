@@ -711,3 +711,70 @@
   .player-select-card{padding:7px 6px!important;gap:5px}
   .player-select-card input{width:15px;height:15px}
 }
+
+
+/* Dedicated one-line search control in the Manage Session Players modal.
+   Keep it independent from the Players page search layout rules. */
+.attendance-picker-toolbar .attendance-player-search{
+  display:flex!important;
+  position:relative!important;
+  align-items:center!important;
+  gap:10px!important;
+  flex:0 0 46px!important;
+  width:100%!important;
+  height:46px!important;
+  min-height:46px!important;
+  max-height:46px!important;
+  margin:0!important;
+  padding:0 12px!important;
+  overflow:hidden!important;
+  border:1.5px solid #a8cdb9!important;
+  border-radius:11px!important;
+  background:#fff!important;
+  box-shadow:0 3px 10px #173e2b08!important;
+}
+.attendance-picker-toolbar .attendance-player-search>svg{
+  position:static!important;
+  display:block!important;
+  flex:0 0 20px!important;
+  width:20px!important;
+  height:20px!important;
+  transform:none!important;
+  fill:none!important;
+  stroke:#327b5b!important;
+  stroke-width:1.8!important;
+}
+.attendance-picker-toolbar .attendance-player-search input{
+  display:block!important;
+  flex:1 1 auto!important;
+  width:0!important;
+  min-width:0!important;
+  height:42px!important;
+  min-height:0!important;
+  max-height:42px!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  outline:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  font-size:13px!important;
+}
+.attendance-picker-toolbar .attendance-player-search>button{
+  display:grid!important;
+  place-items:center!important;
+  flex:0 0 28px!important;
+  width:28px!important;
+  height:28px!important;
+  min-height:28px!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:50%!important;
+  background:#eef4f0!important;
+}
+.attendance-picker-toolbar .attendance-player-search>button svg{
+  width:15px!important;height:15px!important;fill:none!important;
+  stroke:currentColor!important;stroke-width:2!important;stroke-linecap:round!important;
+}
