@@ -153,6 +153,10 @@ export default function GuidedTour({onClose}:{onClose:()=>void}){
   frame=requestAnimationFrame(()=>{
    const target=Array.from(overlayRef.current?.querySelectorAll<HTMLElement>('[data-tour-target="'+step.target+'"]')||[]).find(el=>el.getClientRects().length>0);
    if(!target){setPositionReady(true);return;}
+   // Apply the visible spotlight to the exact element the current step describes.
+   // The previous preview calculated tooltip placement but never attached this class,
+   // so the target was not actually highlighted.
+   target.classList.add("tm-guide-focus");
    target.scrollIntoView({behavior:"smooth",block:"center",inline:"nearest"});
    const placeTooltip=()=>{
     if(cancelled)return;
@@ -221,8 +225,28 @@ export default function GuidedTour({onClose}:{onClose:()=>void}){
  useEffect(()=>{
   const reposition=()=>setLayoutTick(t=>t+1);
   window.addEventListener("resize",reposition);
-  return()=>window.removeEventListener("resize",reposition);
+  window.addEventListener("scroll",reposition,true);
+  window.visualViewport?.addEventListener("resize",reposition);
+  window.visualViewport?.addEventListener("scroll",reposition);
+  return()=>{
+   window.removeEventListener("resize",reposition);
+   window.removeEventListener("scroll",reposition,true);
+   window.visualViewport?.removeEventListener("resize",reposition);
+   window.visualViewport?.removeEventListener("scroll",reposition);
+  };
  },[]);
+ useEffect(()=>{
+  const previousOverflow=document.body.style.overflow;
+  document.body.style.overflow="hidden";
+  const onKeyDown=(event:KeyboardEvent)=>{
+   if(event.key==="Escape"){event.preventDefault();onClose();}
+  };
+  window.addEventListener("keydown",onKeyDown);
+  return()=>{
+   document.body.style.overflow=previousOverflow;
+   window.removeEventListener("keydown",onKeyDown);
+  };
+ },[onClose]);
 
  const next=()=>{if(index===total-1)setComplete(true);else setIndex(n=>n+1);};
  const back=()=>setIndex(n=>Math.max(0,n-1));
