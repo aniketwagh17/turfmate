@@ -624,3 +624,198 @@
 @keyframes turfmateSpin{to{transform:rotate(360deg)}}
 @media(max-width:480px){.turfmate-loader{width:min(100%,330px);min-height:250px;padding:28px 20px}}
 @media(prefers-reduced-motion:reduce){.loader-spinner{animation-duration:2.5s}}
+
+
+/* Session actions and scalable attendance picker */
+.session-action-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:18px 0 20px}
+.session-action-card{display:flex;align-items:center;gap:12px;min-width:0;min-height:88px;padding:14px;border:1px solid #e1e9ed;border-radius:13px;background:#fff;text-align:left;color:#24364a;box-shadow:0 2px 8px #18344708;cursor:pointer;transition:border-color .16s ease,box-shadow .16s ease,transform .16s ease}
+.session-action-card:hover:not(:disabled){border-color:#a8d9c6;box-shadow:0 7px 18px #18344712;transform:translateY(-1px)}
+.session-action-card:focus-visible{outline:3px solid #b9e7d5;outline-offset:2px}
+.session-action-card:disabled{opacity:.48;cursor:not-allowed}
+.session-action-icon{display:grid;place-items:center;flex:0 0 40px;width:40px;height:40px;border-radius:11px;background:#eaf7f1;color:#16865f;font-size:21px;font-weight:800}
+.session-action-copy{display:flex;flex-direction:column;gap:5px;min-width:0;flex:1}
+.session-action-copy b{font:700 13px Manrope;color:#23364a}
+.session-action-copy small{font-size:10px;line-height:1.4;color:#8290a0}
+.session-action-arrow{color:#91a0ac;font-size:19px}
+.session-payment-management{scroll-margin-top:22px}
+.session-payment-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px}
+.session-payment-heading h2{margin:0}
+.session-payment-heading p{margin:5px 0 0;color:#8290a0;font-size:11px;line-height:1.45}
+.attendance-picker-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:2px 0 12px}
+.attendance-search-field{position:relative;display:block;flex:1;min-width:0;margin:0!important}
+.attendance-search-field svg{position:absolute;left:12px;top:50%;width:17px;height:17px;transform:translateY(-50%);fill:none;stroke:#8493a1;stroke-width:1.7;pointer-events:none}
+.attendance-search-field input{width:100%;min-height:43px;margin:0;padding:10px 12px 10px 38px;border:1px solid #dce5ea;border-radius:9px;background:#fbfcfd;font-size:12px}
+.attendance-search-field input:focus{outline:0;border-color:#58b895;box-shadow:0 0 0 3px #16865f18}
+.attendance-picker-count{display:flex;flex-direction:column;align-items:flex-end;white-space:nowrap}
+.attendance-picker-count b{font-size:12px;color:#16865f}
+.attendance-picker-count span{font-size:10px;color:#8a97a4;margin-top:3px}
+.attendance-no-results{grid-column:1/-1;margin:0;padding:24px 12px;text-align:center;color:#8492a0;font-size:12px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:760px){.session-action-grid{grid-template-columns:1fr;gap:9px}.session-action-card{min-height:74px;padding:12px}.session-payment-heading{align-items:flex-start;flex-direction:column}.session-payment-heading>.small-action{width:100%}}
+@media(max-width:520px){.attendance-picker-toolbar{align-items:stretch;flex-direction:column}.attendance-picker-count{align-items:flex-start;flex-direction:row;gap:7px}.attendance-picker-count span{margin-top:0}.player-select-grid{grid-template-columns:1fr;max-height:42vh}}
+
+
+/* Session detail and attendance picker polish */
+.attendance-player-search{position:relative;top:auto;z-index:auto;flex:1 1 220px;margin:0!important;min-width:0}
+.attendance-player-search>svg{width:20px;height:20px;fill:none;stroke:#668276;stroke-width:1.8}
+.attendance-player-search input{min-height:32px}
+.session-action-card-primary{border-color:#8bd5b5;background:linear-gradient(135deg,#effbf5,#ffffff);box-shadow:0 4px 15px #16865f12}
+.session-action-card-primary .session-action-icon{background:#16865f;color:#fff}
+.session-action-card-primary .session-action-copy b{color:#087d57}
+.session-action-card-primary .session-action-copy small{color:#4f8d73}
+.session-back-button{display:inline-flex;align-items:center;gap:9px;min-height:38px;margin:0 0 12px;padding:8px 13px;border:1px solid #d7e7df;border-radius:9px;background:#f3faf6;color:#167a56;font-size:12px;font-weight:800;cursor:pointer;transition:background .16s ease,border-color .16s ease,transform .16s ease}
+.session-back-button:hover{background:#e7f6ee;border-color:#9bd5b9;transform:translateX(-2px)}
+.session-back-button:focus-visible{outline:3px solid #b9e7d5;outline-offset:2px}
+.session-back-button span{font-size:18px;line-height:1}
+@media(max-width:520px){.player-select-grid{grid-template-columns:repeat(2,minmax(0,1fr));max-height:42vh}.player-select-card{padding:9px 8px!important;gap:7px}.player-select-card b{font-size:11px}.player-select-card small{font-size:9px}.attendance-picker-toolbar{align-items:stretch;flex-direction:column}.attendance-picker-count{align-items:flex-start;flex-direction:row;gap:7px}.attendance-picker-count span{margin-top:0}}
+@media(max-width:380px){.player-select-grid{grid-template-columns:1fr}}
+
+
+/* Attendance picker: compact search field and two-up player cards on phones. */
+.attendance-picker-toolbar{align-items:center}
+.attendance-player-search{
+  flex:0 0 auto!important;
+  width:100%;
+  min-height:46px!important;
+  height:46px;
+  padding:0 12px!important;
+  border-radius:11px!important;
+}
+.attendance-player-search input{
+  height:42px!important;
+  min-height:42px!important;
+  padding:0!important;
+  font-size:13px!important;
+}
+.attendance-player-search>button{
+  width:28px!important;
+  height:28px!important;
+  flex:0 0 28px!important;
+}
+.attendance-picker-count{align-items:flex-start}
+.player-select-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.player-select-card{min-width:0;gap:8px;padding:9px 10px!important}
+.player-select-card span{min-width:0}
+@media(max-width:620px){
+  .attendance-picker-toolbar{align-items:stretch;flex-direction:column;gap:9px}
+  .attendance-player-search{flex:0 0 46px!important;width:100%}
+  .attendance-picker-count{align-items:flex-start;flex-direction:row;gap:7px}
+  .attendance-picker-count span{margin-top:0}
+  .player-select-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px;max-height:40vh}
+  .player-select-card{min-height:48px;padding:8px 7px!important;gap:6px}
+  .player-select-card b{font-size:11px;line-height:1.25;overflow-wrap:anywhere}
+  .player-select-card small{font-size:9px;overflow-wrap:anywhere}
+}
+@media(max-width:380px){
+  .player-select-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .player-select-card{padding:7px 6px!important;gap:5px}
+  .player-select-card input{width:15px;height:15px}
+}
+
+
+/* Dedicated one-line search control in the Manage Session Players modal.
+   Keep it independent from the Players page search layout rules. */
+.attendance-picker-toolbar .attendance-player-search{
+  display:flex!important;
+  position:relative!important;
+  align-items:center!important;
+  gap:10px!important;
+  flex:0 0 46px!important;
+  width:100%!important;
+  height:46px!important;
+  min-height:46px!important;
+  max-height:46px!important;
+  margin:0!important;
+  padding:0 12px!important;
+  overflow:hidden!important;
+  border:1.5px solid #a8cdb9!important;
+  border-radius:11px!important;
+  background:#fff!important;
+  box-shadow:0 3px 10px #173e2b08!important;
+}
+.attendance-picker-toolbar .attendance-player-search>svg{
+  position:static!important;
+  display:block!important;
+  flex:0 0 20px!important;
+  width:20px!important;
+  height:20px!important;
+  transform:none!important;
+  fill:none!important;
+  stroke:#327b5b!important;
+  stroke-width:1.8!important;
+}
+.attendance-picker-toolbar .attendance-player-search input{
+  display:block!important;
+  flex:1 1 auto!important;
+  width:0!important;
+  min-width:0!important;
+  height:42px!important;
+  min-height:0!important;
+  max-height:42px!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  outline:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  font-size:13px!important;
+}
+.attendance-picker-toolbar .attendance-player-search>button{
+  display:grid!important;
+  place-items:center!important;
+  flex:0 0 28px!important;
+  width:28px!important;
+  height:28px!important;
+  min-height:28px!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:50%!important;
+  background:#eef4f0!important;
+}
+.attendance-picker-toolbar .attendance-player-search>button svg{
+  width:15px!important;height:15px!important;fill:none!important;
+  stroke:currentColor!important;stroke-width:2!important;stroke-linecap:round!important;
+}
+
+
+/* Use only the custom clear button in the session player search.
+   Hide the browser's native search-field clear control. */
+.attendance-picker-toolbar .attendance-player-search input[type="search"]::-webkit-search-cancel-button,
+.attendance-picker-toolbar .attendance-player-search input[type="search"]::-webkit-search-decoration,
+.attendance-picker-toolbar .attendance-player-search input[type="search"]::-webkit-search-results-button,
+.attendance-picker-toolbar .attendance-player-search input[type="search"]::-webkit-search-results-decoration{
+  -webkit-appearance:none;
+  appearance:none;
+  display:none;
+}
+.attendance-picker-toolbar .attendance-player-search input[type="search"]{
+  -webkit-appearance:none;
+  appearance:none;
+}
+
+
+/* Empty roster state in Manage session players */
+.attendance-empty-roster{grid-column:1/-1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:104px;padding:20px 16px;text-align:center;border:1px dashed var(--border-color,#d7e2dc);border-radius:12px;background:var(--panel-soft,#f8faf9)}
+.attendance-empty-roster strong{font-size:14px}
+.attendance-empty-roster span{font-size:13px;color:var(--muted,#718078)}
+
+
+/* One-time TurfMate session completion celebration */
+.swal2-popup.session-success-celebration{position:relative;overflow:hidden;border-radius:22px;padding:2rem 1.5rem 1.6rem}
+.session-success-celebration .swal2-title{position:relative;z-index:2;font-size:clamp(1.25rem,4vw,1.65rem);line-height:1.25;color:#166534}
+.session-success-celebration .swal2-html-container{position:relative;z-index:2;margin:0.6rem 0 1rem!important}
+.session-success-celebration .swal2-icon{border-color:#22a06b;color:#16a36a}
+.session-success-celebration .swal2-confirm{position:relative;z-index:3;border-radius:10px!important;padding:.75rem 1.5rem!important;font-weight:700}
+.session-success-art{display:flex;align-items:center;justify-content:center;gap:18px;margin:8px 0 14px;font-size:clamp(2rem,9vw,3rem)}
+.session-success-art span{display:inline-block;animation:session-success-bounce .8s ease-in-out both}
+.session-success-art span:nth-child(2){animation-delay:.12s}
+.session-success-art span:nth-child(3){animation-delay:.24s}
+.session-success-message{margin:0 auto 8px;max-width:310px;color:#344b3d;font-size:15px;line-height:1.5;font-weight:600}
+.session-success-submessage{margin:0;color:#718078;font-size:12px}
+.session-success-confetti{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:1}
+.session-success-confetti i{position:absolute;top:-12px;left:calc(var(--i)*5.55%);width:7px;height:12px;border-radius:2px;background:hsl(calc(var(--i)*31),70%,55%);animation:session-success-fall 2.3s ease-in both;animation-delay:calc(var(--i)*-0.09s);transform:rotate(calc(var(--i)*37deg))}
+@keyframes session-success-fall{to{transform:translateY(390px) rotate(620deg);opacity:0}}
+@keyframes session-success-bounce{0%{transform:translateY(12px) scale(.65);opacity:0}65%{transform:translateY(-5px) scale(1.12);opacity:1}100%{transform:translateY(0) scale(1);opacity:1}}
+@media(prefers-reduced-motion:reduce){.session-success-art span,.session-success-confetti i{animation:none!important}.session-success-confetti{display:none}}
