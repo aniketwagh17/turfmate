@@ -944,3 +944,33 @@
 .guided-tour-next{border:1px solid #53c98a;background:#35a96d;color:#071b10}
 .guided-tour-card button:focus-visible{outline:3px solid #9de8b9;outline-offset:3px}
 @media(max-width:650px){.guided-tour-card{right:10px;bottom:calc(10px + env(safe-area-inset-bottom));width:calc(100vw - 20px);max-height:42vh;padding:13px 14px}.guided-tour-card h2{font-size:15px}.guided-tour-card>p{font-size:11px}.guided-tour-hint{font-size:9px}}
+
+
+/* Guided tour: spotlight the real Add session control, then switch to a safe form demo. */
+.guided-tour-spotlight-mode{background:transparent!important}
+.guided-tour-spotlight-mode .guided-tour-card{z-index:10003;bottom:auto!important}
+.guided-tour-target{position:relative!important;z-index:10002!important;outline:3px solid #55e59a!important;outline-offset:6px!important;border-radius:12px!important;box-shadow:0 0 0 9999px rgba(5,14,10,.46),0 0 0 10px rgba(69,220,135,.2)!important}
+.guided-tour-demo-mode{display:flex;align-items:center;justify-content:center;gap:22px;padding:20px;background:rgba(5,14,10,.86)!important;overflow-y:auto}
+.guided-demo-modal-preview{width:min(560px,calc(100vw - 32px));max-height:calc(100dvh - 40px);overflow:auto;padding:20px;border:1px solid #dce7df;border-radius:18px;background:#fff;color:#26382d;box-shadow:0 24px 70px #0008}
+.guided-demo-modal-heading{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding-bottom:13px;border-bottom:1px solid #e9efeb}
+.guided-demo-modal-heading small{color:#218253;font-size:9px;font-weight:900;letter-spacing:.13em}
+.guided-demo-modal-heading h2{margin:5px 0 0;color:#20372a;font:800 20px Manrope,sans-serif}
+.guided-demo-modal-heading>span{color:#829188;font-size:25px}
+.guided-demo-modal-body{display:grid;gap:11px}
+.guided-demo-field{min-width:0;padding:10px 11px;border:1px solid #dce6df;border-radius:10px;background:#fff}
+.guided-demo-field label{display:block;margin-bottom:6px;color:#53665a;font-size:10px;font-weight:800}
+.guided-demo-field>div:not(.guided-demo-choice){min-height:20px;color:#293d30;font-size:12px}
+.guided-demo-field>div span{float:right;color:#84968a}
+.guided-demo-field>small{display:block;margin-top:5px;color:#7d8d83;font-size:9px;line-height:1.4}
+.guided-demo-field-highlight{border:2px solid #27a968;background:#f0fbf4;box-shadow:0 0 0 4px #35b87524}
+.guided-demo-two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.guided-demo-choice{padding:5px 0;color:#23764b;font-size:10px}
+.guided-demo-choice.muted{color:#89958d}
+.guided-demo-create{display:grid;place-items:center;min-height:42px;border-radius:9px;background:#218c56;color:#fff;font-size:12px;font-weight:800}
+.guided-tour-card-demo{position:relative!important;inset:auto!important;flex:0 0 min(350px,calc(100vw - 32px));width:min(350px,calc(100vw - 32px));max-height:calc(100dvh - 40px);overflow:auto}
+@media(max-width:760px){
+ .guided-tour-demo-mode{flex-direction:column;justify-content:flex-start;gap:12px;padding:10px}
+ .guided-demo-modal-preview{width:min(560px,100%);max-height:none;padding:14px}
+ .guided-tour-card-demo{flex:0 0 auto;width:min(560px,100%);max-height:none}
+ .guided-demo-two{gap:7px}
+}
