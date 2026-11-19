@@ -872,42 +872,27 @@
 @media(max-width:700px){.overview-hero-actions{width:100%;display:grid;grid-template-columns:auto 1fr}.overview-hero-actions button{width:100%}.tutorial-dock{width:min(340px,calc(100vw - 20px));padding:12px 13px}.tutorial-dock.is-collapsed{min-width:210px}.tutorial-dock h2{font-size:15px}.tutorial-dock>p{font-size:11px}.tutorial-live-tip{font-size:9px}}
 
 
-/* Guided demo: keep the real app in the upper 80% and instructions in a fixed lower rail. */
-.shell.tutorial-mode{height:80vh;min-height:0;overflow:hidden}
-.shell.tutorial-mode .sidebar{height:80vh;min-height:0;overflow-y:auto}
-.shell.tutorial-mode main{height:80vh;min-height:0;overflow-y:auto;padding-bottom:24px}
-.tutorial-dock{position:fixed;inset:auto 0 0;z-index:1200;width:100%;height:20vh;min-height:132px;max-height:210px;box-sizing:border-box;padding:12px 22px;border:0;border-top:1px solid #cfe3d7;border-radius:16px 16px 0 0;background:#fff;box-shadow:0 -8px 28px #102b1d18;color:#25382e}
-.tutorial-dock-content{width:min(1120px,100%);height:100%;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-rows:auto 1fr;column-gap:24px;align-items:center}
-.tutorial-dock-heading{display:flex;align-items:center;gap:18px;min-width:0}
-.tutorial-drag-label{display:flex;flex-direction:column;gap:3px;color:#26734e;font-size:10px;font-weight:900;letter-spacing:.09em;white-space:nowrap}
-.tutorial-drag-label small{color:#87978d;font-size:9px;letter-spacing:.07em}
-.tutorial-step-count{color:#7c8c82;font-size:9px;font-weight:900;letter-spacing:.08em;white-space:nowrap}
-.tutorial-copy{min-width:0;align-self:center}
-.tutorial-progress{height:4px;margin:0 0 7px;overflow:hidden;border-radius:10px;background:#edf2ee}
-.tutorial-progress span{display:block;height:100%;border-radius:10px;background:#2e9663;transition:width .25s ease}
-.tutorial-dock h2{margin:0 0 4px;color:#1f392b;font:800 15px/1.2 Manrope,sans-serif}
-.tutorial-dock p{margin:0;color:#53665a;font-size:11px;line-height:1.4}
-.tutorial-actions{grid-column:2;grid-row:1 / span 2;display:flex;align-items:center;gap:8px;margin:0}
-.tutorial-actions>div{display:flex;gap:7px}
-.tutorial-skip,.tutorial-back{min-height:36px;padding:0 12px;border:1px solid #dce7df;border-radius:8px;background:#fff;color:#52665a;font-size:11px;font-weight:700;cursor:pointer}
-.tutorial-back:disabled{opacity:.4;cursor:not-allowed}
-.tutorial-next{min-height:36px;padding:0 14px;border-radius:8px;font-size:11px}
-.guide-spotlight{scroll-margin:20px}
-.shell.tutorial-mode .mobile-nav{bottom:20vh}
-@media(max-width:700px){
- .shell.tutorial-mode{height:80dvh}
- .shell.tutorial-mode .sidebar{display:none}
- .shell.tutorial-mode main{height:80dvh;padding-bottom:16px}
- .tutorial-dock{height:20dvh;min-height:150px;max-height:none;padding:9px 12px calc(9px + env(safe-area-inset-bottom))}
- .tutorial-dock-content{grid-template-columns:minmax(0,1fr) auto;grid-template-rows:auto 1fr;column-gap:10px}
- .tutorial-dock-heading{display:block}
- .tutorial-drag-label{font-size:9px}
- .tutorial-step-count{display:block;margin-top:3px;font-size:8px}
- .tutorial-dock h2{font-size:13px}
- .tutorial-dock p{font-size:10px;line-height:1.32}
- .tutorial-actions{flex-direction:column;align-items:flex-end;justify-content:center;gap:6px}
- .tutorial-actions>div{gap:5px}
- .tutorial-skip,.tutorial-back,.tutorial-next{min-height:31px;padding:0 9px;font-size:10px}
- .tutorial-live-tip{display:none}
- .shell.tutorial-mode .mobile-nav{bottom:20dvh}
-}
+
+
+/* Contextual guide: a floating callout that moves above or below the highlighted app control. */
+.guide-spotlight{position:relative!important;z-index:1090!important;outline:3px solid #20a66a!important;outline-offset:5px!important;border-radius:12px;box-shadow:0 0 0 7px #20a66a20,0 12px 34px #173e2b18!important;scroll-margin:28px}
+.tutorial-callout{position:fixed;z-index:1200;width:min(360px,calc(100vw - 28px));box-sizing:border-box;padding:16px 17px 14px;border:1px solid #d8e9dd;border-radius:16px;background:#fff;color:#25382e;box-shadow:0 14px 42px #173e2b2b;animation:tour-callout-in .2s ease-out}
+.tutorial-callout:before{content:"";position:absolute;left:calc(50% - 9px);width:16px;height:16px;background:#fff;border:1px solid #d8e9dd;transform:rotate(45deg)}
+.tutorial-callout[data-placement="below"]:before{top:-9px;border-right:0;border-bottom:0}
+.tutorial-callout[data-placement="above"]:before{bottom:-9px;border-left:0;border-top:0}
+.tutorial-callout-top{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.tutorial-brand-mark{color:#24734f;font-size:9px;font-weight:900;letter-spacing:.1em}
+.tutorial-step-count{margin-left:auto;color:#89988e;font-size:9px;font-weight:800;letter-spacing:.08em;white-space:nowrap}
+.tutorial-close{width:27px;height:27px;border:0;border-radius:8px;background:#f1f6f2;color:#617568;font-size:19px;line-height:1;cursor:pointer}
+.tutorial-callout .tutorial-progress{height:4px;margin:0 0 11px;overflow:hidden;border-radius:10px;background:#edf2ee}
+.tutorial-callout .tutorial-progress span{display:block;height:100%;border-radius:10px;background:#2e9663;transition:width .25s ease}
+.tutorial-callout h2{margin:0 0 6px;color:#1f392b;font:800 16px/1.25 Manrope,sans-serif}
+.tutorial-callout>p{margin:0;color:#53665a;font-size:12px;line-height:1.5}
+.tutorial-callout .tutorial-actions{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px}
+.tutorial-callout .tutorial-actions>div{display:flex;gap:7px}
+.tutorial-callout .tutorial-skip,.tutorial-callout .tutorial-back{min-height:35px;padding:0 11px;border:1px solid #dce7df;border-radius:8px;background:#fff;color:#52665a;font-size:11px;font-weight:700;cursor:pointer}
+.tutorial-callout .tutorial-back:disabled{opacity:.4;cursor:not-allowed}
+.tutorial-callout .tutorial-next{min-height:35px;padding:0 14px;border-radius:8px;font-size:11px}
+.tutorial-callout button:focus-visible{outline:3px solid #a9dec1;outline-offset:2px}
+@keyframes tour-callout-in{from{opacity:0;transform:translateY(7px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
+@media(max-width:700px){.tutorial-callout{width:min(340px,calc(100vw - 24px));padding:13px 14px 12px}.tutorial-callout h2{font-size:14px}.tutorial-callout>p{font-size:11px;line-height:1.42}.tutorial-callout .tutorial-actions{margin-top:11px}.tutorial-callout .tutorial-skip,.tutorial-callout .tutorial-back,.tutorial-callout .tutorial-next{min-height:33px;padding:0 10px;font-size:10px}}
