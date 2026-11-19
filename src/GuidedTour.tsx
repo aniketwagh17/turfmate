@@ -225,14 +225,10 @@ export default function GuidedTour({onClose}:{onClose:()=>void}){
  useEffect(()=>{
   const reposition=()=>setLayoutTick(t=>t+1);
   window.addEventListener("resize",reposition);
-  window.addEventListener("scroll",reposition,true);
   window.visualViewport?.addEventListener("resize",reposition);
-  window.visualViewport?.addEventListener("scroll",reposition);
   return()=>{
    window.removeEventListener("resize",reposition);
-   window.removeEventListener("scroll",reposition,true);
    window.visualViewport?.removeEventListener("resize",reposition);
-   window.visualViewport?.removeEventListener("scroll",reposition);
   };
  },[]);
  useEffect(()=>{
