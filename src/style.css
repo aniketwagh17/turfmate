@@ -819,3 +819,27 @@
 @keyframes session-success-fall{to{transform:translateY(390px) rotate(620deg);opacity:0}}
 @keyframes session-success-bounce{0%{transform:translateY(12px) scale(.65);opacity:0}65%{transform:translateY(-5px) scale(1.12);opacity:1}100%{transform:translateY(0) scale(1);opacity:1}}
 @media(prefers-reduced-motion:reduce){.session-success-art span,.session-success-confetti i{animation:none!important}.session-success-confetti{display:none}}
+
+
+/* Compact, familiar payment form styling. Keep the original fields and behaviour. */
+.secondary-button{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:42px;padding:10px 14px;border:1px solid #d7e5dd;border-radius:9px;background:#fff;color:#287653;font-size:12px;font-weight:700;white-space:nowrap;box-shadow:0 2px 6px #173e2b08;transition:background .16s ease,border-color .16s ease,box-shadow .16s ease}
+.secondary-button:hover{background:#f2faf5;border-color:#9bcbb1;box-shadow:0 4px 12px #173e2b10}
+.secondary-button:focus-visible{outline:3px solid #b9e7d5;outline-offset:2px}
+.session-pdf-button svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.payment-form-panel{padding:20px}
+.payment-form-panel>h3{margin:0 0 18px;color:#23364a;font:800 17px Manrope,sans-serif}
+.payment-form-panel>label{display:block;margin:14px 0;color:#536273;font-size:12px;font-weight:700}
+.payment-form-panel>label select,.payment-form-panel>label input{width:100%;min-height:44px;margin-top:7px;padding:10px 12px;border:1px solid #dce5e8;border-radius:9px;background:#fff;color:#26394d;font-size:13px}
+.payment-form-panel>label select:focus,.payment-form-panel>label input:focus{outline:0;border-color:#55ad88;box-shadow:0 0 0 3px #16865f17}
+.payment-form-panel .field-hint{display:block;margin-top:6px;color:#8491a1;font-size:10px;line-height:1.4;font-weight:500}
+.payment-form-panel .payment-form-actions{display:flex;flex-direction:column;align-items:stretch;gap:9px;margin-top:18px;padding-top:15px;border-top:1px solid #edf1f4}
+.payment-form-panel .payment-form-actions .primary{width:100%;min-height:46px;margin:0}
+.payment-form-panel .payment-form-actions .small-action{width:100%;margin:0}
+@media(max-width:760px){.payment-form-panel{padding:17px}.session-pdf-button{min-height:40px;padding:9px 11px}}
+@media(max-width:520px){.session-pdf-button span{font-size:11px}}
+
+
+/* Match the session PDF action to the red PDF report button treatment */
+.session-pdf-button{background:#fff5f3;border:1px solid #f2d8d2;color:#a54836;border-radius:9px;font-weight:700;transition:background .15s ease,border-color .15s ease,transform .15s ease}
+.session-pdf-button:hover{background:#ffebe7;border-color:#eac4bb;transform:translateY(-1px)}
+.session-pdf-button svg{stroke:currentColor}
