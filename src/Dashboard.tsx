@@ -568,49 +568,6 @@ export default function Dashboard({ email }: { email: string }) {
  </div>;
 }
 
-type GuidedDemoStep={title:string;section:string;body:string;view:string};
- function GuidedDemo({step,steps,onBack,onNext,onClose}:{step:number;steps:GuidedDemoStep[];onBack:()=>void;onNext:()=>void;onClose:()=>void}){
-  const current=steps[step];
-  const [callout,setCallout]=useState<React.CSSProperties>({});
-  useEffect(()=>{
-   if(current.view!=="add-session-button")return;
-   const target=document.querySelector<HTMLElement>('[data-tour-target="add-session-button"]');
-   if(!target)return;
-   target.classList.add("guided-tour-target");
-   const place=()=>{
-    const r=target.getBoundingClientRect(),w=Math.min(360,window.innerWidth-24),h=220,gap=16;
-    const below=window.innerHeight-r.bottom-gap>=h;
-    const top=below?r.bottom+gap:Math.max(12,r.top-h-gap);
-    const left=Math.max(12,Math.min(r.left+(r.width-w)/2,window.innerWidth-w-12));
-    setCallout({position:"fixed",top,left,width:w});
-   };
-   place();window.addEventListener("resize",place);window.addEventListener("scroll",place,true);
-   return()=>{target.classList.remove("guided-tour-target");window.removeEventListener("resize",place);window.removeEventListener("scroll",place,true);};
-  },[current.view]);
-  const modalDemo=current.view==="add-session-modal";
-  return <div className={modalDemo?"guided-tour-layer guided-tour-demo-mode":"guided-tour-layer guided-tour-spotlight-mode"} role="region" aria-label="TurfMate guided walkthrough">
-   {modalDemo&&<div className="guided-demo-modal-preview">
-    <div className="guided-demo-modal-heading"><div><small>NEW SESSION · DEMO</small><h2>Add session</h2></div><span>×</span></div>
-    <div className="guided-demo-modal-body">
-     <div className="guided-demo-field guided-demo-field-highlight"><label>Date</label><div>19 Nov 2026 <span>▣</span></div><small>Choose the date your group has booked the turf.</small></div>
-     <div className="guided-demo-field"><label>Venue</label><div>e.g. Titans Turf</div></div>
-     <div className="guided-demo-two"><div className="guided-demo-field"><label>Start time</label><div>09:00 PM</div></div><div className="guided-demo-field"><label>End time</label><div>12:00 AM</div></div></div>
-     <div className="guided-demo-field"><label>Does your group maintain a cricket fund?</label><div className="guided-demo-choice">● Yes, we maintain a shared cricket fund</div><div className="guided-demo-choice muted">○ No, split the turf expense equally</div></div>
-     <div className="guided-demo-two"><div className="guided-demo-field"><label>Fixed contribution per person</label><div>₹250</div></div><div className="guided-demo-field"><label>Total session expenses</label><div>₹4,500</div></div></div>
-     <div className="guided-demo-field"><label>Actual turf charges paid</label><div>₹4,200</div></div>
-     <div className="guided-demo-create">Create session</div>
-    </div>
-   </div>}
-   <section className={modalDemo?"guided-tour-card guided-tour-card-demo":"guided-tour-card"} style={modalDemo?undefined:callout}>
-    <div className="guided-tour-head"><span>🏏 TURFMATE · GUIDED TOUR</span><span>{step+1} / {steps.length}</span><button type="button" onClick={onClose} aria-label="Exit guide">×</button></div>
-    <div className="guided-tour-progress"><span style={{width:((step+1)/steps.length*100)+"%"}}/></div>
-    <small className="guided-tour-section">{current.section.toUpperCase()}</small>
-    <h2>{current.title}</h2><p>{current.body}</p>
-    <div className="guided-tour-hint">{modalDemo?"This is a visual walkthrough of the Add Session form. Sample values are for explanation only; nothing will be saved.":"The Add session button is highlighted. The guide is positioned clear of the button so you can see both."}</div>
-    <footer><button type="button" className="guided-tour-exit" onClick={onClose}>Exit tour</button><div><button type="button" className="guided-tour-back" onClick={onBack} disabled={step===0}>← Back</button><button type="button" className="guided-tour-next" onClick={onNext}>{step===steps.length-1?"Finish":"Next →"}</button></div></footer>
-   </section>
-  </div>;
- }
  function Stat({label,value}:{label:string;value:string}){return <div className="stat"><small>{label}</small><strong>{value}</strong></div>}
 function SessionList({sessions,players,onAttendance,onEdit,onDelete,onOpen}:{sessions:Session[];players:Player[];onAttendance:(s:Session)=>void;onEdit:(s:Session)=>void;onDelete:(s:Session)=>void;onOpen:(s:Session)=>void}){return <div className="panel">{sessions.length?sessions.map(s=><div className="line session-line" key={s.id}><button type="button" className="session-summary" onClick={()=>onOpen(s)}><b>{s.venue}</b><small>{s.date} · {formatSessionTime(s.startTime)} to {formatSessionTime(s.endTime)} · {(s.participants||[]).length} players selected</small><small>{(s.participants||[]).map(id=>players.find(p=>p.id===id)?.name||"Player").join(", ")||"Attendance not recorded yet"}</small><small className="session-open-hint">View session details →</small></button><strong>{money(s.total)}</strong><button type="button" className="small-action" onClick={()=>onAttendance(s)}>Add players +</button><div className="session-icon-actions" style={{display:"flex",alignItems:"center",justifyContent:"flex-end",gap:12,marginLeft:"auto"}}><button type="button" aria-label="Edit session" title="Edit session" onClick={()=>onEdit(s)} style={{border:0,background:"transparent",color:"#2563eb",fontSize:23,fontWeight:700,cursor:"pointer",padding:8,lineHeight:1}}>✎</button><button type="button" aria-label="Delete session" title="Delete session" onClick={()=>onDelete(s)} style={{border:0,background:"transparent",color:"#dc2626",fontSize:23,fontWeight:700,cursor:"pointer",padding:8,lineHeight:1}}>🗑</button></div></div>):<p className="empty">No sessions yet. Add your first turf booking.</p>}</div>}
 function Modal({title,close,children}:{title:string;close:()=>void;children:ReactNode}){return <div className="backdrop" style={{position:"fixed",inset:0,zIndex:1000}}><div className="modal" role="dialog" aria-modal="true" aria-label={title} onClick={e=>e.stopPropagation()}><div className="modalhead"><h2>{title}</h2><button type="button" className="modal-close-button" aria-label="Close dialog" title="Close" onClick={close}><span aria-hidden="true">×</span></button></div>{children}</div></div>}
