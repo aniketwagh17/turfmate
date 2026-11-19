@@ -60,7 +60,7 @@ export default function Dashboard({ email }: { email: string }) {
   {title:"Finance: payment details and finish",section:"Finance",finance:"Payment details",body:"Payment details stores the organiser's payee name, UPI ID and optional contact, plus fund-manager details. That's the end of the TurfMate organiser guide."}
  ];
  function startTutorial(){setTab("Overview");setFinanceSection("Download reports");setTutorialStep(0);setTutorialOpen(true);}
- function moveTutorial(next:number){const bounded=Math.max(0,Math.min(tutorialSteps.length-1,next));const step=tutorialSteps[bounded];setTutorialStep(bounded);setTab(step.section);if(step.finance)setFinanceSection(step.finance);}
+ function moveTutorial(next:number){const bounded=Math.max(0,Math.min(tutorialSteps.length-1,next));const step=tutorialSteps[bounded];setTutorialStep(bounded);setTab(step.section);if(step.finance)setFinanceSection(step.finance as typeof financeSection);}
  useEffect(()=>{if(!notice)return;void Swal.fire({toast:true,position:"top-end",icon:"info",title:notice,showConfirmButton:false,timer:2800,timerProgressBar:true});setNotice("");},[notice]);
  useEffect(()=>localStorage.setItem("tm-players",JSON.stringify(players)),[players]);
  useEffect(()=>{localStorage.setItem("tm-player-modal-open",String(showPlayer));localStorage.setItem("tm-player-draft-name",name);localStorage.setItem("tm-player-draft-phone",phone);localStorage.setItem("tm-player-draft-editing-id",editingPlayerId);},[tab,showPlayer,name,phone,editingPlayerId]);
