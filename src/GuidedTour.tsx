@@ -135,6 +135,7 @@ export default function GuidedTour({onClose}:{onClose:()=>void}){
     const rect=target.getBoundingClientRect();
     const vw=window.innerWidth,vh=window.innerHeight,pad=12,gap=14;
     const width=Math.min(380,vw-24);
+    if(card)card.style.width=width+"px";
     const cardHeight=card?.getBoundingClientRect().height||220;
     const centeredLeft=Math.max(pad,Math.min(rect.left+(rect.width-width)/2,vw-width-pad));
     const candidates=[
@@ -147,11 +148,19 @@ export default function GuidedTour({onClose}:{onClose:()=>void}){
     const valid=candidates.filter(x=>x.top>=pad&&x.left>=pad&&x.top+cardHeight<=vh-pad&&x.left+width<=vw-pad&&!overlaps(x,width,cardHeight));
     if(valid.length){const preferred=valid.find(x=>x.side==="below")||valid.find(x=>x.side==="above")||valid[0];setPlacement({top:preferred.top,left:preferred.left,width,compact:false});}
     else{
-     const compactHeight=54,compactWidth=Math.min(340,vw-24),compactLeft=Math.max(pad,(vw-compactWidth)/2);
-     const topSpot={top:pad,left:compactLeft},bottomSpot={top:vh-compactHeight-pad,left:compactLeft};
-     const topFree=!overlaps(topSpot,compactWidth,compactHeight),bottomFree=!overlaps(bottomSpot,compactWidth,compactHeight);
-     const chosen=topFree&&bottomFree?(rect.top>vh/2?topSpot:bottomSpot):topFree?topSpot:bottomFree?bottomSpot:(rect.top>vh/2?topSpot:bottomSpot);
-     setPlacement({top:chosen.top,left:chosen.left,width:compactWidth,compact:true});
+     const compactHeight=52,compactWidth=Math.min(320,vw-24),compactLeft=Math.max(pad,(vw-compactWidth)/2);
+     const sideWidth=Math.min(260,vw-24);
+     const centerTop=Math.max(pad,Math.min(rect.top+(rect.height-compactHeight)/2,vh-compactHeight-pad));
+     const spots=[
+      {top:pad,left:compactLeft,width:compactWidth},
+      {top:vh-compactHeight-pad,left:compactLeft,width:compactWidth},
+      {top:centerTop,left:rect.right+gap,width:sideWidth},
+      {top:centerTop,left:rect.left-sideWidth-gap,width:sideWidth}
+     ];
+     const safeSpots=spots.filter(x=>x.top>=pad&&x.left>=pad&&x.top+compactHeight<=vh-pad&&x.left+x.width<=vw-pad&&!overlaps(x,x.width,compactHeight));
+     const chosen=safeSpots.find(x=>x.top===pad&&rect.top>vh/2)||safeSpots.find(x=>x.top>vh/2)||safeSpots[0];
+     const fallback=chosen||{top:rect.top>vh/2?pad:vh-compactHeight-pad,left:compactLeft,width:compactWidth};
+     setPlacement({top:fallback.top,left:fallback.left,width:fallback.width,compact:true});
     }
     setPositionReady(true);
    },360);
