@@ -800,3 +800,22 @@
 .attendance-empty-roster{grid-column:1/-1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:104px;padding:20px 16px;text-align:center;border:1px dashed var(--border-color,#d7e2dc);border-radius:12px;background:var(--panel-soft,#f8faf9)}
 .attendance-empty-roster strong{font-size:14px}
 .attendance-empty-roster span{font-size:13px;color:var(--muted,#718078)}
+
+
+/* One-time TurfMate session completion celebration */
+.swal2-popup.session-success-celebration{position:relative;overflow:hidden;border-radius:22px;padding:2rem 1.5rem 1.6rem}
+.session-success-celebration .swal2-title{position:relative;z-index:2;font-size:clamp(1.25rem,4vw,1.65rem);line-height:1.25;color:#166534}
+.session-success-celebration .swal2-html-container{position:relative;z-index:2;margin:0.6rem 0 1rem!important}
+.session-success-celebration .swal2-icon{border-color:#22a06b;color:#16a36a}
+.session-success-celebration .swal2-confirm{position:relative;z-index:3;border-radius:10px!important;padding:.75rem 1.5rem!important;font-weight:700}
+.session-success-art{display:flex;align-items:center;justify-content:center;gap:18px;margin:8px 0 14px;font-size:clamp(2rem,9vw,3rem)}
+.session-success-art span{display:inline-block;animation:session-success-bounce .8s ease-in-out both}
+.session-success-art span:nth-child(2){animation-delay:.12s}
+.session-success-art span:nth-child(3){animation-delay:.24s}
+.session-success-message{margin:0 auto 8px;max-width:310px;color:#344b3d;font-size:15px;line-height:1.5;font-weight:600}
+.session-success-submessage{margin:0;color:#718078;font-size:12px}
+.session-success-confetti{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:1}
+.session-success-confetti i{position:absolute;top:-12px;left:calc(var(--i)*5.55%);width:7px;height:12px;border-radius:2px;background:hsl(calc(var(--i)*31),70%,55%);animation:session-success-fall 2.3s ease-in both;animation-delay:calc(var(--i)*-0.09s);transform:rotate(calc(var(--i)*37deg))}
+@keyframes session-success-fall{to{transform:translateY(390px) rotate(620deg);opacity:0}}
+@keyframes session-success-bounce{0%{transform:translateY(12px) scale(.65);opacity:0}65%{transform:translateY(-5px) scale(1.12);opacity:1}100%{transform:translateY(0) scale(1);opacity:1}}
+@media(prefers-reduced-motion:reduce){.session-success-art span,.session-success-confetti i{animation:none!important}.session-success-confetti{display:none}}
