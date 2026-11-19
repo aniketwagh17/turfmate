@@ -837,3 +837,9 @@
 .payment-form-panel .payment-form-actions .small-action{width:100%;margin:0}
 @media(max-width:760px){.payment-form-panel{padding:17px}.session-pdf-button{min-height:40px;padding:9px 11px}}
 @media(max-width:520px){.session-pdf-button span{font-size:11px}}
+
+
+/* Match the session PDF action to the red PDF report button treatment */
+.session-pdf-button{background:#fff5f3;border:1px solid #f2d8d2;color:#a54836;border-radius:9px;font-weight:700;transition:background .15s ease,border-color .15s ease,transform .15s ease}
+.session-pdf-button:hover{background:#ffebe7;border-color:#eac4bb;transform:translateY(-1px)}
+.session-pdf-button svg{stroke:currentColor}
