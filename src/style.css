@@ -669,3 +669,45 @@
 .session-back-button span{font-size:18px;line-height:1}
 @media(max-width:520px){.player-select-grid{grid-template-columns:repeat(2,minmax(0,1fr));max-height:42vh}.player-select-card{padding:9px 8px!important;gap:7px}.player-select-card b{font-size:11px}.player-select-card small{font-size:9px}.attendance-picker-toolbar{align-items:stretch;flex-direction:column}.attendance-picker-count{align-items:flex-start;flex-direction:row;gap:7px}.attendance-picker-count span{margin-top:0}}
 @media(max-width:380px){.player-select-grid{grid-template-columns:1fr}}
+
+
+/* Attendance picker: compact search field and two-up player cards on phones. */
+.attendance-picker-toolbar{align-items:center}
+.attendance-player-search{
+  flex:0 0 auto!important;
+  width:100%;
+  min-height:46px!important;
+  height:46px;
+  padding:0 12px!important;
+  border-radius:11px!important;
+}
+.attendance-player-search input{
+  height:42px!important;
+  min-height:42px!important;
+  padding:0!important;
+  font-size:13px!important;
+}
+.attendance-player-search>button{
+  width:28px!important;
+  height:28px!important;
+  flex:0 0 28px!important;
+}
+.attendance-picker-count{align-items:flex-start}
+.player-select-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.player-select-card{min-width:0;gap:8px;padding:9px 10px!important}
+.player-select-card span{min-width:0}
+@media(max-width:620px){
+  .attendance-picker-toolbar{align-items:stretch;flex-direction:column;gap:9px}
+  .attendance-player-search{flex:0 0 46px!important;width:100%}
+  .attendance-picker-count{align-items:flex-start;flex-direction:row;gap:7px}
+  .attendance-picker-count span{margin-top:0}
+  .player-select-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px;max-height:40vh}
+  .player-select-card{min-height:48px;padding:8px 7px!important;gap:6px}
+  .player-select-card b{font-size:11px;line-height:1.25;overflow-wrap:anywhere}
+  .player-select-card small{font-size:9px;overflow-wrap:anywhere}
+}
+@media(max-width:380px){
+  .player-select-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .player-select-card{padding:7px 6px!important;gap:5px}
+  .player-select-card input{width:15px;height:15px}
+}
