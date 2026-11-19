@@ -845,24 +845,28 @@
 .session-pdf-button svg{stroke:currentColor}
 
 
-/* Overview entry point and guided organiser tutorial */
+/* Interactive, non-blocking product tour */
 .overview-hero-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .guide-button{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:44px;padding:0 16px;border:1px solid #cfe3d7;border-radius:11px;background:#fff;color:#24734f;font:700 13px Manrope,sans-serif;box-shadow:0 3px 10px #173e2b0a;transition:background .16s ease,border-color .16s ease,transform .16s ease}
 .guide-button:hover{background:#f0f8f3;border-color:#9fcab0;transform:translateY(-1px)}
-.guide-button:focus-visible,.tutorial-card button:focus-visible{outline:3px solid #a9dec1;outline-offset:2px}
-.tutorial-backdrop{position:fixed;inset:0;z-index:1200;display:grid;place-items:center;padding:20px;background:rgba(12,27,22,.56);backdrop-filter:blur(3px)}
-.tutorial-card{width:min(100%,490px);padding:22px;border:1px solid #e0ebe4;border-radius:20px;background:#fff;box-shadow:0 24px 80px #071b1250;color:#25382e}
-.tutorial-topline{display:flex;align-items:center;justify-content:space-between;gap:12px;color:#43815e;font-size:10px;font-weight:800;letter-spacing:.09em}
-.tutorial-close{width:32px;height:32px;border:0;border-radius:50%;background:#f1f5f2;color:#53665a;font-size:23px;line-height:1;cursor:pointer}
-.tutorial-progress{height:5px;margin:18px 0 17px;overflow:hidden;border-radius:10px;background:#edf2ee}
-.tutorial-progress span{display:block;height:100%;border-radius:10px;background:#2e9663;transition:width .2s ease}
-.tutorial-step-count{color:#7c8c82;font-size:10px;font-weight:800;letter-spacing:.08em}
-.tutorial-card h2{margin:9px 0 9px;color:#1f392b;font:800 22px/1.25 Manrope,sans-serif}
-.tutorial-card>p{margin:0;color:#53665a;font-size:14px;line-height:1.7}
-.tutorial-note{margin-top:17px;padding:11px 12px;border:1px solid #e2eee6;border-radius:10px;background:#f6faf7;color:#63766a;font-size:11px;line-height:1.55}
-.tutorial-actions{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:22px}
-.tutorial-actions>div{display:flex;gap:8px}
-.tutorial-skip,.tutorial-back{min-height:40px;padding:0 13px;border:1px solid #dce7df;border-radius:9px;background:#fff;color:#52665a;font-size:12px;font-weight:700;cursor:pointer}
+.guide-spotlight{position:relative!important;z-index:1090!important;outline:3px solid #20a66a!important;outline-offset:5px!important;border-radius:12px;box-shadow:0 0 0 7px #20a66a20,0 12px 34px #173e2b18!important;transition:outline-color .2s ease,box-shadow .2s ease}
+.tutorial-dock{position:fixed;right:22px;bottom:22px;z-index:1100;width:min(360px,calc(100vw - 28px));padding:15px 16px 14px;border:1px solid #cfe3d7;border-radius:17px;background:#fff;box-shadow:0 16px 48px #102b1d32;color:#25382e}
+.tutorial-dock.is-collapsed{width:auto;min-width:230px;padding:11px 13px}
+.tutorial-dock-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.tutorial-drag-label{display:flex;flex-direction:column;gap:3px;color:#26734e;font-size:10px;font-weight:900;letter-spacing:.09em}
+.tutorial-drag-label small{color:#87978d;font-size:9px;letter-spacing:.07em}
+.tutorial-dock-tools{display:flex;gap:5px}
+.tutorial-dock-tools button{width:29px;height:29px;border:0;border-radius:8px;background:#eff6f1;color:#496455;font-size:19px;cursor:pointer}
+.tutorial-progress{height:5px;margin:13px 0 12px;overflow:hidden;border-radius:10px;background:#edf2ee}
+.tutorial-progress span{display:block;height:100%;border-radius:10px;background:#2e9663;transition:width .25s ease}
+.tutorial-step-count{color:#7c8c82;font-size:9px;font-weight:900;letter-spacing:.08em}
+.tutorial-dock h2{margin:7px 0;color:#1f392b;font:800 17px/1.25 Manrope,sans-serif}
+.tutorial-dock>p{margin:0;color:#53665a;font-size:12px;line-height:1.55}
+.tutorial-live-tip{margin-top:11px;padding:8px 9px;border:1px solid #dceee2;border-radius:9px;background:#f3faf5;color:#3c7654;font-size:10px;line-height:1.45}
+.tutorial-actions{display:flex;align-items:center;justify-content:space-between;gap:9px;margin-top:13px}
+.tutorial-actions>div{display:flex;gap:6px}
+.tutorial-skip,.tutorial-back{min-height:35px;padding:0 10px;border:1px solid #dce7df;border-radius:8px;background:#fff;color:#52665a;font-size:11px;font-weight:700;cursor:pointer}
 .tutorial-back:disabled{opacity:.4;cursor:not-allowed}
-.tutorial-next{min-height:40px;padding:0 18px;border-radius:9px}
-@media(max-width:520px){.overview-hero-actions{width:100%;display:grid;grid-template-columns:auto 1fr}.overview-hero-actions button{width:100%}.tutorial-backdrop{align-items:end;padding:12px}.tutorial-card{padding:19px 17px 16px;border-radius:18px}.tutorial-card h2{font-size:20px}.tutorial-card>p{font-size:13px}}
+.tutorial-next{min-height:35px;padding:0 13px;border-radius:8px;font-size:11px}
+.guide-button:focus-visible,.tutorial-dock button:focus-visible{outline:3px solid #a9dec1;outline-offset:2px}
+@media(max-width:700px){.overview-hero-actions{width:100%;display:grid;grid-template-columns:auto 1fr}.overview-hero-actions button{width:100%}.tutorial-dock{right:10px;bottom:calc(78px + env(safe-area-inset-bottom));width:min(340px,calc(100vw - 20px));padding:12px 13px}.tutorial-dock.is-collapsed{min-width:210px}.tutorial-dock h2{font-size:15px}.tutorial-dock>p{font-size:11px}.tutorial-live-tip{font-size:9px}}
