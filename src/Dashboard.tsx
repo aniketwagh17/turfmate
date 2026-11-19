@@ -46,8 +46,7 @@ export default function Dashboard({ email }: { email: string }) {
  const [notice,setNotice]=useState("");
  const [tutorialOpen,setTutorialOpen]=useState(false); const [tutorialStep,setTutorialStep]=useState(0);
  const tutorialSteps=[
-  {title:"Your organiser dashboard",section:"Overview",body:"Your command centre brings sessions, player activity and cricket finances together. The cards give you a quick picture of collections, outstanding amounts and turf spending.",view:"overview"},
-  {title:"Start a new session",section:"Overview",body:"Use Add session whenever you book a turf. TurfMate keeps the booking details, expenses and contribution model together.",view:"add-session-button"},
+  {title:"Start a new session",section:"Overview",body:"This is where you begin whenever a new turf booking is confirmed. The Add session button opens the booking form where you can enter the date, venue, timing and expenses.",view:"add-session-button"},
   {title:"Add Session form",section:"Overview",body:"Enter the date, venue, start and end time. Choose whether your group maintains a shared cricket fund, enter the per-player contribution, total session expenses and actual turf charges. Create session saves the booking.",view:"add-session-modal"},
   {title:"Your session workspace",section:"Session details",body:"The session page is the hub for one match: attendance, sharing, payment collection and organiser settlement are grouped together.",view:"session"},
   {title:"Manage players",section:"Session details",body:"Manage players opens the attendance picker. Organisers can search the roster, select who is playing and add a new player when needed.",view:"manage-players"},
