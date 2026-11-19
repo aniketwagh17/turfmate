@@ -850,7 +850,7 @@
 .guide-button{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:44px;padding:0 16px;border:1px solid #cfe3d7;border-radius:11px;background:#fff;color:#24734f;font:700 13px Manrope,sans-serif;box-shadow:0 3px 10px #173e2b0a;transition:background .16s ease,border-color .16s ease,transform .16s ease}
 .guide-button:hover{background:#f0f8f3;border-color:#9fcab0;transform:translateY(-1px)}
 .guide-spotlight{position:relative!important;z-index:1090!important;outline:3px solid #20a66a!important;outline-offset:5px!important;border-radius:12px;box-shadow:0 0 0 7px #20a66a20,0 12px 34px #173e2b18!important;transition:outline-color .2s ease,box-shadow .2s ease}
-.tutorial-dock{position:fixed;right:22px;bottom:22px;z-index:1100;width:min(360px,calc(100vw - 28px));padding:15px 16px 14px;border:1px solid #cfe3d7;border-radius:17px;background:#fff;box-shadow:0 16px 48px #102b1d32;color:#25382e}
+.tutorial-dock{position:fixed;z-index:1100;width:min(360px,calc(100vw - 28px));padding:15px 16px 14px;border:1px solid #cfe3d7;border-radius:17px;background:#fff;box-shadow:0 16px 48px #102b1d32;color:#25382e}
 .tutorial-dock.is-collapsed{width:auto;min-width:230px;padding:11px 13px}
 .tutorial-dock-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
 .tutorial-drag-label{display:flex;flex-direction:column;gap:3px;color:#26734e;font-size:10px;font-weight:900;letter-spacing:.09em}
@@ -869,4 +869,4 @@
 .tutorial-back:disabled{opacity:.4;cursor:not-allowed}
 .tutorial-next{min-height:35px;padding:0 13px;border-radius:8px;font-size:11px}
 .guide-button:focus-visible,.tutorial-dock button:focus-visible{outline:3px solid #a9dec1;outline-offset:2px}
-@media(max-width:700px){.overview-hero-actions{width:100%;display:grid;grid-template-columns:auto 1fr}.overview-hero-actions button{width:100%}.tutorial-dock{right:10px;bottom:calc(78px + env(safe-area-inset-bottom));width:min(340px,calc(100vw - 20px));padding:12px 13px}.tutorial-dock.is-collapsed{min-width:210px}.tutorial-dock h2{font-size:15px}.tutorial-dock>p{font-size:11px}.tutorial-live-tip{font-size:9px}}
+@media(max-width:700px){.overview-hero-actions{width:100%;display:grid;grid-template-columns:auto 1fr}.overview-hero-actions button{width:100%}.tutorial-dock{width:min(340px,calc(100vw - 20px));padding:12px 13px}.tutorial-dock.is-collapsed{min-width:210px}.tutorial-dock h2{font-size:15px}.tutorial-dock>p{font-size:11px}.tutorial-live-tip{font-size:9px}}
