@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 
 type DemoTab = "Overview" | "Sessions" | "Session details" | "Players" | "Payments" | "Finance";
-type DemoModal = "session" | "attendance" | "quick-player" | "share" | "reminder" | "player" | null;
+type DemoModal = "session" | "edit-session" | "delete-session" | "delete-player" | "attendance" | "quick-player" | "share" | "reminder" | "player" | null;
 type TourStep = { tab: DemoTab; section: string; title: string; body: string; target: string; modal?: DemoModal; finance?: string };
 
 const TOUR_STEPS: TourStep[] = [
@@ -22,7 +22,13 @@ const TOUR_STEPS: TourStep[] = [
  {tab:"Sessions",section:"SESSIONS",title:"Session summary card",body:"This card gives you the key information without opening the session. The sample session has six players and a ₹4,500 total expense.",target:"session-card"},
  {tab:"Sessions",section:"SESSIONS",title:"Add players from the session card",body:"Use Add players to choose who is attending this particular booking. It opens the same attendance picker available inside the session workspace.",target:"session-card-add-players"},
  {tab:"Sessions",section:"SESSIONS",title:"Edit a booking",body:"Edit lets you correct the venue, date, time or expense details for an existing session.",target:"session-card-edit"},
+ {tab:"Sessions",section:"EDIT SESSION",title:"Review the edit form",body:"The edit form is prefilled with the saved booking. You can correct any field without creating a second session.",target:"edit-session-date",modal:"edit-session"},
+ {tab:"Sessions",section:"EDIT SESSION",title:"Update the venue",body:"Change the turf or ground name if the booking location has changed.",target:"edit-session-venue",modal:"edit-session"},
+ {tab:"Sessions",section:"EDIT SESSION",title:"Adjust the playing time",body:"Update the start and end times if the booking slot changes.",target:"edit-session-time",modal:"edit-session"},
+ {tab:"Sessions",section:"EDIT SESSION",title:"Review the expense values",body:"Check total session expenses, actual turf charges and the fixed contribution before saving. Changing financial details can reset an unsettled organiser advance.",target:"edit-session-total",modal:"edit-session"},
+ {tab:"Sessions",section:"EDIT SESSION",title:"Save the updated booking",body:"Save changes updates this session in place. The demo form is read-only and will not change your real session.",target:"edit-session-save",modal:"edit-session"},
  {tab:"Sessions",section:"SESSIONS",title:"Delete a booking",body:"Delete removes the session and its associated payment records. Review the confirmation carefully because this action cannot be undone.",target:"session-card-delete"},
+ {tab:"Sessions",section:"DELETE SESSION",title:"Confirm before deleting",body:"The confirmation explains that payments recorded against this session will also be deleted. Keep the session if you are unsure; deletion cannot be undone.",target:"delete-session-confirm",modal:"delete-session"},
  {tab:"Sessions",section:"SESSIONS",title:"Open session details",body:"Select the session summary to open its workspace. This is where the booking, attendance, sharing, payments and settlement are grouped.",target:"session-card-open"},
  {tab:"Session details",section:"SESSION DETAILS",title:"Open a session workspace",body:"A session workspace brings booking details, attendance, sharing, payment collection and settlement into one place. The sample session is already populated so every feature can be demonstrated.",target:"session-detail-heading"},
  {tab:"Session details",section:"SESSION DETAILS",title:"Return to the session list",body:"Use Back to sessions to leave the current booking workspace and return to all your sessions.",target:"session-back"},
@@ -66,6 +72,7 @@ const TOUR_STEPS: TourStep[] = [
  {tab:"Players",section:"PLAYERS",title:"Prepare a player payment reminder",body:"For a player with an outstanding amount and a valid saved number, Payment reminder prepares a personalised WhatsApp message and QR link. It never sends automatically.",target:"player-reminder"},
  {tab:"Players",section:"PLAYERS",title:"Edit a player profile",body:"Edit opens the player form so you can correct their name or WhatsApp number. Existing session and payment history remains associated with that player.",target:"player-edit"},
  {tab:"Players",section:"PLAYERS",title:"Delete a player from the roster",body:"A player cannot be deleted while an amount is outstanding. After confirming deletion, the player is removed from future attendance while past sessions, payment records and reports retain their name.",target:"player-delete"},
+ {tab:"Players",section:"DELETE PLAYER",title:"Review the player deletion confirmation",body:"The confirmation protects your history: the player is removed from future attendance and the Players list, while past sessions, payments and reports keep the player's name.",target:"delete-player-confirm",modal:"delete-player"},
  {tab:"Payments",section:"NAVIGATION",title:"Payments tab",body:"The Payments tab gives you a consolidated transaction view across sessions.",target:"nav-payments"},
  {tab:"Payments",section:"PAYMENTS",title:"Consolidated payment management",body:"The Payments tab is the organiser's central transaction view. Record a new UPI or cash payment and review the history from one place.",target:"payments-heading"},
  {tab:"Payments",section:"RECORD PAYMENT",title:"Choose the session",body:"Select the session for which the money was received. TurfMate uses the session roster to populate the player choices.",target:"payment-session"},
